@@ -1567,12 +1567,16 @@
           'Make It Real keyboard hero video');
 
         // WebGL2 first, fall back to WebGL1.
+        // `desynchronized: true` causes silent texImage2D(video) failures
+        // on some Chromium builds — the texture stays as the default
+        // black/zero pixel, the shader keys it to opaque black, and the
+        // canvas reads as a black square. Leaving it off so the compositor
+        // sync stays standard.
         const glOpts = {
           premultipliedAlpha: false,
           alpha: true,
           antialias: true,
           preserveDrawingBuffer: false,
-          desynchronized: true,    // hint: skip the compositor sync if possible
         };
         const gl = canvas.getContext('webgl2', glOpts)
                 || canvas.getContext('webgl',  glOpts)
@@ -1669,13 +1673,21 @@
         gl.enableVertexAttribArray(aPos);
         gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
 
-        // Texture for the video frame
+        // Texture for the video frame. Bind it on TEXTURE0 explicitly so
+        // the sampler uniform's value (0) maps to the right unit.
         const tex = gl.createTexture();
+        gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, tex);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S,     gl.CLAMP_TO_EDGE);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T,     gl.CLAMP_TO_EDGE);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        // Flip Y on upload so the texture is stored upright (videos
+        // originate top-left; WebGL textures are bottom-left). With this
+        // set, the v_uv computation in the vertex shader doesn't need
+        // its own Y flip — but keeping the shader flip means we end up
+        // un-flipping it. So leave UNPACK_FLIP_Y_WEBGL false and let the
+        // shader handle orientation.
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
         gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
         gl.uniform1i(gl.getUniformLocation(program, 'u_video'), 0);

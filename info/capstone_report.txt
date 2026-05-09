@@ -1,0 +1,3014 @@
+ Virtual Reality Operator Preparedness
+             Simulator (VR OPS)
+
+                       Final Design Report
+
+                              ENGG 502 - Winter 2026
+
+                                        Group 20
+
+Abduljalel Wadouh, Ahmed Elkhrashy, Dieter Banaag, Ibrahim Hashmi, Zaid Ahmed, Zain Tariq
+                         Schulich School of Engineering, University of Calgary
+Table of Contents
+
+Table of Contents                                                      2
+
+Declaration of the Use of AI in the Design Project                     5
+
+Executive Summary                                                      5
+
+List of Figures                                                        6
+
+List of Tables                                                         6
+
+1. Project Overview                                                    8
+
+1.1 Background and Motivation                                          8
+
+1.2 Problem Statement                                                  8
+
+1.3 Overview of Expected Project Deliverables                          8
+
+2. Conceptual Design                                                   9
+
+2.1 Background Research and Literature Review                          9
+
+2.1.1 Compressor Background Research                                   9
+
+2.1.2 Control Panel and VR Research                                    10
+
+2.2 Performance Metrics                                                12
+
+2.2.1 System Performance Metrics                                       12
+
+2.2.2 Training Effectiveness Metrics                                   13
+
+2.3 Design Specifications and Constraints                              14
+
+2.3.1 Design Specifications                                            14
+
+2.3.2 Technical Specifications                                         16
+
+2.3.3 Project Constraints                                              18
+
+2.4 Development and Descriptions of Design Alternatives                19
+
+2.4.1 Alternative 1: Full VR Interaction                               19
+
+2.4.2 Alternative 2: Hybrid Physical Control Panel and VR Environment  19
+
+2.4.3 Comparison with Existing Market Solutions                        20
+
+2.4.4 Summary of Design Alternatives                                   20
+
+2.5 Assessment of Design Alternatives                                  21
+
+2.5.1 Assessment Criteria                                              21
+
+2.5.2 Comparative Assessment                                           22
+
+2.6 Discussion and Justification of Selected Design Concept            23
+
+2.6.1 Process Model and Simulation Architecture                        23
+
+2.6.2 Physical Control Panel                                           23
+
+2.6.3 VR Environment and Feedback Logic                                23
+
+2.6.4 Failure and Reset Logic                                          24
+
+2.6.5 AI Instructor and Supervisory Dashboard                          24
+
+3. Design Development                                                  24
+
+                                                                       2
+3.1 High-Level System Architecture                  24
+
+3.2 Compressor Simulation (Aspen HYSYS)             25
+
+3.3 Physical Control Panel (PCP)                    33
+
+3.3.1 Mechanical Design and Manufacturing           33
+
+3.3.1.1 Panel Layout and Ergonomics                 35
+
+3.3.1.2 Fabrication and Assembly                    36
+
+3.3.2 Electrical Design and Communication           37
+
+3.3.2.1 Electrical Components and Wiring            37
+
+3.3.2.2 Sensor / Switch / Actuator Selection        37
+
+3.3.2.3 Microcontroller and Interface Logic         38
+
+3.3.2.4 Communication Protocol                      39
+
+3.3.2.5 Signal Mapping to the Virtual System        40
+
+3.4 VR Simulation                                   41
+
+3.4.1 Virtual Environment Design                    41
+
+3.4.2 SOP State Machine and Procedure Logic         42
+
+3.4.3 Physical Control Panel Integration            42
+
+3.4.4 Debug Window and Development Tooling          42
+
+3.4.5 Pipe Pressure Visualization and Feedback      43
+
+3.4.6 Timing Constraints and Step Validation        43
+
+3.5 AI Instructor                                   44
+
+3.5.1 System Overview                               44
+
+3.5.2 RAG Architecture                              44
+
+3.5.3 Trainee Interaction and Voice Input           44
+
+3.5.4 Knowledge Base Maintenance and Safety         45
+
+3.6 Admin Monitoring Dashboard                      46
+
+3.6.1 Dashboard Overview and Supervisory Functions  46
+
+3.6.2 Trainee Performance and Session Analysis      48
+
+3.6.3 Design Rationale                              48
+
+3.7 Backend and Data Infrastructure                 48
+
+3.7.1 Cloud Backend Server                          49
+
+3.7.2 Database Design                               49
+
+4. Design Verification                              50
+
+4.1 Prototype and System Implementation             50
+
+4.1.1 VR Environment and Hardware Integration       50
+
+4.1.2 AI Instructor and RAG Pipeline                51
+
+4.2 Descriptions of Test Scenarios                  52
+
+4.2.1 Normal Operation Scenario                     53
+
+4.2.2 Failure Detection Scenario                    53
+
+                                                    3
+4.2.3 Emergency Stop and Recovery Scenario                54
+
+4.2.4 User Interaction / Training Scenario                55
+
+4.3 Subsystem Verification Results                        56
+
+4.4 Integrated System Results and Discussion              58
+
+5. Project Management                                     59
+
+5.1 Roles & Responsibilities                              59
+
+5.1.1 Team Structure                                      59
+
+5.1.2 Detailed Responsibilities                           60
+
+5.2 Work Breakdown Structure (WBS)                        62
+
+5.3 Schedule & Milestones                                 62
+
+5.4 Budget for Prototype Development                      63
+
+5.4.1 Cost Breakdown Overview                             63
+
+5.4.2 Cost Savings                                        64
+
+5.5 Use of Project Resources and Contact Hours            65
+
+5.5.1 Use of Physical Laboratories and Facilities         65
+
+6. Project Work for Professional Development              66
+
+6.1 Impact of Engineering on Society and the Environment  66
+
+6.1.1 Stakeholder Analysis                                66
+
+6.1.2 Safety Impact Analysis                              67
+
+6.1.3 Environmental Considerations                        68
+
+6.1.4 Human Factors and Usability Analysis                68
+
+6.2 Professionalism                                       69
+
+6.2.1 Applicable Codes and Standards                      69
+
+6.2.2 Professional Documentation Practices                71
+
+7. Conclusions and Recommendations                        71
+
+7.1 Project Summary                                       71
+
+7.2 Suggestions for Design Improvements                   72
+
+References                                                73
+
+Appendices:
+
+Appendix A: Source Code Repos                             75
+
+Appendix B: SOP Document                                  76
+
+Appendix C: VR Guide Document                             80
+
+Appendix D: Safety Guide                                  88
+
+                                                          4
+Declaration of the Use of AI in the Design Project
+
+Generative AI was used in this report for two main purposes: formatting, grammar, and general
+polishing. Generative AI was only used through the input of original material to enhance
+organization, grammar, and spelling to ensure a more professional outlook of this report. Figure
+21 and Figure 22 were generated using gen AI.
+
+Executive Summary
+
+         Virtual reality is gaining popularity for use in the oil and gas industry for training
+purposes. In recent years, there has been a growing trend toward utilizing virtual reality
+technology to create interactive learning environments for training workers. One area where
+virtual reality has shown great potential for improving worker training is in the oil and gas
+industry. Training for workers who operate compressors at various stages of the natural gas
+production process may be particularly well-suited for development using this type of interactive
+computer technology.
+
+         In particular, training for the operation of compressor stations during the startup phase of
+compressor station operation could benefit from the use of a fully functional, user-interactive
+virtual-reality simulator. During compressor station startups, operators are required to make
+many decisions rapidly, such as when to start up the unit safely. It would be highly beneficial if
+those decisions could be made under controlled conditions prior to actually making them during
+actual operational events. As an example, one area of study that could utilize a fully functional
+VR simulator is the design and development of two-stage centrifugal compressor stations used to
+compress high-pressure Montney natural gas.
+
+         The simulator would allow engineers and technicians to develop and test the design
+parameters of a two-stage compressor station before they were built. Engineers could also
+practice decision-making related to the startup and shutdown of a compressor station.
+Additionally, the simulated nature of the training environment allows operators to experience
+different possible outcomes associated with their decisions, allowing them to learn in a low-risk
+setting.
+
+         Overall, a two-stage compressor station startup training simulator will likely help
+improve operator training efficiency and increase operator confidence in the event of real-world
+emergencies. The two-stage compressor station training simulator should include the ability to
+simulate a variety of failure modes, including loss of power to either stage of the compressor,
+loss of cooling water flow to either stage of the compressor, and loss of compression head due to
+excessive discharge temperature. Additionally, it should be able to demonstrate how each failure
+mode affects the overall behavior of the compressor station.
+
+                                                                                                                    5
+List of Figures
+
+Figure 1: Single stage compressor station                                    10
+
+Figure 2: Industrial Control Panel,                                          12
+
+Figure 3: Illustration of hybrid environment                                 20
+
+Figure 4: High-level diagram of VR OPS design components.                    25
+
+Figure 5: Aspen HYSYS final two-stage compressor model.                      28
+
+Figure 6: HYSYS case study configuration.                                    31
+
+Figure 7: Quick-opening flow characteristic curve for the recycle valve.     32
+
+Figure 8: CAD drawings of the S1,S2,S3 stencils                              34
+
+Figure 9: CAD drawings of the holders.                                       35
+
+Figure 10: Overhead view of the Physical Control Panel                       36
+
+Figure 11: Procedure debug window and control panel simulator                43
+
+Figure 12: Varying pipe colours as per valid pressure range restrictions     43
+
+Figure 13: AI Instructor correctly answering a procedure-related query,      45
+
+Figure 14: AI Instructor handling an out-of-scope question                   46
+
+Figure 15: Admin monitoring dashboard                                        47
+
+Figure 16: SOP Manager interface within the admin dashboard                  47
+
+Figure 17: Individual trainee performance view.                              48
+
+Figure 18: Early models used for scene construction.                         51
+
+Figure 19: Standard Operating Procedure and VR Guide Documents               53
+
+Figure 20: Pipe color table from Section 6 of the VR Guide                   54
+
+Figure 21: Work Breakdown Structure (WBS)                                    62
+
+Figure 22: Gantt chart with critical path                                    63
+
+List of Tables
+
+Table 1: System Performance Metrics Matrix                                   12
+
+Table 2: Training Effectiveness Metrics Matrix                               13
+
+Table 3: Design Specifications Matrix                                        14
+
+Table 4: Technical Specifications Matrix                                     16
+
+Table 5: Project Constraints Matrix                                          18
+
+Table 6: Summary of Design Alternatives Matrix                               20
+
+Table 7: Assessment Criteria Matrix                                          21
+
+Table 8: Comparative Assessment Matrix                                       22
+
+Table 9: Annotated Temperatures and Pressures at Key Nodes at full start up  28
+
+Table 10: Interstage Pressure Ratio                                          29
+
+                                                                             6
+Table 11: Dial Diameters                                       36
+
+Table 12: Unity-to-ESP32 commands                              39
+
+Table 13:ESP32-to-Unity events                                 40
+
+Table 14: Physical Input to Virtual Control Mapping            40
+
+Table 15: Hardware Resources                                   49
+
+Table 16: RACI Matrix                                          61
+
+Table 17: Bill of Materials                                    63
+
+Table 18: Cost Savings                                         64
+
+Table 19: Project Resources and Hours Spent                    65
+
+Table 20: Stakeholder analysis for VR OPS.                     66
+
+Table 21: Professional codes and standards applied in VR OPS.  69
+
+                                                               7
+1. Project Overview
+
+1.1 Background and Motivation
+
+         The oil and gas industry continues to lose more than 10 Canadian oil and gas workers
+every year due to on-site fatalities (Energy Safety Canada). The effort to improve this number
+can never be stopped until injury and fatalities are no longer a risk factor. With that being said,
+the majority of accidents occur due to simple mistakes or lack of knowledge regarding the
+equipment.
+
+         Operator training needs to constantly evolve and upgrade in an effort to reduce casualties
+and losses as its value transcends economic benefit (Assessing the Impact of Simulation-Based
+Training on Clinical Skills Acquisition and Retention: A Systematic Review, 2024; Elendu et al.,
+2024). Some of the biggest challenges limiting operator training are: high costs associated with
+on-site training, production disruptions during training sessions, safety risk during emergency
+procedures, limited opportunity for hands-on-experience, limited knowledge retention in
+traditional training methods.
+
+         Virtual reality technology revolutionizes operator training by creating an immersive,
+rise-free learning environment for skill development and procedure practice (Muda et al., 2024;
+Puranik, 2024).
+
+1.2 Problem Statement
+
+         Current operator training methods in the oil and gas industry are inadequate for preparing
+personnel for complex operational scenarios and emergency situations. Traditional
+classroom-based training lacks practical engagement, while on-site training poses safety risks
+and operational disruptions. There is a critical need for an immersive, scalable, and intelligent
+training solution that can simulate real-world conditions while ensuring operator safety and
+competency.
+
+1.3 Overview of Expected Project Deliverables
+
+The VR OPS project will deliver:
+
+    1. Virtual Reality Environment: Immersive 3D simulation of oil and gas facility
+         operations
+
+    2. Physical Control Panel: Tangible interface with switches and dials for realistic
+         interaction
+
+    3. AI-Powered Instructor: RAG-based assistant providing real-time SOP guidance and
+         procedural support
+
+    4. Performance Dashboard: Dashboard for tracking user progress and training
+         effectiveness
+
+    5. Comprehensive Documentation: Technical specifications and a user manual
+
+                                                                                                                    8
+    6. Two-stage Compressor Simulation: Fully running two-stage sweet natural gas
+         compressor simulation using Aspen HYSYS steady-state
+
+2. Conceptual Design
+
+2.1 Background Research and Literature Review
+
+2.1.1 Compressor Background Research
+         Natural gas produced at the wellhead is typically at insufficient pressure for pipeline
+
+transport, requiring centrifugal compressors at gathering and booster stations to raise gas
+pressure before it enters transmission infrastructure (Rasmussen & Kurz, 2009; NETL, 2017).
+Centrifugal machines are the standard selection for these applications due to their suitability for
+continuous high-flow service. This directly informed the VR OPS scenario selection: the
+simulated station replicates a Montney booster application in which a two-stage centrifugal
+compression train raises gas pressure from 1.5 MPa at the wellhead gathering system to 8.0 MPa
+for export, a configuration that is representative of the upstream and midstream operations for
+which operators require training.
+
+         Temperature management is about more than improving performance, but rather, it is
+about maintaining reliability as well. Reliability is important for both the process scenario and
+the training objectives. The literature showcases a real compressor-process example where a
+problem relating to abnormal bearing-temperature behavior resulted in a serious reliability risk
+(Lee et al., 2017). The study focused on determining the cause of abnormally high temperatures
+associated with a tilting-pad journal bearing. Suh et al. discuss the mechanisms behind that
+concern: thermal boundary conditions surrounding bearings influence lubricant properties (oil
+viscosity, oil-film pressure, minimum film thickness), pad temperature, and ultimately, bearing
+operation (Suh et al., 2020). Therefore, higher-than-normal compressor system temperatures can
+degrade the operating conditions of rotating equipment (i.e., bearings and lubricating systems)
+potentially resulting in operational instability or increased vibration and decreased machinery
+reliability.
+
+         Reliability and availability are prominent topics within the general area of compression
+literature. Due to the necessity for compressor stations to continuously provide services,
+numerous authors have discussed the utilization of multiple compressor units to improve
+redundancy, to continue to provide throughput during outages, and to continue providing service
+through maintenance or partial equipment failure. According to NETL (2017), stations
+frequently contain multiple compressors so that even when one unit is not available, additional
+capacity may be online. Literature on compressor-station availability defines equipment
+redundancy as an operational and planning variable in addition to being viewed as a luxury. The
+
+                                                                                                                    9
+literature defines reliability by defining machinery protection at the unit level, and continuity of
+service at the station level (NETL, 2017; Rasmussen and Kurz, 2009).
+
+         Taken together, the literature treats gas compression as a system-level engineering
+problem rather than a collection of independent components. The interdependence between
+compression stages, intercoolers, scrubbers, and recycle loops means that a change at any one
+point propagates through the entire station. This finding directly shaped the modeling approach
+for VR OPS: rather than representing the compressor in isolation, the HYSYS model captures
+the full compression train including interstage cooling, liquid separation, and recycle flow paths.
+The two-compressor configuration also reflects the redundancy design philosophy described in
+the reliability literature, where multiple units allow continued operation during maintenance or
+partial failure, a scenario that operators must understand before working on a live station (NETL,
+2017; Rasmussen & Kurz, 2009).
+
+                                      Figure 1: Single stage compressor station
+                                       Source: (Qidakon Energy 2026)
+2.1.2 Control Panel and VR Research
+         For VR OPS, the control interface was a central research consideration because
+compressor operations require more than visual recognition of system state. Operators must
+execute start and stop actions, adjust valve settings, and respond to abnormal conditions through
+deliberate physical inputs. As a result, the literature review focused on whether standard VR
+controllers were sufficient for this type of training, or whether a tangible interface would provide
+a more appropriate basis for operator interaction (Muda et al., 2024).
+
+                                                                                                                   10
+         A key study informing this decision was Baek et al. (2021), who investigated VR-based
+job training using tangible interactions. Their results showed that trainees using physical tools
+improved their proficiency over time, while those using standard VR controllers did not
+demonstrate the same sustained improvement. The authors attributed this difference to the fact
+that controller-based interaction did not require the same force control or posture correction as
+physical tool use. For VR OPS, this finding was directly relevant because compressor startup
+depends on repeated physical actions involving switches, rotary adjustments, and emergency
+controls rather than passive observation alone.
+
+         That same study also highlighted an important limitation. Although tangible interaction
+improved training quality, the system relied on multiple Kinect sensors for tracking, which
+increased setup complexity and reduced portability. This was significant for VR OPS because it
+suggested that the value of physical interaction should be preserved, but without depending on an
+external tracking arrangement that would complicate deployment. The literature therefore
+supported a self-contained physical interface rather than a sensor-heavy tool-tracking system
+(Baek et al., 2021).
+
+         The research also showed that interface quality affects training performance
+independently of the simulation environment itself. As summarized in the project materials,
+Bezanson et al. (2023) found that virtual controls, especially knobs, created usability issues for
+many users, with 52% reporting difficulty due to poor sensitivity. In a procedure that depends on
+controlled adjustment, this matters because awkward input can interfere with the trainee's ability
+to perform the task correctly. Their results therefore strengthened the case for a dedicated
+physical panel by showing that controller-based interaction may introduce its own training
+barrier even when the virtual environment is otherwise effective.
+
+         In addition to informing the need for the use of physical interaction, the research results
+indicated that this needed to be accompanied by meaningful feedback. The findings reinforced
+the importance of the control panel being utilized in conjunction with a larger training
+framework, where both physical actions taken at the control panel would be related to the
+simulator's response to those actions; and the procedures associated with taking those physical
+actions would be clearly provided. While the literature supported the utilization of a control
+panel as a hardware component of an operator-training program; it did so primarily as an element
+of a larger operator-training system. (Baek et al., 2021; Bezanson et al., 2023).
+
+                                                                                                                   11
+                                          Figure 2: Industrial Control Panel,
+                                            Source: (French, 2026)
+
+2.2 Performance Metrics
+
+         The performance metrics for VR OPS were established to assess both technical system
+performance and training effectiveness. Because the platform integrates a physical control panel,
+a virtual reality simulation environment, a process-response model, an AI instructor, and a
+supervisory dashboard, its evaluation must address both engineering functionality and trainee
+learning outcomes. The selected metrics therefore measure whether the system operates reliably,
+produces realistic process behavior, delivers accurate instructional support, and contributes to
+measurable improvement in procedural execution over repeated sessions.
+
+2.2.1 System Performance Metrics
+
+            Table 1: System Performance Metrics Matrix
+
+  Metric    Target Value                  Verification Method
+
+Simulation     VR process values remain     Compare logged VR outputs against
+  fidelity     consistent with the Aspen  HYSYS case-study outputs for matching
+            HYSYS reference model under
+                                            valve positions and operating states.
+                  equivalent operating
+                        conditions
+
+                                                                                   12
+AI instruction   All responses cite retrieved       Validate AI outputs against retrieved
+   accuracy             SOP passages.             source passages and expected procedural
+
+                                                                    guidance.
+
+AI response      Less than 5 seconds per trainee  Measure average response time using a
+    time                        query             predefined set of representative operator
+
+                                                                    questions.
+
+ Panel-to-VR     All physical controls produce    Test each push button, rotary encoder, and
+input mapping    the correct simulator response      emergency stop input and verify the
+                                                        corresponding change in system
+
+                                                  indicators, equipment state, or procedure
+                                                                        flow.
+
+Failure-state    Incorrect actions trigger the    Execute predefined fault cases and verify
+  detection        intended abnormal-state         that the system disables further control
+
+                 response and control lockout        input and requires recovery through
+                                                             emergency shutdown.
+
+         These criteria are used to establish the minimum technical standards that the system will
+have to meet before it can be considered an effective training tool. The five parameters
+collectively assess if the simulation has remained consistent with its base process model
+(HYSYS), if the AI responds appropriately within acceptable time frames under actual operating
+conditions, and if the physical interfaces trigger the desired responses from the simulated
+environment. The inclusion of error-state identification criteria is critical due to the fact that
+successful training behaviors depend on the ability to respond correctly both when the system
+operates normally and when the user takes incorrect action.
+
+2.2.2 Training Effectiveness Metrics
+
+                 Table 2: Training Effectiveness Metrics Matrix
+
+     Metric      Target Value                     Assessment Method
+
+Task completion  90% correct step execution       Compare correct vs. incorrect step
+    accuracy      after ten repeated sessions         appraisals per session using
+
+                                                  session_steps table; reviewed via
+                                                            admin dashboard.
+
+                                                                                             13
+Reaction time to  Reduction in ESD response        Log timestamp of failure-state trigger
+     alarms       time between first and tenth        and ESD activation per session;
+
+                             sessions              compute elapsed time per occurrence.
+
+Completion time   15% reduction in total startup   Compare total session duration and
+  improvement     duration between Session 1 and   per-step timing across sessions using
+                  Session 10 with no increase in
+                                                     the admin dashboard overlapping
+                               error rate                        session view.
+
+         These measures are focused on determining if using the simulator repeatedly leads to
+improved skills among operators as opposed to just verifying that the platform will run properly.
+Metrics were chosen with an emphasis on operational procedure and timing of reactions as well
+as the degree of consistency within each session, and the number of errors made during all
+training sessions. Together these criteria provide information as to whether or not trainees have
+become more proficient, and thus more confident when performing the startup process.
+
+2.3 Design Specifications and Constraints
+
+         The VR OPS system was designed to address a specific operator training gap: the need
+for a safe, repeatable, and realistic training platform that develops physical motor control,
+procedural adherence, and situational awareness for industrial compressor operations. To achieve
+this, the design had to satisfy a set of functional and technical specifications while remaining
+feasible within the academic project scope. These specifications define what the system must do,
+while the constraints define the practical limits that shaped the final concept.
+
+2.3.1 Design Specifications
+
+                             Table 3: Design Specifications Matrix
+
+Category                     Design Specification                   Verification Method
+
+Training scope The system shall train users on a 12-step      All 12 steps executed correctly
+and procedure two-stage compressor startup procedure,           in the normal operation test
+                                                                 scenario (Section 4.2.1).
+                     including abnormal-condition detection.
+
+Process           The system shall represent a two-stage         HYSYS interstage pressure
+realism                compressor arrangement with            (3.44­3.48 MPa) verified against
+                                                              theoretical optimum (3.46 MPa)
+                  intercooling, liquid separation, recycle
+                      flow, and export flow behavior                 with <1% deviation.
+
+                    consistent with the HYSYS model.
+
+                                                                                               14
+Process-respon     The simulator shall retrieve updated         Confirmed by timing lookup
+  se behavior      process pressures from the HYSYS           response during all 12 SOP steps
+                lookup table within one simulation frame
+                 (<50 ms) for any valid combination of             with the physical panel
+                  valve opening and compressor speed                       connected.
+
+                                    inputs.
+
+Failure-state        The system shall detect pressure          Confirmed by intentional valve
+  handling      deviations from the acceptable range at       misposition during Step 6 testing
+                the active step, disable all control inputs,
+                 and require ESD activation before the                  (Section 4.2.2).
+
+                             step can be retried.
+
+ Physical          The system shall include a physical                   Confirmed by
+interaction        control panel with rotary encoders,        encoder-to-valve-state round-trip
+                momentary push buttons, and a latching
+                mushroom-head ESD mapped to the VR              latency measurement during
+                simulation over WiFi with no perceptible        hardware integration testing.
+
+                                   input lag.
+
+     VR         The system shall provide a Unity-based        Confirmed by walkthrough of all
+environment      compressor station environment with             visual and audio indicators
+                pipe pressure color states (grey, yellow,
+                red, green), compressor audio feedback,         during integrated system test.
+                 and spatially repositionable UI panels.
+
+     AI            The system shall answer trainee              Confirmed by in-scope and
+instructional   questions using context retrieved from        out-of-scope query tests against
+
+   support       approved SOP documents and shall               the deployed RAG pipeline
+                 decline to respond when no relevant                   (Section 4.2.4).
+                context exists in the knowledge base.
+
+Performance        The system shall record per-step               Confirmed by reviewing
+  tracking         completion time and correctness             session_steps database records
+                appraisal for each session and expose         after a complete 12-step training
+                this data through the admin dashboard.
+                                                                               run.
+
+Modularity      The system architecture shall separate          Confirmed by architecture
+                procedure logic, process-response data,       review showing SOPManager,
+                 and VR assets such that new training
+                                                                 CSV lookup, and ESP32
+                    scenarios can be added without
+
+                                                                                                 15
+modifying the SOP state machine or                InputState registry as
+  hardware communication layer.                   independent modules.
+
+         This chart outlines the key abilities required for each of the identified concepts as it
+relates to their function. These are the minimum expectations for what is possible with the
+platform (scope), what needs to be modeled about the processes involved, how the training will
+take place structurally, and the role(s) of each component that supports the training (control
+panel, virtual reality environment, artificial intelligence support, and performance assessment).
+When combined they provide an overall baseline for evaluating all future design decisions.
+
+2.3.2 Technical Specifications
+
+               Table 4: Technical Specifications Matrix
+
+ Subsystem                      Parameter         Value / Constraint
+Process model
+               Simulation software                Aspen HYSYS (steady-state)
+
+Process model                   Gas composition   Montney sweet natural gas (~methane, 
+Process model                                                         = 1.28)
+Process model
+Process model                   Suction pressure         1.5 MPa
+
+HYSYS dataset                   Final discharge   7.9­8.0 MPa
+HYSYS dataset                       pressure
+HYSYS dataset
+               Maximum allowable                         150°C
+                     discharge
+                    temperature
+
+               Integration method                 Offline case-study sweep; no live
+                                                             co-simulation
+
+                                Independent       Valve opening percentages, compressor
+                                  variables               speed setpoints (0­100%)
+
+                                Runtime lookup    O(1) dictionary lookup
+                                  complexity
+
+                                                                                         16
+    VR simulation       Development        Unity (Meta XR SDK), deployed on Meta
+    VR simulation         platform                               Quest
+    VR simulation
+Physical control panel  SOP procedure      12 steps
+Physical control panel       length
+Physical control panel
+Physical control panel  Pressure feedback  4 (grey: no flow, yellow: below range,
+Physical control panel         states      red: above range, green: within range)
+     AI instructor
+     AI instructor      Microcontroller    ESP32-WROOM-32E (dual-core 240
+     AI instructor                                            MHz)
+     AI instructor
+                        GPIO expander      MCP23017 (I2C, 16 additional inputs)
+        Backend
+        Backend         Total input count  14 rotary encoders, 4 push buttons, 1
+        Backend                                          latching ESD
+
+                        Communication      TCP over WiFi, port 7777
+                            protocol
+
+                        Input encoding     Relative direction signal (±1 per encoder
+                                                detent), accumulated to 0­100%
+
+                        LLM (generation)   GPT-4o-mini via OpenAI API
+
+                        Embedding model    nomic-embed-text (Ollama,
+                                                   server-hosted)
+
+                        Vector database    ChromaDB
+
+                        Response latency   5 seconds
+                               target
+
+                        Server platform    UCalgary CloudStack (Ubuntu VM)
+
+                        Database           PostgreSQL with PostgREST REST layer
+
+                        Server RAM /       16 GiB RAM, 53 GB virtual disk
+                            storage
+
+                                                                                      17
+         The specifications above reflect the final implemented state of the VR OPS system.
+Hardware parameters were selected to satisfy the input count requirements of the control panel
+within the GPIO constraints of the ESP32, with the MCP23017 expander providing the
+additional 16 inputs needed to support all 14 encoders, 4 push buttons, and the ESD. The offline
+HYSYS dataset was sized to cover the full operating envelope of all independent variables at 1%
+resolution, that are accessed at O(1) runtime with no perceptible simulation delay. AI response
+latency is bounded by the OpenAI API round-trip and ChromaDB retrieval time, with the
+5-second target established based on acceptable wait time during an active training session. All
+backend services are hosted on a single UCalgary CloudStack virtual machine operating well
+within its provisioned resources, with 94% of RAM and 69% of storage remaining available at
+the time of deployment, providing sufficient headroom for expanded trainee cohorts and
+additional SOP knowledge base documents.
+
+2.3.3 Project Constraints
+
+              Table 5: Project Constraints Matrix
+
+Constraint    Constraint                         Effect on Final Design
+ Category
+
+Scope and         The system models a single        Procedure logic, pressure lookup
+simulation    two-stage compressor loop for one  table, and physical panel inputs are all
+boundary                                         scoped to the compressor startup SOP.
+                trainee at a time. Upstream and
+                 downstream facility units are    No multi-user session management
+                                                             was implemented.
+                             excluded.
+
+   Data       Access to OEM equipment data and   Operating assumptions were derived
+availability      live plant SOPs was limited.   from literature (Rasmussen & Kurz,
+                                                   2009; NETL, 2017) and validated
+                                                  against HYSYS outputs rather than
+
+                                                       proprietary plant data. The
+                                                 project-defined SOP (VR-OPS-001)
+                                                 serves as the authoritative procedural
+
+                                                                 reference.
+
+Academic      The project was completed within a Favored a stable offline HYSYS
+schedule
+              two-semester capstone timeline.    dataset over a live dynamic
+
+                                                 co-simulation, and limited the SOP to
+
+                                                                                         18
+                                                   12 steps rather than a broader facility
+                                                               startup sequence.
+
+Budget       Total hardware budget was CAD            Drove selection of ESP32 over
+                              450.                       industrial PLCs, UCalgary
+
+                                                    CloudStack over commercial cloud
+                                                     providers, and open-source tools
+
+                                                   (PostgreSQL, PostgREST, Streamlit)
+                                                         over licensed equivalents.
+
+Integration       The system spans physical            Required modular subsystem
+complexity     hardware, VR software, process      architecture with independent input,
+             simulation data, an AI pipeline, and  simulation, and procedure layers to
+
+                        a web dashboard.             allow parallel development and
+                                                               isolated testing.
+
+Training     The project prioritizes procedural      Justified the use of a steady-state
+objective     correctness and abnormal-state        HYSYS lookup table rather than a
+ priority                                          dynamic simulation model, accepting
+             recognition over transient process     the trade-off of step-level pressure
+                           accuracy.                accuracy over continuous transient
+
+                                                                    response.
+
+         These constraints collectively define the implementation boundary of VR OPS as a
+focused single-operator procedural training tool, and directly informed the architectural and
+component decisions described in Section 3.
+
+2.4 Development and Descriptions of Design Alternatives
+
+         Two primary design pathways were considered for VR OPS. Both retained the same core
+training scenario, a compressor startup procedure supported by a simulation layer and procedural
+guidance, and differed only in how the trainee interacted with the system.
+
+2.4.1 Alternative 1: Full VR Interaction
+         All operator actions are performed within the virtual environment using hand tracking or
+
+VR controllers. Valves, switches, and compressor controls are represented as interactable digital
+objects. No external hardware interface is used. This approach minimizes implementation
+complexity and eliminates panel fabrication and embedded communication, allowing all
+interaction logic to be updated entirely within software.
+
+2.4.2 Alternative 2: Hybrid Physical Control Panel and VR Environment
+
+                                                                                            19
+         The trainee interacts with a physical control panel including rotary encoders, push
+buttons, and a latching ESD that is mapped into the VR simulation in real time. The virtual
+environment provides the compressor station, process displays, and scenario feedback while the
+panel handles all operator input. This approach requires embedded firmware, panel fabrication,
+and hardware-software interface mapping, but directly replicates the physical interaction pattern
+of a real compressor control station.
+
+                                    Figure 3: Illustration of hybrid environment
+2.4.3 Comparison with Existing Market Solutions
+
+         A review of comparable commercial products, including Oberon Technologies and
+SynergyXR, identified three consistent gaps: absence of tactile controls, no integrated AI
+procedural support, and limited focus on routine startup operations as opposed to emergency or
+safety-only scenarios. Neither identified product targets compressor-specific natural gas training.
+These gaps informed the alternatives by confirming that a physical interface and AI instructor
+were not available in existing off-the-shelf solutions and would need to be developed.
+
+                                                                                                                   20
+2.4.4 Summary of Design Alternatives
+
+                 Table 6: Summary of Design Alternatives Matrix
+
+Alternative                Key Advantages          Key Limitations
+
+ Full VR           Lower implementation            No physical interface; reduced
+Interaction       complexity; no hardware           psychomotor training value;
+                 fabrication; faster software       limited skill transfer to field
+
+                            iteration                          equipment
+
+Hybrid Physical   Replicates real control station  Higher integration effort; requires
+  Panel + VR            interaction; supports       panel fabrication and embedded
+
+                 psychomotor skill development;               communication
+                   clear separation of input and
+                            display layers
+
+         The central trade-off is training fidelity versus implementation complexity. The basis for
+selecting between these alternatives is discussed in Section 2.5.
+
+2.5 Assessment of Design Alternatives
+
+         The two alternatives were assessed against six criteria derived from the project
+requirements and implementation scope.
+
+2.5.1 Assessment Criteria
+
+Criterion                  Table 7: Assessment Criteria Matrix
+                                                 Assessment Focus
+
+Functional fit   Whether the alternative supports the required compressor startup
+                               procedure and system feedback structure
+
+Interaction method Whether the control method is appropriate for the intended training
+                                                               scenario
+
+Implementation   The level of fabrication, development, and integration required to
+      effort                                 realize the concept
+
+Integration      The effort required to coordinate user inputs, simulation logic, and
+complexity                                        VR outputs
+
+                                                                                        21
+Maintainability  The ease of modifying, troubleshooting, or extending the design after
+                                                   deployment
+
+Future scalability The extent to which the alternative can support additional procedures
+                                                 or expanded training scenarios
+
+         These criteria provide a consistent basis for comparing the alternatives. Rather than
+selecting a concept based on general preference, the comparison is organized around functional
+fit, interaction method, implementation demands, and longer-term considerations such as
+maintainability and scalability. Establishing the criteria first makes the later comparison more
+transparent and easier to justify.
+
+2.5.2 Comparative Assessment
+
+                 Table 8: Comparative Assessment Matrix
+
+  Criterion      Full VR Interaction               Hybrid Physical Control Panel +
+Functional fit                                              VR Environment
+
+                 Supports the full startup         Supports the same procedure with a
+                 procedure entirely within          dedicated external input interface
+
+                           software
+
+Interaction      Controllers or hand tracking for  Physical buttons, encoders, and
+  method
+                 all in-scene actions              latching ESD mapped to the simulator
+
+Implementation      Lower -- no fabrication,         Higher -- requires panel design,
+      effort     embedded electronics, or panel    manufacturing, wiring, and hardware
+
+                        assembly required                         integration
+
+Integration       Lower -- interaction and         Higher -- requires coordination of
+complexity       feedback remain within the        hardware input handling, simulator
+
+                    software environment               response, and VR feedback
+
+Maintainability  Updates require software          Updates may require both software
+                        changes only               revision and hardware modification
+
+                                                                                          22
+Future scalability  Expandable through additional    Expandable, but hardware layout and
+                    digital scenarios and interface     software mapping must both be
+                                                                     considered
+                                 changes
+
+         The full VR concept scores better on implementation simplicity, while the hybrid concept
+scores better on interaction fidelity and alignment with real compressor station controls. The
+basis for selecting between these alternatives is discussed in Section 2.6.
+
+2.6 Discussion and Justification of Selected Design Concept
+
+         The hybrid physical panel and VR environment was selected over the full VR alternative
+on the basis of interaction fidelity and alignment with the training objective. The primary goal of
+VR OPS is procedural competency and abnormal-state recognition, outcomes that benefit
+directly from physical muscle memory developed through repeated interaction with real controls.
+A software-only interface cannot replicate the psychomotor experience of locating and actuating
+an emergency stop under stress. The hybrid concept was therefore selected despite its higher
+implementation effort, because the added complexity was justified by the training outcome it
+enables.
+
+2.6.1 Process Model and Simulation Architecture
+         The compressor scenario was configured as a two-stage centrifugal compression system
+
+boosting Montney natural gas from 1.5 MPa to 8.0 MPa, consistent with typical upstream
+booster station practice (Rasmussen & Kurz, 2009). The overall pressure ratio of 5.33 is too high
+for a single stage without exceeding safe discharge temperatures or surge margins. The optimal
+interstage pressure for equal-work staging is:
+
+                     = 1. 5 × 8. 0 = 3. 46 ,  =        8.0  =2. 31
+                                                       1.5
+
+         The HYSYS model produces an interstage pressure of 3.44­3.48 MPa, within 0.6% of
+the theoretical optimum, confirming the staging configuration is thermodynamically consistent.
+Rather than running HYSYS as a live co-simulation, the model was used to generate an offline
+dataset covering all valve and compressor speed combinations. This dataset is loaded into Unity
+and accessed at O(1) runtime, producing stable, repeatable pressure-state transitions without a
+real-time simulation dependency. For a training application where procedural correctness and
+step repeatability matter more than transient accuracy, this trade-off is well justified.
+
+2.6.2 Physical Control Panel
+         The panel was designed as a three-module chassis of 3D-printed PLA shells and stencils,
+
+fastened using M5 brass heat-set inserts and M5 hex bolts to allow disassembly and component
+replacement. An ESP32-WROOM-32E microcontroller communicates with Unity over WiFi via
+
+                                                                                          23
+TCP on port 7777, streaming encoder increments and button states with no continuous broadcast.
+The panel contains 14 rotary encoders, 4 push buttons, and a latching mushroom-head ESD, all
+selected to replicate the tactile experience of an industrial compressor control station rather than
+a generic gaming interface.
+
+2.6.3 VR Environment and Feedback Logic
+         The compressor station was reconstructed in Unity with dynamic pipe pressure coloring
+
+as the primary process feedback mechanism: grey for no flow, yellow for below range, red for
+above range, and green for within the acceptable range at the active step. Compressor audio
+scales with dial position and intercooler activation are indicated by flashing status lights,
+providing simultaneous multi-modal feedback without requiring trainees to consult numerical
+displays. Teleportation points allow navigation between plant areas without motion sickness.
+
+2.6.4 Failure and Reset Logic
+         Each startup step has an associated acceptable pressure band at monitored streams. Any
+
+out-of-range condition immediately disables all control inputs, the trainee cannot self-correct by
+adjusting valves. Recovery requires pressing the physical ESD, which resets only the active step
+while preserving all previously completed steps. This design forces two competencies
+simultaneously: recognition that a procedural deviation constitutes an abnormal condition, and
+the psychomotor habit of actuating the emergency stop under pressure.
+
+2.6.5 AI Instructor and Supervisory Dashboard
+         The AI Instructor answers trainee voice queries in real time using a RAG pipeline
+
+constrained to approved SOP documents, and declines to respond when no relevant context
+exists. This keeps procedural guidance traceable to vetted content rather than generated from
+general training data. The admin dashboard extends the platform from a demonstration tool to a
+full training system by recording per-step timing and correctness for each session, allowing
+supervisors to identify recurring weaknesses across multiple attempts rather than reviewing only
+final completion status.
+
+         Together, these subsystems form a coherent training architecture in which each layer,
+process data, physical input, virtual environment, instructional support, and performance
+tracking, has a distinct and non-overlapping role.
+
+3. Design Development
+
+3.1 High-Level System Architecture
+
+         The system is composed of five main components that work together to deliver an
+end-to-end training experience: the process simulation model, the physical control panel, the VR
+environment, the AI Instructor, and the admin monitoring dashboard. Each component has a
+
+                                                                                                                   24
+distinct responsibility, but they are integrated through a shared cloud infrastructure that acts as
+the central server for the platform.
+
+         The foundation of the simulation data comes from the Aspen Hysys process model of the
+compressor system. The model was used to generate a comprehensive dataset covering all
+meaningful combinations of valve positions and compressor speeds, producing a lookup table of
+over 100,000 entries. This table is what drives the real-time pipe pressure states in the VR
+simulation, ensuring that the values trainees work with reflect physically accurate process
+behaviour.
+
+         The Apache CloudStack instance serves as the backend server that connects all
+components of the system. The RAG pipeline powering the AI Instructor is hosted on the cloud,
+handling speech-to-text processing, document retrieval, and response generation. The admin
+monitoring dashboard is also served from this infrastructure, pulling live session data and
+providing administrators with remote access without any local server setup required. Access is
+restricted to authenticated UCalgary users on the university network or VPN, preventing external
+access without credentials. The VR application on the Meta Quest communicates with the cloud
+to send session events and receive AI responses, while the ESP32 hardware connects to the same
+network to stream physical control inputs into the simulation.
+The diagram below illustrates how these components relate to one another at a high level.
+
+                                                                                                                   25
+                          Figure 4: High-level diagram of VR OPS design components.
+
+3.2 Compressor Simulation (Aspen HYSYS)
+
+3.2.1 Simulation Objectives
+         The Aspen HYSYS model has been used to develop a process-level representation of a
+
+staged natural gas compression station. The primary goal for using the simulation was to be able
+to determine how the station's pressure, temperature, phase behavior, and recycle conditions
+would change when an operator changed one or more of the operator-controlled variables, i.e.
+suction control, recycle valve opening, compressor load, and the route that the compressed gas
+was exported out of the plant. Therefore, the model was designed to reflect the thermodynamics
+and hydraulics of the entire compression train, including all the interactions between each stage
+of compression, the coolers, separators, and recycle loops that exist throughout the station, which
+is similar to how most references treat compression stations as fully integrated process systems
+vs. separate units (Amin et al., 2021; Rasmussen & Kurz, 2009).
+
+         A second objective of the simulation was to show how pressure builds up and gas flow is
+redistributed through staged compression. As such, modeling must resolve pressure increase
+
+                                                                                                                   26
+across each centrifugal compressor; temperature rises due to compression; coolant-to-gas
+temperature differentials across each cooler; separation of phases within each scrubber; and
+effect of return gas through anti-surge & full system recycle paths. These goals are consistent
+with multistage theory for compression, which treats the suction state of the first stage of
+compression, discharge state of the last stage of compression, intercooler losses, and efficiency
+of individual stages as the variables that will determine the total performance of the station and
+work required to compress the gas (Lugo-Méndez et al., 2021).
+
+         A third objective is to provide valid physical operating points as reference points in order
+to identify safe, warning, and unsafe ranges for the compressor station. Instead of assigning an
+arbitrary value for high/low system pressure based upon either a manual or empirical assignment,
+the use of simulation enabled the creation of a physically grounded relationship between
+movement of valves/compressor control systems and resulting pressures within the overall
+system. In doing so this aligns with the stated VR OPS modelling approach in which the HYSYS
+model has been utilised to develop a large database of pressures in order that the downstream
+behaviours of the system remain directly related to understandable responses to changes in
+pressure rather than simply being defined by manual assignments.
+
+3.2.2 Process Flow and Input Parameters
+         The processing sequence begins in the suction side of the system at the entry point for the
+
+gas, which goes into a pressure control and mixing region. Following this area the gas is sent to
+Scrubber-1; from here it will be subjected to removal of free liquid and then go on to receive its
+first stage of compression. Upon completing the first stage of compression (Compressor-1) the
+discharged gas will either move onward through Cooler-1 and proceed into an interstage section
+or will have been diverted through ASV-1 and returned to the suction side as a means to maintain
+a constant flow rate of the compressors. At that time, the forward flowing gas stream will pass
+through Cooler-1 and will enter Scrubber-2. In Scrubber-2, free liquid formed by interstage
+cooling will be separated from the gas prior to it being compressed once again. For the second
+stage of compression, the logic is virtually identical to the first stage. Gas that has exited
+Compressor-2 will either proceed onward through Cooler-2 to ultimately leave the station or if
+necessary it will be recirculated through ASV-2 back to the suction side for protection of the
+equipment when operating at low flow rates. Once gas exits Cooler-2, it may exit via the export
+valve or it may exit via the full system recycle valve back toward the inlet side of the station.
+
+         Both the initial conditions of feed streams and the operating conditions of unit operations
+were used to define the HYSYS model. The inlet gas stream had an inlet temperature of 25°C ,
+an inlet pressure of 1.5 MPa and a flow rate of 1000 kmol/hr. Following suction side control, the
+gas passed through the first scrubber and the first-stage compressor at approximately 25°C and
+1.45 MPa. The first-stage compressor was modeled using a pressure ratio of 2.4 and a
+compression efficiency of 75%. This produced a discharge stream at approximately 114°C and
+3.48 MPa. The gas was then cooled in the interstage cooler to approximately 31°C, while the
+corresponding pressure was 3.44 MPa at the inlet to the second-stage compressor. The
+
+                                                                                                                   27
+second-stage compressor was similarly modeled using a pressure ratio of 2.4 and a compression
+efficiency of 75%, resulting in a final discharge stream at approximately 127°C and 7.9 MPa.
+Following final cooling, the gas temperature decreased to approximately 35°C while maintaining
+a final delivery pressure of approximately 7.9 MPa.
+
+         The initial gas composition is: N = 0.0066; CO = 0.1298; CH = 0.4477; CH = 0.1281;
+CH = 0.0640; i-CH = 0.0576; n-CH = 0.0510; i-CH = 0.0455; n-CH = 0.0381; and
+n-CH = 0.0315 on a mole fraction basis. This composition represents a relatively rich natural
+gas compared to a lean methane-dominant stream, allowing for the generation of meaningful
+condensate formation in the scrubbers post-cooling.
+
+         The simulation utilizes steady-state assumptions as described below: steady-state
+operation implies no mass accumulation nor energy accumulation in equipment and constant
+flow rates, pressures, temperatures, and compositions at each inlet are maintained for all
+operating cases. Compressors were modeled using the Schultz polytropic method with a fixed
+efficiency rather than utilizing full-vendor compressor performance curves. HYSYS will
+calculate the heat duties for the compressors and coolers based upon user-defined pressure-ratios
+and cooling objectives. Piping is assumed to be adiabatic and therefore no ambient heat loss or
+gain can occur between major pieces of equipment. Scrubbers were modeled as ideal
+vapor-liquid separators. Although these assumptions reduce complexity associated with
+modeling, they preserve the most significant thermodynamic and hydraulic aspects required for
+compressor analysis.
+
+3.2.3 Compressor Staging and Operating Logic
+         The simulated station was arranged as two compression stages separated by intercooling
+
+and liquid separation. This configuration was selected because it reflects typical field practice
+and distributes the required pressure rise across two machines instead of a single high-ratio stage.
+In the model, gas first passes through the suction-side control elements and scrubber, is
+compressed in Stage 1, cooled and separated before entering Stage 2, and is then routed either to
+export or back through recycle depending on the operating condition. Interstage cooling is also
+beneficial because lower compressor inlet temperature reduces compression work relative to a
+hotter second-stage inlet (S. Jarung Thammachote; 2022).
+
+         Within the training model, the primary manipulated variables are valve opening
+percentages and compressor operating setpoints. These inputs change the flow split between
+forward flow and recycle flow, which in turn changes the pressures at the main process streams.
+The operator's responsibility in the simulator is therefore to establish a stable suction path, start
+compression in the correct sequence, maintain sufficient recycle during low-flow conditions, and
+transition the station from recycle-dominant startup to export service without driving either
+compressor toward surge. This operating philosophy is consistent with standard
+centrifugal-compressor practice, where recycle flow is used during startup, shutdown, and surge
+prevention to maintain adequate through-flow across the machine.
+
+                                                                                                                   28
+                   Figure 5: Aspen HYSYS final two-stage compressor model.
+
+Table 9: Annotated Temperatures and Pressures at Key Nodes at full start up
+
+Node / Location                 Description                 Temperature Pressure
+
+                                                            (°C)            (MPa)
+
+Feed inlet                Incoming gas to station.          25               1.5
+
+Compressor-1 suction      Gas entering first-stage          25               1.45
+                           compression section.
+
+Compressor-1 discharge Gas leaving Compressor-1 before      114              3.48
+
+                                Cooler-1.
+
+Cooler-1 outlet /         Gas after interstage cooling and  31               3.44
+
+Compressor-2 suction before second-stage compression.
+
+region
+
+Compressor-2 discharge Gas leaving Compressor-2 before      127              7.9
+
+                                Cooler-2
+
+Cooler-2 outlet / Export    Gas after final cooling         35               7.9
+            line
+
+For a two-stage compression system minimizing total work input, the theoretical optimal
+interstage pressure is given by the geometric mean of the suction and final discharge pressures
+(Lugo-Méndez et al., 2021):
+
+         =                  ×   = 1. 5 × 8. 0 = 3. 46 
+                              
+
+This yields an equal per-stage compression ratio of:
+
+                                                                                   29
+                    =           8.0                      = 2. 31
+                                1.5
+                        = 
+
+                        
+
+                           
+
+The HYSYS model produces an interstage pressure of 3.44­3.48 MPa, within 0.6% of the
+theoretical optimum. The per-stage ratios from the model are:
+
+                   Table 10: Interstage Pressure Ratio
+
+          Suction    Discharge Actual Ratio Theoretical                      Deviation
+          (MPa)
+                       (MPa)                                      Ratio        +3.9%
+                                                                               -0.4%
+Stage 1   1.45         3.48     2.40                              2.31
+Stage 2
+          3.44         7.90     2.30                              2.31
+
+         The small positive deviation in Stage 1 is consistent with pressure drop across the suction
+scrubber (feed inlet at 1.50 MPa, scrubber outlet at 1.45 MPa), which reduces effective suction
+pressure and slightly elevates the Stage 1 ratio. This is an expected and physically correct
+behavior.
+
+To confirm that the HYSYS discharge temperatures are physically reasonable, the isentropic
+
+outlet temperature was calculated for each stage using:
+
+                                                         -1
+
+                        =  ×  
+                       ,      
+
+Montney natural gas was approximated as predominantly methane with a heat capacity ratio of 
+= 1.28, giving an isentropic exponent of ( - 1)/ = 0.219. This value is consistent with the
+Peng-Robinson equation of state used in HYSYS for this gas composition.
+
+Stage 1:
+
+           = (25 + 273)×(2. 40)0.219 = 298×1. 218 = 363  = 90°
+
+            ,1
+
+The HYSYS model produces 114°C. Back-calculating the isentropic efficiency:
+
+            = = = = 0. 73  -
+                                 ,1 
+                              363-298 65
+
+                1      -      387-298                        89
+                   , 
+
+Stage 2:
+
+           = (31 + 273)×(2. 30)0.219 = 304×1. 208 = 367  = 94°
+
+            ,2
+
+                                                                                        30
+The HYSYS model produces 127°C:
+
+ =                               367-304  =  63  = 0. 66
+                                 400-298     96
+  2
+
+         Both values fall within the typical isentropic efficiency range for centrifugal compressors
+of 65­85% (Rasmussen & Kurz, 2009), confirming that the HYSYS model is producing
+thermodynamically consistent results rather than arbitrary outputs. The slightly lower Stage 2
+efficiency is physically plausible given the higher inlet temperature sensitivity at elevated
+pressure.
+
+3.2.4 Failure-State / Abnormal Scenario Modeling
+         The simulation incorporates a structured failure-state framework tied directly to the
+
+compressor startup procedure. Each step in the startup sequence is assigned an acceptable
+pressure range at one or more key streams. This range defines the band of steady-state pressures
+produced when the correct valves have been set to the correct opening percentages for that step.
+Provided all monitored stream pressures fall within their defined bounds upon completion of a
+step, the system advances to the next stage of the procedure.
+
+         A failure state is triggered when the pressure at any monitored stream falls outside the
+acceptable range for the current step. This condition indicates that one or more valves have been
+incorrectly positioned, producing an operating point that deviates from the intended startup
+procedure. Upon failure detection, the VR platform immediately disables all control panel inputs.
+The trainee cannot correct the error by adjusting valves, the system is intentionally unresponsive
+to further input. Recovery requires the trainee to press the emergency shutdown (ESD) button on
+the physical control panel, which resets the current step and restores the system to its state at the
+start of that step.
+
+         This design is deliberately non-forgiving at the moment of error. A pressurized system in
+an abnormal state demands a formal, controlled response, not incremental correction. Research
+on abnormal situation management in process industries has consistently shown that operators
+who are only trained in normal procedures perform poorly when deviations occur, because they
+lack practiced decision pathways for recovery (I. Nimmo; 1995). By forcing the ESD response
+rather than allowing valve correction, the training scenario reinforces two things simultaneously:
+recognition that a procedural deviation constitutes an abnormal condition, and the physical habit
+of locating and actuating the emergency stop, a critical psychomotor skill in field operations.
+
+3.2.5 Integration with VR OPS Platform
+         Integration between HYSYS and the VR OPS platform was implemented using an offline
+
+case-study workflow rather than continuous live co-simulation. A large HYSYS case study was
+used to sweep the independent variables over the intended operating envelope, including valve
+opening percentages and compressor operating setpoints from 0 to 100%. This generated a large
+csv. file with many operating points. For each operating point, the model returned the dependent
+
+                                                          31
+variables required by the VR environment, primarily the pressures at the key streams and
+equipment boundaries.
+
+                                     Figure 6: HYSYS case study configuration.
+         The resulting dataset was exported and loaded into Unity as the process-response layer
+for the training simulator. During runtime, user inputs from the physical control panel are
+mapped to the corresponding operating point, or nearest valid operating region, and the VR scene
+updates the process indicators, alarms, and equipment state accordingly. This architecture
+preserves a physics-grounded relationship between operator action and process response without
+requiring HYSYS to run continuously in the background. That trade-off was intentional. For this
+project, the main training objective is procedural correctness and abnormal-state recognition, not
+high-frequency transient prediction. An offline dataset therefore provides repeatable scenarios,
+low runtime latency, and stable VR performance while still allowing trainees to rehearse
+hazardous operating situations in a safe and repeatable environment
+3.2.6 Design Rationale
+         The HYSYS model was configured to prioritize clear operator-response trends and stable
+simulator integration rather than full transient fidelity. Valve behavior was represented using
+quick-opening characteristics so that small initial valve movements produced a strong early
+change in flow. This was selected because it created a more responsive training model for startup
+and recycle actions, and it is consistent with quick-opening valve behavior, where a relatively
+small lift near the closed position can produce a large fraction of the maximum flow (Spirax
+Sarco; 2026).
+
+                                                                                                                   32
+                   Figure 7: Quick-opening flow characteristic curve for the recycle valve.
+
+         For the recycle branches, directly varying recycle-valve opening in steady-state did not
+always produce the expected redistribution of flow. To obtain the intended operating response,
+the recycle tee split ratios were therefore adjusted to reflect valve opening and closing. This
+ensured that opening a recycle path sent more flow through the recycle loop and reduced the
+amount of pressure propagated downstream, while closing the recycle path directed more flow
+forward through the compression train.
+
+         A Set operation was also introduced in the recycle loops to maintain pressure consistency
+before the recycle stream re-entered the mixer. In Aspen HYSYS, Set is a steady-state logical
+operation used to enforce a specified relationship between two variables, and it can be used to
+maintain one stream pressure relative to another. Here, it was used so the recycle-stream pressure
+matched the upstream pressure condition closely enough for stable remixing and steady-state
+convergence.
+
+         Overall, these modeling choices were made so that operator inputs produced repeatable,
+physically interpretable pressure responses in the simulator. That was more valuable for this
+training application than pursuing a more complex dynamic implementation with higher
+computational cost and less stable VR integration.
+
+3.3 Physical Control Panel (PCP)
+
+                                                                                                                   33
+3.3.1 Mechanical Design and Manufacturing
+         The control panel serves as the physical anchor for the VR OPS system, providing the
+
+"Tangible User Interface" necessary for psychomotor skill acquisition. To ensure the system
+remains portable, maintainable, and scalable, the manufacturing strategy prioritizes a modular
+architecture over a monolithic design.
+
+         The physical enclosure utilizes a "Shell + Stencil" design methodology, dividing the 66
+cm wide console into three distinct, interchangeable modules ( ,  ,  ).
+
+                                                                                                             123
+
+         A physical control panel with buttons and dials is used to simulate real-life operator
+training in order to make the VR environment as realistic as possible. The control panel consists
+of three sections, with holders covered with a stencil containing cutouts for buttons and dials.
+The structural housing is fabricated using 3D-printed PLA (Polylactic Acid) and high-strength
+resin to create a lightweight yet rigid chassis.
+
+         The rationale for a sectioned off design was to accommodate for the lack of horizontal
+and vertical capacity of the 3D printers. An added benefit of this design is the interchangeability
+and modularity of quickly being able to swap parts and make changes to the internal electronics
+of the panel.
+
+Shell-to-Stencil Assembly
+
+         Each of the three shell modules (S, S, S) is joined to its corresponding stencil using M5
+machine screws threaded into brass heat-set inserts embedded in the PLA shell walls. The
+heat-set inserts were installed by pressing them into pre-sized pilot holes using a soldering iron,
+which melts the surrounding PLA and allows the knurled brass insert to anchor firmly upon
+cooling. This method was chosen over tapping threads directly into the plastic, as heat-set inserts
+provide significantly higher pull-out resistance and allow for repeated disassembly and
+reassembly without stripping the housing. The stencil sits flush-mounted against the top edges of
+the shell, creating a seamless interface for the buttons and dials.
+
+Shell-to-Shell Assembly
+
+         The three shell sections are fastened together using M5 hex bolts and matching nuts,
+passed through aligned through-holes on the mating flanges of adjacent modules. This bolted
+connection produces a rigid, unified chassis while preserving the modularity of the design. Any
+individual section can be detached by removing its bolts for internal servicing, component
+swaps, or electronics upgrades without disassembling the entire console.
+
+The objective of the control panel is to control the following parameters while simultaneously
+providing a tactile sensation to develop muscle memory:
+
+    1) Start/Stop Compressor
+    2) Valve open percentage
+
+                                                                                                                   34
+3) Emergency stop
+
+                          Figure 8: CAD drawings of the S1,S2,S3 stencils
+
+                                                                                                              35
+Figure 9: CAD drawings of the holders.
+
+3.3.1.1 Panel Layout and Ergonomics
+
+To maximize training transfer, the panel utilizes industrial-grade hardware rather than
+
+consumer gaming peripherals. The specific components were selected to provide tactile feedback
+
+consistent with real-world compressor stations.
+
+Push Buttons (Momentary Actuation): Sections  and  feature distinct Green (Start)
+                                                 1  2
+
+and Red (Stop) industrial push buttons. These utilize momentary actuation switches that send a
+
+signal only when depressed, mirroring the logic of standard motor starter circuits.
+
+Emergency Stop (E-Stop): A functional "Mushroom-head" E-Stop switch is mounted
+
+prominently on section  . Unlike standard buttons, this component features a latching
+
+                                                3
+
+                                                                                     36
+mechanism that physically locks in the open position until twisted to reset. This provides trainees
+with the physical sensation of executing a critical safety trip .
+
+         Rotary Encoders (Valve Control): Pressure and temperature adjustments are managed
+via rotary encoders rather than potentiometers. Encoders were selected to allow for infinite
+rotation and digital "stepping," which provides precise, incremental control over virtual valve
+openings (0­100%).
+
+Figure 10: Overhead view of the Physical Control Panel
+
+Component           Table 11: Dial Diameters
+                                                      Cutout diameter
+
+Start/Stop Buttons  1.8 cm
+
+      Dials         1.6 cm
+Emergency Stop      2.2 cm
+
+3.3.1.2 Fabrication and Assembly
+                                                                                                                   37
+         Each of the three modules was printed separately as an individual shell, with a
+corresponding top stencil and internal holder component. All parts were printed in PLA. Stencils
+were printed with particular attention to dimensional accuracy, as they serve as the mounting
+plane for all user-facing switches, encoders, and the emergency stop, and any deviation in cutout
+position directly affects hardware fit and panel alignment.
+
+         Once all shell sections were prepared and threaded inserts installed, hardware was
+mounted into the stencil cutouts for each module before the sections were joined. Internal wiring
+was routed to the electronics bay during this stage, as access becomes constrained once adjacent
+modules are bolted together. The three sections were then fastened along their mating flanges to
+form the final console unit.
+
+3.3.2 Electrical Design and Communication
+
+3.3.2.1 Electrical Components and Wiring
+         The embedded electronics of the control panel are built around the ESP32-WROOM-32E
+
+module that is mounted on a Freenove Breakout Board. This microcontroller runs a dual core
+240 MHz processor, It provides sufficient GPIO pins for direct input handling and supports I2C
+natively. I2C is a two-wire serial communication protocol that uses a shared data line (SDA) and
+a clock line (SCL) to allow the ESP32 to interface with external peripheral devices. By
+connecting the MCP23017 I/O expander over the I2C bus, the system gains 16 additional digital
+input channels, extending the ESP32's effective GPIO capacity to accommodate all panel inputs.
+The breakout board is a printed circuit board (PCB) with labeled header pins that are mapped to
+the pins of the microcontroller that is mounted on it, in this case, the ESP-32. To connect wires to
+the ESP32, the breakout board has screw terminal blocks, this allows stripped wires to be
+inserted and secured using a clamping mechanism from the screw. This mechanism creates a
+reliable and stable electrical connection to the ESP32 without having to solder anything. The
+ESP32 module, and wires can easily be replaced or changed, making this system modular.
+
+         To power the ESP32, the module can be connected through a USB Type-C connector that
+can either be connected directly to a PC or an external power supply. When powered, an onboard
+regulator on the ESP32 steps the 5V input down to 3.3V, which runs all the electronics including
+the MCP23017, encoders, buttons, and the E-STOP. If the 5V input is required, the module has a
+5V rail that is accessible to use for different inputs that require that voltage. All components
+share a common ground that is tied to the ESP-32 GND pin. To design the full circuit, the
+schematic tool, KiCAD was used.
+
+3.3.2.2 Sensor / Switch / Actuator Selection
+         The goal of the control panel is to allow for tactile interaction, this enables users to gain
+
+hands-on experience to get familiar with the look and feel of an actual control panel. The input
+devices were chosen to match that physical feel of real industrial compressor control stations.
+
+                                                                                                                   38
+The full control panel is split into three sections, labeled S1, S2, and S3. The electronic
+components on the first and second section are similar, as it includes two push buttons, and 5
+rotary encoders. The last section, S3, includes one E-STOP button and 4 rotary encoders. So all
+in all, there are 14 encoders, 4 push buttons and one E-STOP.
+
+         A rotary encoder is an input device that provides rotational control, it generates digital
+signals that corresponds to angular movement or simply, it sends signals whether or not the knob
+is rotated clockwise or counter clockwise, thanks to the two digital signals CLK and DT. These
+two signals have a 90 degree offset between the two channels alowing firmware to determine
+both the direction and movement of each turn. The rotary encoder handles all the variable
+adjustments, on the simulation it adjusts valve opening percentage, and compressor speeds.
+When the rotary encoder is rotated, it sends a message, either 0 or 1, this corresponds to decrease
+and increase respectively. Hence, rotary encoders were chosen over potentiometer because it
+supports infinite rotation that produces clean digital quadrature outputs with incremental control
+rather than absolute position mapping. Rotating the encoders simulates different controls to the
+simulation, with little to no latency, allowing for a realistic experience for the operator/trainee.
+
+         The push buttons were also chosen for the same tactile feel, it handles discrete binary
+inputs. They are color coded as green and red, for start and stop. These buttons are momentary
+normally-open switches that close only when they are pressed. This matches the logic of motor
+starter circuits on compressor stations.
+
+         Finally the E-STOP is a mushroom-head latching button. When it is pressed, the button
+stays down and locked, it releases only when it is twisted. Thee E-STOP is one of the inputs that
+physical connection users will get, they have to locate and engage it under stress, helping the
+users psychomotor skills. Traditionally, E-STOPs are wired using normally-closed switches, so it
+only sends binary inputs to the simulation in Unity, where the unity program disables all the
+panel inputs virtually.
+
+3.3.2.3 Microcontroller and Interface Logic
+
+  Designing the full electronic circuit required a lot of planning and design. The ESP32 has
+
+in total 34 GPIO pins, but only 14 of those pins are useable and safe to use and 6 additional pins
+
+that function as boot or strapping pins and must be handled carefully during startup. The
+
+remaining pins are reserved internally for flash memory, and cannot be used. Due to these
+
+constraints, the circuit had to be planned carefully. Each encoder has 3 pins, two are digital
+
+output pins (A and B) that indicate the rotation (either right or left), and one GND pin. So in
+
+total, 14 × 2 = 28 pins for input. Four push buttons that only have one input pin and one GND
+
+pin, so 4 pins, and finally the E-STOP that uses one pin for input as well. In total, the system
+
+requires 33 input pins. 
+
+  Since the ESP32 only has around 20 useable pins for I/O, the MCP23017 expander was
+
+chosen to increase the GPIO selection, allowing for 16 more inputs. The MCP23017 has A0, A1,
+
+A2, which are address selection pins that is used to configure the device's I2C address, it has the
+
+SDA and SCL connected to pins 21, and 23 on the ESP32. When an input on the MCP changes,
+
+                                             39
+it sends an 8 bit address to the ESP32 through the I2C protocol. Eight of the 14 encoders are
+connected to the MCP23017, so only 6 encoders will be connected to the ESP32, decreasing the
+load to only 17 pins, which is below the maximum amount.
+
+         The I2C bus uses GPIO 21 and 23 on the ESP32 to connect to SDA and SCL on the MCP
+respectively. Both of these lines have pull-up resistors to maintain signal integrity. The
+MCP23017 also has a RESET pin that connects to the ESP32 so the firmware can reset the
+expander without a new power cycle. The expander has a 0.1 µF decoupling capacitor across
+VDD and GND to handle voltage transients. To maintain low noise on the I2C bus, the wiring of
+the loop area between power and ground return paths were kept small.
+
+3.3.2.4 Communication Protocol
+         The ESP32 was chosen for the microcontroller because of its WiFi capabilities compared
+
+to the Arduino Uno. The control panel's wireless connection to the VR simulation allows users to
+freely move without being restricted to a wire length, this also prevents the user from being
+tangled with the wire of the headset when rotating, and moving their arms. For communication
+between the VR and the ESP32, both devices need to be connected to the same Wi-F access
+point. When the ESP32 is connected, it hosts a TCP server on port 7777. Unity (the VR
+simulation engine) acts as the TCP client and initiates the connection.
+
+         The protocol works both ways between devices, when the VR connects to the ESP32, it
+can also send commands back to the ESP32 over the same TCP connection.
+
+                Table 12: Unity-to-ESP32 commands
+
+Command         Description                   Response
+WHOAREYOU
+PING            Identity handshake            VR-OPS READY 3.0
+STATUS
+                Connectivity check            PONG
+GET NAME
+                Returns state of all buttons  Current input states
+ZERO NAME       and E-stop
+
+ZERO ALL        Returns current value of a    NAME=value
+                named encoder
+SET NAME VALUE
+                Resets a named encoder        OK: NAME ZEROED
+                accumulator to zero
+
+                Resets all encoder            OK: ALL ZEROED
+                accumulators
+
+                Injects a value into a named OK: NAME=value
+                encoder
+
+                                                                    40
+         When the inputs are interacted with, it sends messages that are plain-text ASCII and
+newline delimited. The firmware only sends messages when an input state changes, so there is no
+continuous broadcast or loop, this keeps network traffic low and allows Unity to only process
+updates that reflect real user actions.
+
+                        Table 13:ESP32-to-Unity events
+
+Event                   Format                          Example
+Encoder turn clockwise
+Encoder turn            *Name* = 1                      S1_E2 = 1
+counter-clockwise
+Button pressed          *Name*= 0                       S1_E2 = 0
+Button released
+E-stop engaged          *Name* RELEASED                 S1_B1 PRESSED
+E-stop released         *Name* RELEASED                 S1_B1 RELEASED
+                        E-STOP ACTIVE                   E-STOP ACTIVE
+                        E-STOP RELEASED                 E-STOP RELEASED
+
+3.3.2.5 Signal Mapping to the Virtual System
+         All hardware inputs feed into a centralised InputState registry in Unity. This decouples
+
+the raw TCP messages from the SOP procedure logic. The state machine evaluates completion
+conditions independently of when or how physical inputs arrive, which makes the system
+tolerant of variable network timing.
+
+         Encoder messages carry a relative direction signal, either +1 or -1 per detent. Unity
+accumulates the incremental steps and maps the running total to a percentage opening for the
+corresponding virtual valve or a percentage setpoint for a compressor.
+
+Table 14: Physical Input to Virtual Control Mapping
+                                                                                       41
+Panel Section ESP32 Name  Virtual Control            Type     Range
+                                                              On / Off
+S1  S1_B1                 Compressor 1 On/Off Button toggle   0 to 100
+                                                              0 to 100
+S1  S1_P1                 Compressor 1 Speed         Encoder  0 to 100
+                                                              0 to 100
+S1  S1_E1                 Feed Valve                 Encoder  0 to 100
+                                                              On / Off
+S1  S1_E2 Suction Pressure Valve (SPV) Encoder                0 to 100
+                                                              0 to 100
+S1  S1_E3                 Anti-Surge Valve 1 (ASV1) Encoder   0 to 100
+                                                              0 to 100
+S1  S1_E4 Non-Return Valve 1 (NRV1) Encoder                   0 to 100
+                                                              0 to 100
+S2  S2_B1                 Compressor 2 On/Off Button toggle   On / Off
+
+S2  S2_P1                 Compressor 2 Speed         Encoder
+
+S2  S2_E1                 Anti-Surge Valve 2 (ASV2) Encoder
+
+S2  S2_E2                 Scrubber 1 Drain (Drain1)  Encoder
+
+S2  S2_E3                 Scrubber 2 Drain (Drain2)  Encoder
+
+S3  S3_E1                 Intercooler 1 (IC1)        Encoder
+
+S3  S3_E2                 Intercooler 2 (IC2)        Encoder
+
+S3  E_STOP                Emergency Shutdown         Button
+
+3.4 VR Simulation
+
+3.4.1 Virtual Environment Design
+         The VR simulation was developed in Unity using the Meta XR SDK, targeting the Meta
+
+Quest headset. The environment replicates a two-stage compressor station, including scrubbers,
+compressors, coolers, interconnecting pipework, and valve assemblies, providing trainees with a
+spatially accurate representation of the equipment they will operate in the field.
+
+         Locomotion is implemented via a teleportation system rather than continuous joystick
+movement. This decision was made to eliminate motion sickness, which is a well-documented
+usability barrier for users new to head-mounted displays and would interfere with training focus.
+Fixed teleport points are placed at locations corresponding to each major equipment area, suction
+side, interstage section, and export side, allowing trainees to reposition themselves to view
+equipment relevant to the current procedure step.
+
+                                                                                                                   42
+         UI panels displaying the task board, pressure gauges, and AI Instructor interface are
+spatially anchored in the environment but can be repositioned and resized by the trainee. This
+accommodates different working styles and ensures that panels do not obstruct the equipment
+view during critical procedure steps. All panels remain visible and functional regardless of the
+trainee's teleport position within the scene.
+
+3.4.2 SOP State Machine and Procedure Logic
+         The simulation is structured around a 12-step standard operating procedure (SOP) for
+
+compressor startup. Each step is managed by a central SOPManager state machine, which tracks
+the current procedure state, enforces step-by-step sequencing, and validates completion
+conditions before allowing progression. Steps require both correct physical inputs and a manual
+confirmation action which reduces the chance of accidental advancement.
+
+3.4.3 Physical Control Panel Integration
+         Physical controls are connected to an ESP32 microcontroller on the control panel
+
+connected via WiFi. Rotary encoders map to valve controls (SPV, ASV1, ASV2, NRV1, NRV2,
+BD1, BD2, and compressor percentages), and buttons handle compressor toggle events. All
+hardware inputs are registered through a central InputState registry, which decouples the raw
+ESP32 messages from the procedure logic. This design allows the SOP conditions to be
+evaluated independently of how or when inputs arrive.
+
+3.4.4 Debug Window and Development Tooling
+         To support development and testing when the physical control panel was not available, a
+
+debug window was built into the simulation. This overlay panel exposed all of the same inputs
+that the ESP32 hardware would normally provide, including sliders for each encoder-mapped
+valve and toggle buttons for the compressors. Any input made through the debug window was
+fed directly into the same InputState registry as the hardware signals, meaning the full procedure
+logic and pipe color system behaved identically regardless of the input source.
+
+                                                                                                                   43
+                        Figure 11: Procedure debug window and control panel simulator
+3.4.5 Pipe Pressure Visualization and Feedback
+
+         Pipe segments in the scene change color dynamically based on the current pressure state.
+Grey indicates zero pressure, yellow indicates below the required range, red indicates above it,
+and light green indicates the pipe is within the acceptable range for the current step. This
+provides continuous visual feedback without requiring the trainee to consult a separate display.
+Pressure values are determined through a lookup table loaded from a precomputed CSV file
+containing 100,000 rows, enabling O(1) lookup during runtime without any simulation delay.
+
+         Figure 12: Varying pipe colours as per valid pressure range restrictions on a specific step
+3.4.6 Timing Constraints and Step Validation
+
+         Timing constraints are enforced at the step level to prevent trainees from passing through
+steps with momentary correct inputs that do not reflect deliberate procedure execution. Valve
+transitions require a minimum hold time of 4 seconds at the target position before the step
+
+                                                                                                                   44
+condition is considered satisfied. This mirrors the physical behavior of real compressor station
+valves, which require controlled, gradual adjustment rather than instantaneous repositioning. The
+Step 6 caution note in the SOP (VR-OPS-001) explicitly states that ASV-1 shall not be adjusted
+abruptly, and the 4-second hold requirement enforces this constraint directly in the simulator.
+Steps also require a manual confirmation action after all input and pressure conditions are met,
+further reducing the chance of accidental advancement through the procedure.
+
+3.5 AI Instructor
+
+3.5.1 System Overview
+         The AI Instructor is a conversational assistant integrated into the training system that
+
+provides guidance to trainees during the simulation. Rather than relying on a static scripted hint
+system, the assistant uses a Retrieval-Augmented Generation (RAG) pipeline to answer
+questions and deliver relevant procedural information based on the trainee's current state.
+
+3.5.2 RAG Architecture
+         RAG works by combining a vector-based document retrieval system with a large
+
+language model. When a trainee submits a question or the system detects that guidance is
+needed, the pipeline first retrieves the most relevant passages from a curated knowledge base.
+This knowledge base includes the SOP documentation, equipment manuals, safety guidelines,
+and operational notes specific to the compressor startup process. The retrieved context is then
+passed to the language model alongside the query, allowing the model to generate a grounded,
+accurate response rather than relying solely on general training data.
+
+         The pipeline uses nomic-embed-text running locally via Ollama for document
+embedding, with ChromaDB as the vector store. Generation is handled by GPT-4o-mini via the
+OpenAI API. Document chunks are sized to capture sufficient procedural context for multi-step
+questions, with the top-k most relevant chunks retrieved per query and passed to the model
+alongside the trainee's question. The model is instructed to answer only from provided context
+and to decline when no relevant passage exists.
+
+3.5.3 Trainee Interaction and Voice Input
+         The trainee interacts with the assistant through voice input. Speech is captured and
+
+converted to text in real time after the user presses the "Record" button using their finger, then
+submitted as a query to the RAG pipeline. The system retrieves the most relevant document
+chunks from the knowledge base, ranks them by relevance, and passes them along with the query
+to the language model. The generated response is returned and displayed to the trainee as text
+within the VR interface. Alongside the response, the source chunks used to produce it are also
+surfaced, showing the trainee exactly which part of the SOP documentation or equipment manual
+the answer was drawn from. This transparency is important in a safety-critical training context,
+
+                                                                                                                   45
+as it allows trainees to verify the information and follow up by consulting the original source if
+needed, rather than treating the assistant as a black box.
+3.5.4 Knowledge Base Maintenance and Safety
+
+         This approach has several practical advantages for an industrial training context. The
+assistant is constrained to information that has been vetted by subject matter experts at the
+organization, reducing the risk of the model hallucinating and providing inaccurate information.
+It also means the knowledge base can be updated independently of the model itself, for example
+when procedures are revised or new equipment is introduced, without requiring retraining or
+fine-tuning of the LLM.
+
+            Figure 13: AI Instructor correctly answering a procedure-related query, with source
+                                       chunks cited below the response.
+
+                                                                                                                   46
+          Figure 14: AI Instructor handling an out-of-scope question, declining to answer rather
+                                 than generating an unsupported response.
+
+3.6 Admin Monitoring Dashboard
+
+         The Admin Monitoring Dashboard is a Streamlit web application served from the
+UCalgary CloudStack server. It reads session data from PostgreSQL via PostgREST HTTP
+endpoints and provides training coordinators with two core functions: trainee performance
+monitoring and AI Instructor knowledge base management. Both functions are accessible
+through a single tabbed interface, eliminating the need for separate tools for training oversight
+and content administration.
+
+3.6.1 Dashboard Overview and Supervisory Functions
+         The dashboard is organized into two levels that correspond to the two main supervisory
+
+tasks: cohort-level screening and individual-level diagnosis. The upper tab presents an
+aggregated performance view across all trainees. Supervisors can filter by trainee name and time
+horizon, and toggle the main trend chart between total errors per session and completion time per
+session. Two summary indicators automatically surface the current top performer and the trainee
+with the highest recent error count, allowing instructors to identify who requires intervention
+without manually inspecting individual session records.
+
+         The upper tab also contains the SOP Manager, through which administrators can upload,
+review, and delete source documents from the RAG knowledge base. Supported formats are
+DOCX and PDF. Uploaded documents are chunked and embedded on the server without
+requiring any changes to the AI pipeline or application code, keeping knowledge base
+maintenance under administrative control rather than developer involvement.
+
+                                                                                                                   47
+Figure 15: Admin monitoring dashboard displaying trainee session data, including step
+                                         progression.
+
+Figure 16: SOP Manager interface within the admin dashboard, used to manage the AI
+                               Instructor's knowledge base.
+                                                                                                        48
+3.6.2 Trainee Performance and Session Analysis
+         The lower tab provides a step-level breakdown for a selected trainee and date range. For
+
+each of the 12 SOP steps, the chart displays completion time on the vertical axis with
+color-shaded regions indicating whether the step was executed correctly (green) or incorrectly
+(red). Plotting both timing and correctness on the same axis makes it possible to distinguish
+between a trainee who is slow but accurate and one who is fast but making repeated errors at the
+same step.
+
+         When multiple sessions fall within the selected date range, they are rendered as
+overlapping plots. This allows recurring weaknesses to become visible across attempts: if a
+trainee consistently exceeds the time limit or triggers a failure state at the same step across
+several sessions, the overlap makes the pattern immediately apparent. A session highlight control
+allows the supervisor to foreground one session while dimming the others, preserving the
+comparison context without losing readability.
+
+            Figure 17: Individual trainee performance view, showing step-level completion time,
+  correct and incorrect execution regions, and comparison of multiple sessions over a selected
+
+                                                    date range.
+3.6.3 Design Rationale
+
+         The two-level layout was chosen to separate broad monitoring, where speed of
+interpretation matters, from step-level diagnosis, where detail matters. Combining both into a
+single flat view would make the interface slower to use for the common case of a quick cohort
+check. The SOP Manager was included in the same interface rather than a separate admin portal
+to ensure that the RAG knowledge base remains maintainable by training coordinators without
+developer access to the server.
+
+3.7 Backend and Data Infrastructure
+
+                                                                                                                   49
+3.7.1 Cloud Backend Server
+         The backend infrastructure for VR OPS is hosted on a virtual machine provided through
+
+the University of Calgary's CloudStack platform. CloudStack is a cloud computing platform that
+the university operates internally for student and research projects.
+
+         Several factors made the UCalgary CloudStack a more appropriate choice than a
+commercial provider such as AWS or Azure for this project. First, the platform was available at
+no cost through the university, removing any ongoing hosting expenses during development and
+deployment. Second, and more importantly for a training system handling institutional data, the
+CloudStack environment is hosted entirely within the university's own infrastructure. This means
+the system is not dependent on a third-party cloud provider and is not subject to the data
+residency concerns that can accompany commercial cloud platforms. Finally, network access to
+the server can be restricted to authenticated UCalgary users on the university's network, meaning
+only verified students or staff can interact with the system. This mirrors the access control model
+of a real industrial company where internal tools are restricted to employees on a corporate
+network, which is a realistic constraint for the training scenario being simulated.
+
+The virtual machine runs Ubuntu and was provisioned with the following hardware resources:
+
+         Table 15: Hardware Resources
+
+Resource  Specification
+
+CPU 2x Intel Xeon (Icelake), 8 cores total
+
+RAM       16 GiB
+
+Storage   53 GB virtual disk
+
+         At the time of deployment, the server was operating well within its limits, with only 569
+MB of the 16 GiB RAM in use and approximately 37 GB of the 48 GB root partition still
+available. This headroom is sufficient to scale the number of concurrent users, expand the
+document knowledge base for the AI Instructor, and accumulate session logs over a full training
+cohort without any hardware upgrades.
+
+3.7.2 Database Design
+         The system uses PostgreSQL as its primary database, hosted on the same CloudStack
+
+virtual machine as the rest of the backend. Keeping the database on the same server avoids any
+network latency between the application layer and the data store, and simplifies the deployment
+since no external managed database service is required.
+
+         The schema is organised into three tables. The trainees table stores a unique record per
+trainee. The sessions table records each training run, including the date, total completion time,
+and total error count for that attempt. The session_steps table stores the per-step breakdown for
+
+                                                                                                                   50
+each session, recording how long each of the 12 steps took and whether it was appraised as
+correct or incorrect. A view called performance_wide is also defined, which flattens the step data
+into a single row per session to match the column layout used in the admin dashboard and make
+reporting queries straightforward.
+
+         Rather than exposing PostgreSQL directly to the application layer, the system uses
+PostgREST to serve the database over a REST API. PostgREST is a lightweight server that
+automatically generates a fully functional HTTP API from a PostgreSQL schema, eliminating
+the need to write any custom database query code. This means the VR simulation and the admin
+dashboard can both read and write session data using standard HTTP requests, without any
+additional backend logic in between. PostgREST runs as a dedicated systemd service on the
+CloudStack server, alongside the FastAPI backend and the Streamlit dashboard, and is
+configured to connect through a dedicated read-only role so that the API surface is limited to
+only what the application needs.
+
+         Nginx sits in front of all three services and acts as a reverse proxy, routing requests to the
+appropriate backend based on the path. External access is restricted to ports 80 and 443, with all
+internal service ports kept off the public network.
+
+4. Design Verification
+
+4.1 Prototype and System Implementation
+
+4.1.1 VR Environment and Hardware Integration
+         The VR simulation is a Unity application deployed on a Meta Quest headset using the
+
+Meta XR SDK. The scene contains a two-stage compressor station including scrubbers,
+compressors, coolers, interconnecting pipework, and valve assemblies. Pipe segments change
+color dynamically based on the current pressure state retrieved from the HYSYS lookup table:
+grey for no flow, yellow for below range, red for above range, and green for within the
+acceptable range at the active step. Compressor audio scales with dial position and intercooler
+activation is indicated by flashing status lights, providing multi-modal feedback throughout the
+startup sequence.
+
+         A central SOPManager state machine manages the 12-step startup procedure, enforcing
+step sequencing, input validation, timing constraints, and completion conditions. Each step
+requires both correct physical inputs and a manual confirmation action before the system
+advances. A valve state UI panel and task board provide the trainee with a continuous secondary
+reference for current valve positions and procedure progress. All UI panels are spatially
+repositionable within the VR environment. Locomotion is implemented via fixed teleport points
+placed at the suction side, interstage section, and export side of the station.
+
+         The physical control panel connects to the Unity application over WiFi via TCP on port
+7777. All 14 encoders, 4 push buttons, and the latching ESD are mapped to their corresponding
+virtual controls through the centralized InputState registry, which decouples raw TCP messages
+
+                                                                                                                   51
+from the procedure logic. A software input simulator replicates the full hardware input surface
+within the Unity editor, feeding the same InputState registry as the physical panel and allowing
+step validation independent of hardware availability. All 12 steps were implemented, mapped,
+and verified prior to integrated system testing.
+
+                               Figure 18: Early models used for scene construction.
+
+4.1.2 AI Instructor and RAG Pipeline
+         The AI Instructor is a RAG pipeline deployed as a FastAPI service on the UCalgary
+
+CloudStack server, running as a persistent systemd process behind an Nginx reverse proxy. The
+pipeline uses nomic-embed-text running locally via Ollama for document embedding and
+ChromaDB as the vector store. Response generation is handled by GPT-4o-mini via the OpenAI
+API. Embedding is performed locally to reduce API cost, since knowledge base indexing does
+not require a frontier model.
+
+         The knowledge base contains the project SOP (VR-OPS-001), the VR Environment
+Indicators and Feedback Guide (VR-OPS-002), and supporting operational reference documents.
+Documents are chunked at a size calibrated to preserve sufficient procedural context for
+multi-step questions. The top-k most relevant chunks are retrieved per query and passed to the
+generation model alongside the trainee's question. The model is instructed to answer only from
+provided context and returns a structured decline when no relevant passage exists, rather than
+generating an unsupported response.
+
+         Within the VR environment, the trainee activates the assistant by pressing the Record
+button, speaks a question, and receives a text response displayed in the VR interface alongside
+the source document chunks used to generate it. The speech-to-text conversion and RAG query
+are handled server-side, with the response returned over the same network connection used by
+the rest of the backend.
+
+4.1.3 Database and Admin Dashboard
+
+                                                                                                                   52
+         Session data is stored in a PostgreSQL database hosted on the same CloudStack virtual
+machine as the RAG backend. The schema consists of three tables: trainees, which stores a
+unique record per trainee; sessions, which records the date, total completion time, and total error
+count for each training run; and session_steps, which stores the per-step completion time and
+correctness appraisal for each of the 12 steps in a session. A flattened view called
+performance_wide is defined over the session_steps table to support dashboard reporting queries
+without requiring joins at query time.
+
+         The database is exposed to the VR simulation and admin dashboard through PostgREST,
+which auto-generates a REST API from the PostgreSQL schema. All external access is routed
+through a dedicated read-only role, limiting the API surface to only what the application
+requires. Nginx routes requests to PostgREST, the FastAPI RAG service, and the Streamlit
+dashboard based on request path, with external access restricted to ports 80 and 443.
+
+         The admin dashboard is a Streamlit application served from the same server. It provides
+two functions accessible through a single tabbed interface: a performance monitoring view
+displaying cohort-level and individual trainee session data, and an SOP Manager for uploading,
+reviewing, and deleting documents from the RAG knowledge base. At the time of verification
+testing, the database contained session records from prior development testing runs, confirming
+that the full data pipeline from VR session to dashboard display was functioning correctly.
+
+4.2 Descriptions of Test Scenarios
+
+         The test scenario is grounded in the two governing documents developed for this project:
+the Compressor Station Startup Procedure (VR-OPS-001, referred to here as the SOP) and the
+VR Environment Indicators and Feedback Guide (VR-OPS-002, referred to here as the VR
+Guide). The SOP defines the 12-step startup sequence, the required valve positions, and the
+acceptance criteria for each step. The VR Guide defines what the trainee should observe in the
+virtual environment, pipe colors, audio cues, intercooler status lights, and emergency reset
+behavior, as confirmation that the system is responding correctly. Together, these documents
+form the basis against which each test scenario is evaluated.
+
+                                                                                                                   53
+         Figure 19: Standard Operating Procedure and VR Guide Documents that were fed to the
+                                                   AI Instructor
+
+4.2.1 Normal Operation Scenario
+         Objective: Verify that a trainee who executes all 12 startup steps correctly in sequence
+
+receives the expected visual, audio, and procedural confirmations at each step, and that the
+system advances without triggering any failure state.
+
+         Procedure: The trainee begins with the simulation loaded and all equipment in standby,
+consistent with the preconditions defined in Section 4 of the SOP. The trainee executes each step
+in order:
+
+         Steps 1­3 establish the initial flow path: scrubbers BD-1 and BD-2 are drained to 100%,
+both anti-surge valves ASV-1 and ASV-2 are opened fully, and the feed is opened to 100%. Steps
+4­5 bring Compressor 1 online by setting the SPV to the 10­25% range, starting the compressor,
+and then advancing the SPV to 40­50%. Steps 6­12 complete the staged transition to full
+operation: ASV-1 and ASV-2 are reduced incrementally, NRV-1 and NRV-2 are opened in stages,
+Compressor 2 is started, and both intercoolers are brought online. The final operating state
+requires SPV at 100%, NRV-1 and NRV-2 both fully open, ASV-1 at 5%, ASV-2 at 15%, and
+both compressors and intercoolers running.
+
+         Expected system response: At each step, the VR environment should confirm correct
+completion through the feedback indicators described in the VR Guide. Process pipe sections
+should transition from grey (no flow) to green (pressure within the acceptable range for the
+active step) as the startup progresses. Compressor audio should begin immediately on start
+command and increase proportionally with dial position. Intercooler status lights should flash red
+and blue upon activation. The procedure panel should highlight the active step green and expose
+the "Next Step" button only after all required actions for that step are complete. By the final step,
+all process pipes in the simulation should display green.
+
+         Pass criteria: The system advances through all 12 steps without triggering a failure state,
+all final operating confirmations listed in Section 7 of the SOP are satisfied, and all pipes display
+green at step completion.
+
+4.2.2 Failure Detection Scenario
+         Objective: Verify that the system correctly identifies a procedural deviation, locks out
+
+further control inputs, and requires the trainee to acknowledge the failure before the step can be
+retried.
+
+                                                                                                                   54
+         Procedure: The trainee is placed at a defined step in the startup sequence for example,
+Step 6 (Reduce ASV-1). Rather than closing ASV-1 from 100% to 50% as specified, the trainee
+either moves the valve abruptly rather than over the required 4-second minimum, or adjusts it to
+an incorrect position outside the acceptable range. This produces a stream pressure that falls
+outside the acceptable bounds defined for that step in the HYSYS dataset.
+
+         Expected system response: As described in Section 8 of the VR Guide, the affected pipe
+section changes to red, indicating that the simulated pressure has exceeded the acceptable range
+for the active step. The VR platform should disable all further control panel inputs at this point,
+the trainee cannot correct the error by re-adjusting the valve. The system remains locked until the
+Emergency Stop button on the physical control panel is pressed. The SOP identifies this class of
+event explicitly in its General Operating Notes: the ESD is to be used when an abnormal or
+unexpected response is observed.
+
+         Pass criteria: The red pipe condition appears within the step in which the deviation
+occurs and does not propagate silently to the next step. All control inputs are disabled correctly
+on failure detection. The system does not accept any further valve or compressor inputs until the
+ESD is activated.
+
+Visual  State          Interpretation
+
+        Grey    There is no flow in that section,
+                so simulated pressure is zero.
+
+        Yellow  Pressure is below the intended
+                range for the active step.
+
+        Red     Pressure is above the
+
+                acceptable range for the active
+
+                step.
+
+        Green   Pressure is within the correct
+                range for the active step.
+
+        Figure 20: Pipe color table from Section 6 of the VR Guide
+
+4.2.3 Emergency Stop and Recovery Scenario
+         Objective: Verify that pressing the Emergency Stop button correctly resets the active
+
+step, restores all controls, and allows the trainee to retry the step from its initial state.
+
+                                                                    55
+         Procedure: This scenario follows directly from the failure state established in Section
+4.2.2. Once the red pipe condition is displayed and control inputs are locked, the trainee presses
+the ESD button on the physical control panel. The system should reset the current step, not the
+entire startup sequence, and restore the equipment state to what it was at the beginning of that
+step.
+
+         The trainee then repeats the step: for the Step 6 example, ASV-1 is closed gradually from
+100% to 50% over at least 4 seconds as specified in the SOP. The SOP's caution note for this step
+explicitly states that this adjustment shall not be performed abruptly, and the test verifies that a
+smooth adjustment within the correct range clears the failure condition. The VR Guide confirms
+that after reset, the trainee should repeat the step actions and confirm that all expected indicators
+return to normal before the system allows progression.
+
+         Expected system response: Pressing ESD resets only the active step. The trainee's
+progress through all previously completed steps is preserved. After a correct retry, the pipe color
+returns to green, the step highlights as complete, and the Next Step button reappears.
+
+         Pass criteria: The ESD resets the active step and restores control panel inputs. The
+system does not roll back to Step 1. A correct retry on the reset step results in successful step
+completion without triggering a second failure state. The system advances normally to the next
+step.
+
+4.2.4 User Interaction / Training Scenario
+         Objective: Verify that the supporting interaction features: the AI Instructor, task board,
+
+pressure gauge window, and teleportation system, function correctly and provide the trainee with
+accurate, accessible guidance throughout the startup sequence.
+
+         Procedure: This scenario is conducted in parallel with a normal startup run. At defined
+points during the sequence, the trainee exercises each of the four support features described in
+Section 3 of the VR Guide.
+
+         For the AI Instructor, the trainee activates the input button, speaks a question relevant to
+the current step for example, asking why ASV-1 must be reduced gradually in Step 6, and
+reviews the response. The response should be grounded in the SOP and display the source
+reference used to generate the answer, consistent with the RAG architecture described earlier in
+this report.
+
+         For the task board, the trainee verifies that completed steps are highlighted green and that
+the active step number and title match the current position in the SOP. The trainee also confirms
+that the board can be repositioned and resized in VR without affecting system state.
+
+         For the pressure gauge window, the trainee confirms that the live readings at key plant
+locations update correctly as valve positions are changed, and that the values are consistent with
+the pipe color feedback shown in the environment.
+
+         For teleportation, the trainee uses the yellow teleport boxes to move between operating
+areas during steps that require interaction with equipment in different sections of the plant.
+
+                                                                                                                   56
+         Expected system response: AI Instructor responses are returned within the 5-second
+latency target and are traceable to the SOP. The task board accurately reflects step status at all
+times. Pressure gauge readings are consistent with the HYSYS dataset output for the current
+valve configuration. Teleportation functions without disrupting the simulation state or the
+procedure panel display.
+
+         Pass criteria: All four support features operate without error during a complete startup
+run. AI responses are grounded and accurate. Task board status matches actual step completion
+state at all times. Pressure readings are consistent with pipe color feedback. Teleportation does
+not cause any loss of session state.
+
+4.3 Subsystem Verification Results
+
+         Each subsystem was tested independently prior to integrated system testing. The results
+are summarized in the table below.
+
+                 Table 15: Hardware Resources
+
+Subsystem  Test                        Pass Criteria                      Result
+
+HYSYS            Stage discharge         Stage 1 and Stage 2       114°C and 127°C
+process    temperatures within safety  discharge temperatures     respectively -- Pass
+ model
+                      ceiling                below 150°C
+
+HYSYS      Runtime lookup              O(1) pressure retrieval     No delay observed
+dataset      performance                 with no perceptible      across all 12 steps --
+
+Physical                               simulation delay during              Pass
+control                                     step execution
+ panel
+           Encoder input registration  Each encoder increment      All 14 encoders
+Physical                                 produces correct ±1      confirmed -- Pass
+control
+ panel                                 direction signal in Unity
+Physical                                  InputState registry
+control
+ panel     Push button registration    Green and red buttons All 4 buttons confirmed
+
+                                       produce correct On/Off     -- Pass
+
+                                       toggle events in Unity
+
+           ESD registration and        ESD activation disables    Confirmed on physical
+                   lockout             all control panel inputs   panel and in software
+
+                                              and triggers                 -- Pass
+
+                                                                                          57
+                                         failure-state response in
+                                                    Unity
+
+Physical    TCP communication              ESP32 maintains          No dropped messages
+control            stability              connection to Unity        observed during test
+ panel                                     over WiFi with no
+                                         message loss during a         session -- Pass
+                                          full 12-step session
+
+    VR      SOP state machine             System enforces step      Confirmed across all 12
+simulation      sequencing                 order and does not             steps -- Pass
+                                           allow advancement
+                                            until all input and
+
+                                         pressure conditions for
+                                           the active step are
+                                                 satisfied
+
+    VR      Pipe color feedback          Pipe segments update             Confirmed by
+simulation                                 correctly to grey,       walkthrough of all steps
+                                                                    with intentional correct
+                                         yellow, red, or green      and incorrect inputs --
+                                            based on current
+                                                                               Pass
+                                         pressure state at each
+                                                   step
+
+    VR      Timing constraint            Valve transitions held     Confirmed at Step 6
+simulation     enforcement               for less than 4 seconds    with both abrupt and
+
+                                           do not satisfy step         gradual ASV-1
+                                         completion conditions      adjustment -- Pass
+
+    VR      Failure-state detection and  Incorrect valve position        Confirmed by
+simulation          input lockout            triggers red pipe      intentional misposition
+
+                                         condition and disables        at Step 6 -- Pass
+                                         all control inputs within
+
+                                              the active step
+
+    AI      In-scope procedural query      Response returned        Average response time
+instructor                               within 5 seconds with       within target -- Pass
+
+                                           correct procedural
+                                           guidance and SOP
+
+                                             source citation
+
+                                                                                          58
+    AI       Out-of-scope query         System returns a          Confirmed with
+instructor  Session data recording  structured decline rather  multiple out-of-scope
+
+  Admin       Performance view          than a generated          queries -- Pass
+dashboard        SOP Manager         unsupported response
+
+  Admin                               Per-step completion         Confirmed by
+dashboard                             time and correctness     reviewing database
+                                       appraisal stored in
+  Admin                             session_steps table after   records after test
+dashboard                           a complete 12-step run       session -- Pass
+
+                                        Cohort-level and         Confirmed against
+                                    individual trainee views   known session records
+                                    display correct session
+                                                                        -- Pass
+                                       data with accurate
+                                     step-level timing and
+                                      correctness regions
+
+                                       Document upload,          Confirmed by
+                                        embedding, and           uploading and
+                                        deletion function       removing a test
+                                        correctly without      document -- Pass
+                                    requiring changes to the
+
+                                           AI pipeline
+
+         All subsystems met their individual pass criteria and were confirmed ready for integrated
+testing.
+
+4.4 Integrated System Results and Discussion
+
+         Integrated system testing confirmed that VR OPS meets its primary design objective: a
+consistent, repeatable, and physically grounded environment for training operators on
+compressor station startup procedures. With all subsystems connected, operator inputs at the
+physical control panel produced correct process state changes, pipe color updates, and procedural
+progression across all four test scenarios defined in Section 4.2. The system correctly supported
+normal startup operation, abnormal-state detection, emergency stop recovery, and guided
+operator interaction through the AI Instructor and task board interfaces. No subsystem
+integration failures occurred during the test scenarios.
+
+         The use of a precomputed HYSYS lookup table was validated as an appropriate
+architecture for this training application. Pressure state transitions were deterministic and
+immediate, with no runtime latency introduced by the process response layer. The step-level
+pressure bands derived from the HYSYS dataset produced clear and consistent failure-state
+
+                                                                                    59
+triggers -- incorrect valve positions were detected reliably and the input lockout behavior
+functioned as specified in all tested cases. The offline dataset approach also provided the
+scenario repeatability required for training, ensuring that the same operator inputs always
+produce the same system response across sessions.
+
+         Three practical limitations were identified during integrated testing that are consistent
+with the constraints defined in Section 2.3.3. First, WiFi communication between the ESP32 and
+the Meta Quest was occasionally unstable in environments with high network congestion,
+causing transient input delays. The software input simulator served as a functional fallback in
+these cases, confirming that the procedure logic and feedback system are not dependent on the
+physical hardware connection. Second, the steady-state HYSYS dataset does not capture
+transient pressure behavior between operating points, meaning the simulator moves directly
+between discrete states rather than animating a continuous process response. This is an accepted
+trade-off for this training scope, where procedural correctness and step recognition matter more
+than dynamic fidelity. Third, the current implementation is scoped to a single two-stage
+compressor startup scenario. The modular architecture with independent SOPManager, CSV
+lookup, and InputState registry layers, supports extension to additional procedures without
+structural changes, but no additional scenarios were implemented or tested within this project.
+
+         Overall, the integrated system results demonstrate that VR OPS functions as a coherent
+training platform rather than a collection of loosely connected subsystems. Each layer, process
+data, physical input, virtual environment, instructional support, and performance tracking,
+operated correctly in combination and produced the training behaviors specified in the design
+requirements.
+
+5. Project Management
+
+5.1 Roles & Responsibilities
+
+         The VR OPS team utilized a hybrid organizational structure, to ensure clear
+accountability and collaboration between the different leads. Each member of the team was
+assigned a primary responsibility related to their area of expertise. The team structure roles are
+detailed below.
+
+5.1.1 Team Structure
+
+     Project Manager (PM) oversees coordination, communication, and progress tracking.
+     Subsystem Leads (Mechanical, VR, AI, Mechatronics, Manufacturing, QA) with their
+
+         own set of deliverables.
+     Cross-functional collaboration occurs at subsystem interfaces (e.g: panel with
+
+         electronics with VR with AI).
+
+                                                                                                                   60
+5.1.2 Detailed Responsibilities
+
+Zain Tariq - Mechanical Simulation Lead
+
+     Owns overall project delivery and ensures subsystem integration readiness.
+     Leads compression system modeling, HYSYS validation, and equipment behaviour
+
+         mapping.
+     Manages project scope, sets meeting agendas, and maintains decision logs.
+
+Ibrahim Hashmi - Manufacturing Lead
+
+     Owns panel fabrication, CAD design, material/component procurement, and machining
+         workflow.
+
+     Conducts button spacing analysis, and panel layout optimization.
+     Responsible for assembly tolerances, durability, and ease of maintenance design.
+
+Abduljalel Wadouh - Quality Assurance Lead
+
+     Develops test plans, validation protocols, and acceptance criteria.
+     Conducts systematic design reviews (technical, UI/UX, ergonomics, safety).
+     Interfaces with Mechatronics Lead to ensure manufacturability of electronic system
+     Ensures compliance with training requirements and safety standards in VR.
+
+Ahmed Elkhrashy - Controls Lead
+
+     Develops user performance database, Streamlit dashboards, and instructor logic
+     Leads compression system modeling, HYSYS validation, and equipment behaviour
+
+         mapping.
+     Ensures mechanical system realism matches SOPs
+
+Zaid Ahmed - VR Development Lead
+
+     Implements core VR environment, lighting, physics simulations, and interaction logic.
+     Develops compressor models, alarm behaviours, valve sequencing logic, and emergency
+
+         scenarios.
+     Integrates AI user interface, UI panels, and scenario control modules.
+     Owns RAG pipeline, vector embeddings, and cloud-hosted AI functions.
+     Ensures secure data flows, modularity, and scalability.
+
+Dieter Banaag - Mechatronics & Backend Lead
+
+     Develops ESP32/Arduino input polling, filtering, debouncing logic, and communication
+         protocol.
+
+                                                                                                                   61
+     Designs wiring schematics, power distribution, and E-stop logic.
+     Coordinates hardware-to-software mapping with the VR lead.
+     Builds internal APIs for VR­AI communication.
+
+         In the spirit of continuous learning, we had decided to rotate members in order for us to
+vary our experiences and develop new skills. This is shown in the table below:
+
+Table 16: RACI Matrix (The letters in red represent how roles had changed from the fall
+                                               semester)
+
+Task           Zain Ibrahim Abduljalel Ahmed Zaid     Dieter
+
+Scope          A  C                        R  C  C    C
+
+Definition
+
+AI Prototype   C  C                        C  C  A    R
+
+VR Prototype   C  C                        C  C  A/R  C
+
+Panel          R  R                        A  R  C    C
+
+Manufacturing
+
+Electronics    C  C                        R  R  C    A/R
+
+Integration
+
+System         R  R                        C  A  C    C
+
+Integration
+
+R = Responsible (does the work)
+A = Accountable (owns the final decision)
+C = Consulted
+
+                                                                                         62
+5.2 Work Breakdown Structure (WBS)
+
+         The Work Breakdown Structure organizes the VR OPS project into six major subsystems,
+with each subsystem having its own set of deliverables. The subsystems are as follows:
+
+     Mechanical,
+     Control Panel
+     VR Environment,
+     AI Instructor,
+     Data Analytics
+     Integration & Testing.
+
+The WBS diagram below visually represents this hierarchical breakdown.
+
+                                    Figure 21: Work Breakdown Structure (WBS)
+
+5.3 Schedule & Milestones
+
+         The project schedule aligns academic deadlines with the project expectations. The
+following dependencies are as outlined for the project and a detailed schedule is illustrated
+within the gantt chart below.
+
+Dependencies are as follows:
+     AI prototype depends on availability of sponsor SOPs.
+     The VR compressor model depends on Aspen/HYSYS simulation outputs.
+     Panel electronics must be complete before VR­hardware integration.
+                                                                                                                   63
+     AI-VR integration cannot begin until the scenario manager module is functional
+
+                                      Figure 22: Gantt chart with critical path
+
+5.4 Budget for Prototype Development
+
+         The VR OPS project budget is allocated to construct a physical control panel, an
+immersive VR environment, an AI-driven instructional system, and a cloud-based analytics
+platform.
+
+         The budget breakdown below reflects actual component costs,cloud compute usage,
+software asset purchases, and incidental project expenses. All estimates consider UCalgary's
+available student licenses and lab infrastructure.
+5.4.1 Cost Breakdown Overview
+
+                                                                                                                   64
+      Table 17: Bill of Materials
+
+         Bill of Materials
+
+Tool                                      Cost (CAD)
+
+      Freenove ESP32 Board (2 Pack)        $27.25
+   Freenove Breakout Board for ESP32      $15.92
+ MCP23017-E SS I2C Expansion Module       $20.59
+I2C Expander Board IO Extension Module    $19.11
+   Soldering Brass Sponge Tip Cleaner     $19.00
+ Silicone Soldering Mat (Heat Resistant)  $17.63
+    Helping Third Hand with Magnifier     $13.64
+                                          $10.45
+               Rosin Flux Paste           $9.42
+     Solder Wick (Desoldering Braid)      $10.71
+                                          $28.53
+        Soldering Iron Tips (12 pcs)      $33.07
+           Emergency stop buttons         $22.04
+                  Heat Shrink             $78.05
+                   Cable Ties             $11.64
+               Rotary Encoders            $14.05
+           Wire Ferrule Connectors        $4.45
+               Wire Connectors            $10.73
+                  Resistor Kit            $11.14
+                  Solder Wire             $30.34
+                PCB Prototype
+                 Silicone Cable
+
+                                                      65
+                         Buttons           $7.08
+         Printing and Miscellaneous Costs  $30.07
+
+     Total Estimated Budget: 434 CAD
+     Remaining Budget: 16 CAD
+5.4.2 Cost Savings
+
+Service                      Table 18: Cost Savings          AWS Cost
+                                                             (Monthly)
+                        VR OPS Cost AWS Equivalent
+                                                                  $25
+Compute (FastAPI +      $0                  EC2 t3.medium
+                                                                  $15
+Streamlit + nginx                          RDS db.t3.micro        $5
+                                           Pinecone or EBS
+PostgreSQL + PostgREST  $0                                        $16
+                                                 storage
+ChromaDB                $0                                      $3.65
+                                           Application Load  <$0.004 per
+Nginx                   $0                      Balancer
+                                                                query
+ Static IP                       $0         Elastic IP EC2
+LLM Calls               <$0.004 per query   AWS Bedrock
+
+         Using CloudStack instead of AWS enabled us to use more compute resources than we
+initially expected, which leads to a faster system able to handle more data leading to a cost
+savings of 65 CAD per month.
+
+5.5 Use of Project Resources and Contact Hours
+
+         The VR OPS project makes use of provided university facilities and on-campus working
+areas. Resource utilization varies based on the type of work being done due to the subsystem
+
+                                                                          66
+organization of the team. The table below outlines the time commitment for each member within
+the project team:
+
+          Table 19: Project Resources and Hours Spent
+
+Activity                      Hours per  Purpose
+                                Week
+
+Team Meeting (All Members)    2 hrs      Progress review, alignment, scheduling
+
+Subsystem Work Sessions       10­15 hrs  VR coding, AI development, panel
+                                            fabrication, electrical testing
+
+Makerspace / Lab Work         5­8 hrs    3D printing, machining, soldering, panel
+                                                           assembly
+
+Independent Work (Research &  10 hrs     SOP review, Unity development,
+              Coding)                                  firmware
+
+5.5.1 Use of Physical Laboratories and Facilities
+
+         The Engineering Makerspace is used for fabrication activities, mainly for 3D printing of
+the control panel shell, soldering embedded hardware, and assembling wiring harnesses.
+
+         Aspen HYSYS was used to validate the compressor thermodynamics, model valve
+behavior, and simulate various pressure and/or temperature responses. The computers at the
+UCalgary computer lab were used for HYSYS modelling and process simulation work as they
+had licenses available.
+
+         Biweekly advisory meetings were scheduled with the sponsor to discuss scope,
+expectations and feedback on progress made.These sessions were used to review milestone
+completion, clarify technical requirements, and ensure they are aligned with the sponsor's needs.
+Risk items and constraints were also raised during these meetings, allowing the team to receive
+early guidance and adjust the project plan proactively. These meetings helped maintain
+transparency, manage expectations, and secure timely approvals for design iterations and
+prototype updates.
+
+6. Project Work for Professional Development
+
+6.1 Impact of Engineering on Society and the Environment
+
+         The VR OPS project was intended to replace or supplement portions of live operator
+training on Oil and Gas compressor equipment. The design decisions carry direct implications
+
+                                                                                                                   67
+for workplace safety, environmental risk, and the broader adoption of simulation-based training
+in the energy sector. The analysis below describes the tools and frameworks that were used to
+evaluate these impacts and how the results influenced the final design.
+
+6.1.1 Stakeholder Analysis
+
+         A stakeholder analysis was conducted early in the project to identify who would be
+affected by the design and how their needs should inform the system requirements. The primary
+stakeholders and their interests are summarised in the table below.
+
+                                Table 20: Stakeholder analysis for VR OPS.
+
+Stakeholder       Interest / Concern         How Design Addresses It
+
+Field Operators    Safe, realistic training   VR simulation replicates compressor station
+   (Trainees)     without exposure to live   with physically grounded pressure data; ESD
+                                             training builds muscle memory for emergency
+                      hazards; intuitive
+                           controls                                response
+
+ Training          Visibility into trainee     Admin dashboard provides cohort and
+Supervisors       performance; ability to    individual analytics; SOP Manager allows
+                  update training content    knowledge base updates without developer
+
+                                                               involvement
+
+    Plant         Reduced training costs     VR-based training eliminates the need to take
+Management            and downtime;          live equipment offline for training exercises;
+
+                  regulatory compliance             session data supports competency
+                                                               documentation
+
+Safety Engineers  Assurance that training    Failure-state framework forces ESD response
+                     covers abnormal           to procedural deviations; system does not
+                       operations and            allow trainees to silently correct errors
+
+                  emergency procedures
+
+                                                                                       68
+General Public /      Reduced risk of              Better-prepared operators reduce the
+  Community       industrial incidents near  probability of compressor station incidents that
+
+                       populated areas                 could result in releases or fires
+
+         Stakeholder analysis provided input for several design elements. Specifically, the need
+for administrative monitoring (admin monitoring dashboard) was derived from the training
+supervisor's requirement to monitor the competency development of trainees remotely due to the
+fact that they cannot be present at every session. The failure state framework was also influenced
+by the safety engineer's viewpoint that trainee development of habits to incrementally correct in
+uncomfortable, high-stress environments should not occur while operating on live equipment;
+therefore, VR OPS prevents trainee access to live process equipment while they are completing
+the "learning" portion of the procedure by locking the user interface in case of an SOP violation.
+
+6.1.2 Safety Impact Analysis
+
+         VR OPS provides a means for trainees to practice and learn the "start-up" procedure of a
+compressor without the potential risks involved when practicing the start-up sequence on a "live"
+pressurized system. With traditional training methods, new operators either "shadow" an
+experienced operator during a live training session on a "real" piece of equipment or they
+complete a controlled training exercise on a "real" compressor station under the supervision of an
+experienced operator. Both traditional training methods expose the trainee/operator to varying
+degrees of risk including, but not limited to, a procedural error during a live training session that
+could lead to over-pressurization, damage to the equipment, or even loss of containment. VR
+OPS completely eliminates these risks by replacing the "live" training scenario with a simulated
+environment where errors will have no physical consequence.
+
+         In addition to removing the risks related to the simulation environment, the system was
+designed to provide a specific solution to abnormal situation management (ASM). ASM is an
+area that research has shown lacks preparedness in operators. Instead of allowing trainees to
+self-correct if a deviation occurs, the system locks all input devices and requires the trainee to
+manually locate and activate the Emergency Shutdown (ESD) button. This was done to develop
+two competencies simultaneously: recognizing cognitively that a deviation has occurred and
+activating the ESD button (a psychomotor skill), which is a critical function in emergency
+response and must be practiced in a realistic environment.
+
+         Additionally, enforcing ESD response is an effective method of addressing another
+well-known failure mode in operator training. Trainees that are only trained in normal
+procedures do not have a defined path of decision-making in recovering from abnormal
+conditions. VR OPS integrates failure modes into every training session using the step-level
+pressure validation system, ensuring that operators experience and practice emergency response
+as part of their normal training regimen instead of just once as an isolated exercise.
+
+                                                                                                                   69
+6.1.3 Environmental Considerations
+
+         The environmental considerations were assessed based on both the direct footprint of VR
+OPS and the avoided environmental impacts compared to those of conventional training
+methods. The direct environmental footprint of VR OPS is minimal. The cloud-based backend of
+VR OPS is hosted on a university-provided virtual machine that uses a very small percentage of
+the available server resources; the Meta Quest headset draws about 10­15 watts during use; and
+the ESP32 control panel consumes virtually no power. There are no consumable materials used
+during training sessions.
+
+         However, the avoided environmental impacts are much larger. Traditional training
+practices at compressor stations may involve powering up compression equipment only for
+training purposes, thus utilizing fuel gas, producing emissions, and creating noise pollution. Live
+training exercises at each reciprocating or centrifugal compressor station include venting or
+flaring during startup and shutdown cycle operations, resulting in additional greenhouse gases
+released into the atmosphere. Therefore, by providing a virtual platform for operators to practice
+these procedures without having to run physical equipment, VR OPS reduces the number of live
+training events needed to obtain operator competency and subsequently reduces fuel usage and
+emissions.
+
+6.1.4 Human Factors and Usability Analysis
+
+         Designers of both the physical control panel and the virtual reality (VR) interface
+employed human factor principles as they created both interfaces. The design of the control
+panel was intended to have all of the physically related controls grouped together in an orderly
+fashion; the valve encoder layout was also laid out similarly to the way the piping is laid out at a
+compressor station. The emergency stop button was located on the control panel in a prominent
+location and at eye level where it could be quickly accessed and activated, which ensured that the
+psychomotor reaction that occurred while training would be transferred directly into the actual
+operation of the equipment at the compressor stations.
+
+         The designers also utilized many methods to ensure usability within the VR environment.
+One method used was the pipe color feedback system. This system provided trainees with
+immediate visual feedback regarding whether there was any flow or if the flow rate was outside
+of acceptable limits. The color scheme included grey when there was no pressure, yellow when
+flow rates were below normal operating ranges, red when pressures were above normal operating
+ranges, and green when pressures fell within normal operating ranges. Trainees did not have to
+refer to numeric display screens for this information. Two other panels within the VR
+environment were also able to be moved by trainees. The panels were the task board and the
+pressure gauges. These two panels were made movable in space so that each trainee could
+position these panels in his/her field of vision based upon individual preferences for how he/she
+
+                                                                                                                   70
+preferred to operate. By providing trainees with flexibility in positioning the panels, designers
+reduced the need for head movement to view important information. Movement in the VR
+environment was accomplished using a teleportation system instead of continuous movement.
+Designers chose to use a teleportation system to reduce the incidence of motion sickness. Motion
+sickness has been identified as one of the most common usability concerns associated with VR
+systems. Many VR system developers are developing VR applications specifically for
+individuals that will be wearing a HMD (Human Mobile Device) for the first time. Teleportation
+points were established along the path that would correspond with the typical viewing locations
+around a compressor station.
+
+6.2 Professionalism
+
+         The VR OPS project required the team to identify and apply professional codes,
+standards, and guidelines relevant to the design of a training simulator that interfaces with
+process engineering, electrical systems, virtual reality, and data management. The standards and
+guidelines referenced during the project are described below, along with how each was applied to
+guide or verify the design work.
+
+6.2.1 Applicable Codes and Standards
+                    Table 21: Professional codes and standards applied in VR OPS.
+
+Standard /        Relevance to VR OPS     Application in Design
+Guideline
+
+API Standard 618  Industry standards for  The two-stage compressor configuration with
+ / API Standard      reciprocating and      intercooling and recycle was modelled in
+        617                                 HYSYS to reflect typical field practice as
+                  centrifugal compressor     described in these standards. The startup
+                   design and operation        procedure was structured around the
+
+                                          operating philosophy of maintaining recycle
+                                          flow during startup and shutdown to prevent
+                                          surge, consistent with centrifugal compressor
+
+                                                        operating guidelines.
+
+                                                                                   71
+IEC 61131-3 /            Standards for           The SOP state machine in Unity was
+  IEC 62682        programmable controller      designed with reference to structured
+                   programming and alarm    programming principles from IEC 61131-3.
+                   management in process    The alarm and colour-coding system for pipe
+                                              pressures followed the philosophy of IEC
+                            industries      62682 for alarm prioritisation, using distinct
+                                            visual states to differentiate between normal,
+
+                                                     caution, and alarm conditions.
+
+   ISO 9241        Provides guidance on     The VR interface design applied principles
+(Ergonomics of          usability and          from ISO 9241, particularly regarding
+Human­System                                  feedback visibility (pipe colour changes
+                   human-centred design
+  Interaction)     for interactive systems  confirming operator actions), error tolerance
+                                            (ESD reset preserves progress on completed
+
+                                               steps), and controllability (movable UI
+                                             panels, teleportation locomotion to reduce
+
+                                                            motion sickness).
+
+     APEGA          Defines professional        The team operated under awareness of
+   Standards of      responsibilities for   APEGA's requirement to hold paramount the
+Practice and Code  engineers practising in  safety, health, and welfare of the public. This
+
+     of Ethics              Alberta               informed the decision to design the
+                                              failure-state framework to be deliberately
+                                              non-forgiving, the SOP documentation to
+                                               follow professional operating document
+                                              formatting, and the access controls on the
+                                            CloudStack server to restrict system access to
+
+                                                     authenticated university users.
+
+6.2.2 Professional Documentation Practices
+
+         The project produced two governing documents that were formatted to reflect
+professional operating document standards: the Compressor Station Startup Procedure
+(VR-OPS-001) and the VR Environment Indicators and Feedback Guide (VR-OPS-002). Both
+documents follow a structured format with document control fields (document number, revision,
+effective date, status, and classification), scope and purpose statements, and numbered
+
+                                            72
+procedural steps with acceptance criteria. This format was adopted to familiarise the team with
+the documentation practices used in industrial process operations, where standard operating
+procedures must be clearly written, version-controlled, and traceable. The SOP was also used as
+the primary knowledge base for the AI Instructor, ensuring that the guidance provided to trainees
+during the simulation is grounded in the same controlled documentation that a real operator
+would reference in the field.
+
+7. Conclusions and Recommendations
+
+7.1 Project Summary
+
+         VR OPS was developed to address a specific gap in oil and gas operator training: the
+absence of a safe, repeatable, and physically grounded environment for practicing compressor
+station startup procedures. Conventional training methods, live equipment exercises and
+experienced-operator shadowing, carry inherent safety risks and operational costs that VR OPS
+eliminates by replacing live exposure with an immersive simulation where procedural errors
+have no physical consequence.
+
+         All six deliverables defined in Section 1.3 were completed and verified. The two-stage
+Montney natural gas compressor simulation was built in Aspen HYSYS and validated against
+theoretical staging calculations, with the resulting 100,000-row lookup table driving
+process-response behavior in the VR environment. The physical control panel was fabricated as a
+three-module PLA chassis housing 14 rotary encoders, 4 push buttons, and a latching ESD,
+communicating with Unity over WiFi via TCP. The VR simulation was deployed on a Meta
+Quest headset and implements the full 12-step startup SOP, including step-level pressure
+validation, failure-state detection, input lockout, and ESD recovery logic. The AI Instructor was
+deployed as a RAG pipeline on the UCalgary CloudStack server, providing SOP-grounded
+procedural guidance with source citations and declining to respond to out-of-scope queries. The
+admin monitoring dashboard records per-step timing and correctness for each session and
+exposes this data through a Streamlit interface supporting both cohort-level and individual
+trainee analysis. Comprehensive technical documentation was produced in the form of two
+governing documents, VR-OPS-001 and VR-OPS-002, which served as both the SOP reference
+for the simulation and the primary knowledge base for the AI Instructor.
+
+         The integrated system was verified across four test scenarios covering normal operation,
+failure detection, emergency stop recovery, and AI-assisted interaction. All subsystems met their
+individual pass criteria and functioned correctly in combination. The prototype demonstrates that
+a physically grounded, AI-supported VR training platform can be developed and deployed within
+a student-project budget of CAD 450, using open-source infrastructure and university-hosted
+compute resources.
+
+7.2 Suggestions for Design Improvements
+
+                                                                                                                   73
+         The greatest potential for an enhancement lies in developing the process-response layer
+from a static, offline data set into a hybrid or dynamic simulation environment. While the current
+static lookup table methodology will consistently produce stable, physically accurate training
+responses that can be predicted with high accuracy, if the training were to simulate transient
+responses such as startup ramp up/down rates, pressure delay times, and/or time-dependent surge
+margins, it would provide much greater realism when simulating abnormal situations and/or
+when transitioning between different operating states. A good example of how this could be used
+would be to allow operators to identify and respond to early-stage surge indicator signals instead
+of simply waiting until they reach an out-of-range condition.
+
+         Adding new procedures to the process manager is the second-highest priority item.
+Currently, the process manager supports one single two-stage compressor startup. If you were to
+add additional shutdowns, upset scenarios, multi-equipment configurations, and procedures
+supporting other facility areas outside of what currently exist within the models boundaries, it
+would expand your training capabilities beyond just being a single-scenario trainer to a complete
+operator proficiency development tool. In doing so, the independent design structure of each of
+the three layers (SOPManager, CSV Lookup Table Manager, and Input State Registry Layers)
+was designed to enable this expansion with no structural changes to the existing core system.
+
+         Improving hardware on the physical control panel would improve the overall realism and
+durability of the panel. The current PLA case and encoders are fine for a proof of concept but
+would greatly benefit from using higher-quality industrial-grade materials and enclosures, as
+well as providing more inputs/outputs for additional control elements to support more complex
+procedures.
+
+         Lastly, both the AI instructor and administrator dashboards have plenty of opportunities
+to enhance their functionality. Enhancing the knowledge base by incorporating multiple
+equipment manuals and operational references, enabling feedback based upon past performance
+history of trainees, and allowing administrators to compare sessions across trainees on the admin
+dashboard would significantly advance VR OPS from its current status as a working prototype
+towards a commercially viable and deployable training solution.
+
+                                                                                                                   74
+References
+
+Muda, A. S., Aziz, M. A. A., Misnan, M. F., & Sam, R. (2024). Design and implementation of
+immersive virtual reality for enhanced operational efficiency and safety in oil and gas industry.
+In 2024 IEEE International Conference on Automatic Control and Intelligent Systems
+(I2CACIS) (pp. 325­329). IEEE. https://doi.org/10.1109/I2CACIS61270.2024.10649620
+
+Baek, S., Gil, Y.-H., & Kim, Y. (2021). VR-based job training system using tangible interactions.
+Sensors, 21(20), Article 6794. https://doi.org/10.3390/s21206794
+
+Bezanson, K., Soberanis, L., Thomas, B., Brooks, R., & Rojas-Munoz, E. (2023). Towards an
+intelligent tutoring system for virtual reality learning environments. In Proceedings of the 2023
+IEEE Frontiers in Education Conference (FIE) (pp. 1­8). IEEE.
+https://doi.org/10.1109/FIE58773.2023.10343505
+
+TrainBeyond. (2024, July 18). VR training oil and gas: Revolutionizing safety protocols.
+https://www.trainbeyond.com/vr-training-oil-gas-revolutionizing-safety-protocols/
+
+DevDen Solutions. (2025, November 10). Why oil & gas companies are turning to VR training
+for safer and smarter operations.
+https://www.devdensolutions.com/blog/why-oil-gas-companies-are-turning-to-vr-training-for-saf
+er-and-smarter-operations/
+
+Puranik, R. (2024, December 23). Virtual reality revolutionises training and operations in oil and
+gas industry. Offshore Technology.
+https://www.offshore-technology.com/news/virtual-reality-revolutionises-training-and-operations
+-in-oil-and-gas-industry/
+
+Assessing the impact of simulation-based training on clinical skills acquisition and retention: A
+systematic review. (2024). World Journal of Applied Research and Reviews, 4(1), 1­10.
+https://wjarr.com/sites/default/files/WJARR-2024-0163.pdf
+
+Elendu, C., et al. (2024). The impact of simulation-based training in medical education. BMC
+Medical Education, 24, Article 874. https://doi.org/10.1186/s12909-024-04320-0
+
+Rasmussen, P. C., & Kurz, R. (2009). Centrifugal compressor applications--Upstream and
+midstream. Turbomachinery Laboratory, Texas A&M University.
+
+Lugo-Méndez, H. D., et al. (2021). Step by step derivation of the optimum multistage
+compression process. Entropy, 23(3), Article 351.
+
+Lee, J., et al. (2017). Abnormal high-temperature behavior troubleshooting of process
+compressor tilting pad journal bearing.
+
+                                                                                                                   75
+Suh, J., Kim, T., & Kim, K. (2020). Effect of thermal boundary condition on tilting pad journal
+bearing behavior. Applied Sciences, 10(21), Article 7540.
+
+Chalmers, G. R. L., et al. (2022). Geology and geochemistry of the hydrocarbon compositional
+changes in the Triassic Montney Formation, Western Canada. Energies, 15(22), Article 8677.
+
+Desrocher, A. (1997). Geochemistry of natural gases from the Montney, Doig and Halfway
+formations, northeastern British Columbia and northwestern Alberta (Master's thesis, University
+of Calgary).
+
+National Energy Technology Laboratory. (2017). Natural gas compressors and processors ­
+Overview and potential impact on power system reliability.
+
+S. Jarungthammachote, "Optimal interstage pressures of multistage compression with
+intercoolers," Results in Engineering, 2022. Optimal interstage pressures of multistage
+compression with intercooling processes - ScienceDirect
+
+I. Nimmo, "Adequately address abnormal operations," Chem. Eng. Prog., vol. 91, no. 9, pp.
+36­45, Sep. 1995. [Online]. Available: Adequately Address Abnormal Operations
+
+"Control Valve Characteristics." Spirax Sarco Learn About Steam. Accessed April 11, 2026.
+(Control Valve Characteristics | Spirax Sarco)
+
+Baek, S., Gil, Y.-H., & Kim, Y. (2021). VR-based job training system using tangible interactions.
+Sensors, 21(20), Article 6794. https://doi.org/10.3390/s21206794
+
+Bezanson, K., Soberanis, L., Thomas, B., Brooks, R., & Rojas-Munoz, E. (2023). Towards an
+intelligent tutoring system for virtual reality learning environments. In Proceedings of the 2023
+IEEE Frontiers in Education Conference (FIE) (pp. 1­8). IEEE.
+https://doi.org/10.1109/FIE58773.2023.10343505
+
+Muda, A. S., Aziz, M. A. A., Misnan, M. F., & Sam, R. (2024). Design and implementation of
+immersive virtual reality for enhanced operational efficiency and safety in oil and gas industry.
+In 2024 IEEE International Conference on Automatic Control and Intelligent Systems
+(I2CACIS) (pp. 325­329). IEEE. https://doi.org/10.1109/I2CACIS61270.2024.10649620
+
+Appendices:
+
+
+Appendix A: Source Code Repositories
+
+Component                             Repository
+
+                                                  76
+VR Simulation                    https://github.com/zaid-ahmed1/VR-OPS
+AI Instructor & Admin Dashboard  https://github.com/zaid-ahmed1/VR-OPS-RAG
+
+Appendix B: SOP Document
+
+                                 77
+78
+79
+80
+81
+Appendix C: VR Guide Document
+
+                                                                                                                   82
+83
+84
+85
+86
+87
+88
+89
+Appendix D: Safety Guide
+
+                                                                                                                   90
+

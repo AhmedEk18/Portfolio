@@ -1,0 +1,21 @@
+# Claude Code workspace settings — local only
+.claude/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+*.swp
+*~
+
+# Common JS toolchain (in case anything is added later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs / preview server caches
+dist/
+build/
+.cache/

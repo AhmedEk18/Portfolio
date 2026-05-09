@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enbridge Power Operations — Ahmed Elkhrashy</title>
+  <meta name="description" content="Sixteen months as a Reliability & Integrity Co-op Engineer on Enbridge's Power Operations team — wind and solar reliability, SCADA dashboards, and a self-led CMMS rebuild." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Space+Grotesk:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body data-section="enbridge">
+
+  <div class="page-cover" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-brand"><span class="dot"></span> Ahmed Elkhrashy</a>
+    <ul class="nav-links">
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── HERO ────────────────────────────────────────────────── -->
+  <header class="detail-hero">
+    <div class="detail-hero-inner">
+      <a href="index.html#work" class="crumb"><span class="arrow">←</span><span>All work</span></a>
+
+      <div class="detail-meta">
+        <span class="tag">Project · 02</span>
+        <span class="tag tag-plain">Enbridge — Power Operations</span>
+        <span class="tag tag-plain">May 2024 — Sep 2025</span>
+        <span class="tag">Intern of Merit · top 15 %</span>
+      </div>
+
+      <h1 class="detail-title">Enbridge — keeping a <em>1.2&nbsp;GW</em>&nbsp;fleet honest.</h1>
+      <p class="detail-tagline">
+        Sixteen months as a Reliability &amp; Integrity Co-op Engineer in
+        Power Operations — instrumenting decisions for roughly 300 wind
+        turbines and a portfolio of solar assets, then leading a self-initiated
+        CMMS rebuild as the largest side project I owned.
+      </p>
+
+      <div class="spec-grid reveal">
+        <div class="spec-cell">
+          <span class="k">Role</span>
+          <span class="v">Reliability &amp; Integrity Co-op</span>
+        </div>
+        <div class="spec-cell">
+          <span class="k">Fleet</span>
+          <span class="v"><em>~300</em> wind + solar</span>
+        </div>
+        <div class="spec-cell">
+          <span class="k">Capacity</span>
+          <span class="v mono">900 — 1,200 MW</span>
+        </div>
+        <div class="spec-cell">
+          <span class="k">Length</span>
+          <span class="v">16 months · two co-op terms</span>
+        </div>
+        <div class="spec-cell">
+          <span class="k">Recognition</span>
+          <span class="v"><em>Intern of Merit</em> · top 15 %</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── HERO IMAGE ──────────────────────────────────────────── -->
+  <section class="figure-large reveal">
+    <figure class="figure">
+      <img src="Photos/Enbridge/picture%20from%20top%20of%20the%20turbine.jpg" alt="View from the top of an Enbridge wind turbine — surrounding fleet visible across the prairie" class="img-reveal" style="aspect-ratio:21/9;object-fit:cover;" />
+      <figcaption><strong>From the nacelle</strong>Top-of-turbine view across the AB / SK fleet — the vantage point reliability work is built around.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ── ROLE OVERVIEW ───────────────────────────────────────── -->
+  <section class="detail-section">
+    <div class="detail-grid-2">
+      <!-- LEFT: turbine-at-night figure — the fleet the SCADA work watches -->
+      <div class="reveal">
+        <figure class="figure" style="margin:0;">
+          <img src="Photos/Enbridge/wind%20turbine%20night.png"
+               alt="Wind turbine at night with safety lights — the fleet running unattended through low-load hours"
+               class="img-reveal"
+               style="aspect-ratio:4/5; object-fit:cover;" />
+          <figcaption><strong>The fleet at night.</strong>The hours when the SCADA stack does the watching — anomalies surface in trends long before anyone gets a phone call.</figcaption>
+        </figure>
+      </div>
+
+      <!-- RIGHT: heading + prose -->
+      <div class="reveal detail-prose">
+        <span class="eyebrow">Role · 01</span>
+        <h3 style="font-family:var(--ff-display);font-size:clamp(1.8rem,3.4vw,2.6rem);font-weight:300;line-height:1.1;letter-spacing:-0.02em;margin:18px 0 28px;color:var(--text);">
+          Reading <em>signals</em> off a fleet.
+        </h3>
+        <p>
+          Renewable assets fail differently than thermal ones. A wind turbine
+          doesn't announce itself with smoke — it drifts, gradually, through
+          degrading bearings and misaligned yaw, until power output curves start
+          to lie. The job was to catch the drift early — translating noisy
+          fleet-wide telemetry into corrective decisions a planner could act on.
+        </p>
+        <ul>
+          <li>
+            Trended <strong>power output curves, nacelle temperatures, rotor RPM, and vibration
+            signatures</strong> in <span class="accent">AVEVA PI SCADA</span> across ~300 wind
+            turbines and the solar fleet to detect anomalies and drive corrective work.
+          </li>
+          <li>
+            Tracked <strong>solar PV inverter strings</strong> via irradiance-normalised yield,
+            DC/AC ratios, and inverter fault codes — identified underperforming strings
+            and prioritised maintenance interventions.
+          </li>
+          <li>
+            Investigated <strong>gearbox bearing degradation, pitch-actuator faults,
+            and yaw-system misalignment</strong> using SCADA fault logs, SAP histories,
+            and lube oil analysis to identify failure drivers.
+          </li>
+          <li>
+            Coordinated <strong>wind blade inspection campaigns</strong> — interpreted
+            P&amp;IDs / PFDs to define inspection scope; classified leading-edge erosion,
+            delamination, and lightning-strike damage per <span class="accent">IEC 61400</span>
+            and initiated corrective work orders.
+          </li>
+          <li>
+            Built <strong>equipment criticality matrices</strong> for main bearings,
+            gearboxes, generators, and solar inverters — risk-ranking assets to
+            optimise PM frequency and inspection scope.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PULL QUOTE ──────────────────────────────────────────── -->
+  <section class="detail-section">
+    <div class="container">
+      <blockquote class="pull-quote reveal">
+        <em>What does normal look like</em> — so abnormal becomes obvious. The
+        fleet doesn't announce a fault; it drifts. The work is building the
+        lens that catches the drift early.
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ── DASHBOARDS / IMPACT ─────────────────────────────────── -->
+  <section class="detail-section bg-soft">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="index">02</span>
+        <h2>Faster reporting, <em>better</em>&nbsp;decisions.</h2>
+        <span class="meta">Power BI · SCADA · SAP PM</span>
+      </div>
+
+      <div class="detail-grid-2">
+        <div class="reveal detail-prose">
+          <p>
+            Built a set of <span class="accent">Power BI dashboards</span> that
+            integrated AVEVA PI SCADA telemetry with SAP PM maintenance records to
+            monitor equipment availability and inspection KPIs across the renewable
+            fleet — replacing manual report assembly that had previously eaten a
+            disproportionate share of engineering time.
+          </p>
+          <p>
+            The dashboards <strong>cut reporting time by ~40 %</strong>, and gave
+            senior engineers and operations leadership a single live view of the
+            fleet — availability, open work orders, fault frequency, and inspection
+            backlog rolled up by site, asset class, and OEM.
+          </p>
+          <p>
+            They weren't decorative. They sat in front of decisions about which
+            turbines to take offline for inspection, which strings to pull off
+            solar combiners, and where to re-prioritise corrective work orders.
+          </p>
+        </div>
+        <div class="reveal">
+          <figure class="figure" style="margin:0;">
+            <!-- Dashboard glyph — a stylised Power-BI-style report tile.
+                 Inline SVG so the strokes can pick up our brand orange
+                 (var(--accent)) without a raster file. -->
+            <div class="dashboard-glyph" aria-hidden="true">
+              <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                <!-- Outer frame -->
+                <rect x="14" y="14" width="372" height="272" rx="6"
+                      fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.55" />
+                <!-- Title bar -->
+                <line x1="14" y1="54" x2="386" y2="54"
+                      stroke="currentColor" stroke-width="1" opacity="0.4" />
+                <circle cx="32"  cy="34" r="4" fill="var(--accent)" opacity="0.9" />
+                <circle cx="48"  cy="34" r="4" fill="currentColor" opacity="0.35" />
+                <circle cx="64"  cy="34" r="4" fill="currentColor" opacity="0.35" />
+                <line x1="84" y1="34" x2="200" y2="34"
+                      stroke="currentColor" stroke-width="1.2" opacity="0.5" stroke-linecap="round" />
+
+                <!-- KPI tiles row -->
+                <rect x="30"  y="74" width="100" height="56" rx="3"
+                      fill="none" stroke="currentColor" stroke-width="1" opacity="0.45" />
+                <rect x="30" y="74" width="6" height="56" fill="var(--accent)" />
+                <line x1="44" y1="92"  x2="100" y2="92"  stroke="currentColor" stroke-width="1.2" opacity="0.7" />
+                <line x1="44" y1="106" x2="86"  y2="106" stroke="currentColor" stroke-width="1"   opacity="0.4" />
+
+                <rect x="146" y="74" width="100" height="56" rx="3"
+                      fill="none" stroke="currentColor" stroke-width="1" opacity="0.45" />
+                <line x1="160" y1="92"  x2="216" y2="92"  stroke="currentColor" stroke-width="1.2" opacity="0.7" />
+                <line x1="160" y1="106" x2="200" y2="106" stroke="currentColor" stroke-width="1"   opacity="0.4" />
+
+                <rect x="262" y="74" width="108" height="56" rx="3"
+                      fill="none" stroke="currentColor" stroke-width="1" opacity="0.45" />
+                <line x1="276" y1="92"  x2="332" y2="92"  stroke="currentColor" stroke-width="1.2" opacity="0.7" />
+                <line x1="276" y1="106" x2="316" y2="106" stroke="currentColor" stroke-width="1"   opacity="0.4" />
+
+                <!-- Bar chart (left card) -->
+                <rect x="30" y="148" width="170" height="120" rx="3"
+                      fill="none" stroke="currentColor" stroke-width="1" opacity="0.45" />
+                <line x1="44" y1="252" x2="186" y2="252" stroke="currentColor" stroke-width="1" opacity="0.45" />
+                <rect x="54"  y="220" width="14" height="32" fill="currentColor" opacity="0.45" />
+                <rect x="78"  y="194" width="14" height="58" fill="currentColor" opacity="0.55" />
+                <rect x="102" y="178" width="14" height="74" fill="var(--accent)" opacity="0.95" />
+                <rect x="126" y="208" width="14" height="44" fill="currentColor" opacity="0.55" />
+                <rect x="150" y="186" width="14" height="66" fill="currentColor" opacity="0.55" />
+                <rect x="174" y="172" width="14" height="80" fill="currentColor" opacity="0.55" />
+
+                <!-- Line chart (right card) -->
+                <rect x="216" y="148" width="154" height="120" rx="3"
+                      fill="none" stroke="currentColor" stroke-width="1" opacity="0.45" />
+                <line x1="232" y1="252" x2="356" y2="252" stroke="currentColor" stroke-width="1" opacity="0.45" />
+                <polyline points="232,232 252,210 272,222 292,194 312,202 332,176 356,184"
+                          fill="none" stroke="var(--accent)" stroke-width="1.8"
+                          stroke-linecap="round" stroke-linejoin="round" />
+                <!-- Trend dots -->
+                <circle cx="252" cy="210" r="2.4" fill="var(--accent)" />
+                <circle cx="292" cy="194" r="2.4" fill="var(--accent)" />
+                <circle cx="332" cy="176" r="2.4" fill="var(--accent)" />
+                <!-- Subtle gridline -->
+                <line x1="232" y1="218" x2="356" y2="218"
+                      stroke="currentColor" stroke-width="1" opacity="0.18"
+                      stroke-dasharray="3 4" />
+              </svg>
+            </div>
+            <figcaption><strong>Live fleet view.</strong>A single Power BI surface for availability, work-order load, and inspection backlog — replacing the manual report assembly that used to eat the week.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CMMS SPOTLIGHT ─────────────────────────────────────── -->
+  <section class="detail-section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="index">03</span>
+        <h2>The <em>side project</em>&nbsp;that became the&nbsp;big one.</h2>
+        <span class="meta">Self-initiated · CMMS</span>
+      </div>
+
+      <div class="detail-grid-2">
+        <div class="reveal">
+          <figure class="figure">
+            <img src="Photos/Enbridge/CMMS.png" alt="Computerized Maintenance Management System — the largest side project I led at Enbridge" class="img-reveal" />
+            <figcaption><strong>Largest side project I led</strong>A Computerized Maintenance Management System (CMMS) I designed end-to-end for Enbridge Power Operations.</figcaption>
+          </figure>
+        </div>
+        <div class="reveal detail-prose">
+          <h3>I designed a <em>CMMS</em>&nbsp;for the renewable fleet.</h3>
+          <p>
+            Alongside the core reliability work, I <span class="accent">designed a Computerized
+            Maintenance Management System</span> tailored to the renewable fleet's
+            inspection, work-order, and KPI patterns — the largest side project I
+            owned during my time at Enbridge.
+          </p>
+          <p>
+            The existing maintenance workflow stitched together SAP, spreadsheets,
+            and tribal knowledge — every layer hiding a different data quality
+            problem. The new CMMS pulled the asset hierarchy, work-order routing,
+            inspection schedules, and reliability KPIs into a single coherent
+            system the field could actually use.
+          </p>
+          <p>
+            The CMMS work shaped how I think about reliability tooling now:
+            instrumented decisions, low-friction data entry, and dashboards that
+            answer the question planners actually&nbsp;ask.
+          </p>
+        </div>
+      </div>
+
+      <div class="callout reveal" style="margin-top:60px;">
+        <span class="eyebrow">Philosophy</span>
+        <p>
+          A system runs only as well as the people running it understand the
+          parts under load. Good reliability tooling shortens the distance between
+          a signal in the field and a decision at a planner's desk.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FIELD GALLERY ─────────────────────────────────────── -->
+  <section class="detail-section bg-soft">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="index">04</span>
+        <h2>Out at the <em>asset</em>.</h2>
+        <span class="meta">Field captures · 2024 — 2025</span>
+      </div>
+
+      <div class="gallery">
+        <div class="gallery-item reveal" style="grid-column: span 7; aspect-ratio: 16/10;">
+          <img src="Photos/Enbridge/picture%20from%20top%20of%20the%20turbine.jpg" alt="View from the nacelle of a wind turbine — surrounding fleet visible" class="img-reveal" />
+          <div class="caption">From the nacelle · climb-up site visit</div>
+        </div>
+        <div class="gallery-item reveal" style="grid-column: span 5; aspect-ratio: 4/5;">
+          <img src="Photos/Enbridge/wind%20blade.jfif" alt="Wind turbine blade close-up" class="img-reveal" />
+          <div class="caption">Blade leading edge · erosion classification per IEC 61400</div>
+        </div>
+        <div class="gallery-item reveal" style="grid-column: span 5; aspect-ratio: 4/5;">
+          <img src="Photos/Enbridge/wind%20turbines.jfif" alt="Multiple wind turbines on the prairie" class="img-reveal" />
+          <div class="caption">Prairie wind portfolio · ~300 units</div>
+        </div>
+        <div class="gallery-item reveal" style="grid-column: span 7; aspect-ratio: 16/10;">
+          <img src="Photos/Enbridge/solar%20panels.jpg" alt="Solar panel array — string-level inverter performance was tracked across the fleet" class="img-reveal" />
+          <div class="caption">Solar array · string-level inverter performance tracked via DC/AC ratios &amp; fault codes</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── COMMUNITY / ETFAC ────────────────────────────────── -->
+  <section class="detail-section">
+    <div class="detail-grid-2">
+      <div class="reveal">
+        <span class="eyebrow">Community · 05</span>
+        <h3 style="font-family:var(--ff-display);font-size:clamp(1.8rem,3.4vw,2.6rem);font-weight:300;line-height:1.1;letter-spacing:-0.02em;margin-top:24px;color:var(--text);">
+          Riding for <em>cancer research</em>.
+        </h3>
+      </div>
+      <div class="reveal detail-prose">
+        <p>
+          Outside of the engineering work, I volunteered with the
+          <span class="accent">Enbridge Tour Alberta For Cancer (ETFAC)</span> —
+          a two-day cycling event that raises funds for the Alberta Cancer
+          Foundation and cancer research at the Cross Cancer Institute.
+        </p>
+        <p>
+          Working the event was a different kind of engineering — logistics,
+          route support, hospitality — but the shared principle held: the people
+          behind the assets matter as much as the assets themselves. A reminder
+          worth carrying back into the dashboards.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── RECOGNITION ─────────────────────────────────────────── -->
+  <section class="detail-section bg-soft">
+    <div class="container reveal" style="text-align:center;max-width:880px;margin:0 auto;">
+      <span class="eyebrow">Recognition</span>
+      <h3 style="font-family:var(--ff-display);font-size:clamp(2rem,4.5vw,3.4rem);font-weight:300;line-height:1.1;letter-spacing:-0.02em;margin:24px 0 24px;color:var(--text);">
+        <em>Enbridge Intern of Merit</em> · top 15 % of the co-op cohort.
+      </h3>
+      <p style="color:var(--text-soft);font-size:1.05rem;line-height:1.7;max-width:64ch;margin:0 auto;">
+        The Intern of Merit award is given annually to roughly the top 15 % of
+        Enbridge's co-op cohort. It reflects the engineering impact and the way
+        the work was carried — collaboratively, with the operations and
+        maintenance teams who keep the fleet running, and the junior co-ops I
+        mentored along the way.
+      </p>
+      <div style="margin-top:36px;">
+        <a class="cta-pill"
+           href="info/Ahmed%20Elkhrashy%20Intern%20of%20Merit%20Letter.pdf"
+           target="_blank"
+           rel="noopener">
+          <span>View the letter</span>
+          <span class="arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── NEXT ──────────────────────────────────────────────────── -->
+  <section class="next-project">
+    <div class="label-row">Next project · 03 / 04</div>
+    <a href="carbon-fiber.html"><em>Carbon Fibre</em> — from plasma</a>
+  </section>
+
+  <footer class="contact" style="padding: 80px var(--gutter) 60px;">
+    <div class="contact-inner">
+      <div class="footer-end" style="border: 0; padding: 0;">
+        <span>© 2026 — Ahmed Elkhrashy</span>
+        <span><a href="index.html">↑ Back to index</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

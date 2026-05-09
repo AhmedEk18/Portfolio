@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carbon Fibre from Plasma — Ahmed Elkhrashy</title>
+  <meta name="description" content="Research project benchmarking microwave plasma heating against conventional furnace and laser methods for carbon-fibre activation. Carbon Fiber Manufacturing Lab, 2023." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Space+Grotesk:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body data-section="carbon">
+
+  <div class="page-cover" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-brand"><span class="dot"></span> Ahmed Elkhrashy</a>
+    <ul class="nav-links">
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── HERO ─────────────────────────────────────────────── -->
+  <header class="detail-hero">
+    <div class="detail-hero-inner">
+      <a href="index.html#work" class="crumb"><span class="arrow">←</span><span>All work</span></a>
+
+      <div class="detail-meta">
+        <span class="tag">Project · 03</span>
+        <span class="tag tag-plain">Carbon Fiber Manufacturing Lab</span>
+        <span class="tag tag-plain">May 2023 — Dec 2023</span>
+        <span class="tag">Schulich Research Award</span>
+      </div>
+
+      <h1 class="detail-title">Microwave-plasma carbonization of <em>asphaltene</em>&nbsp;precursors.</h1>
+      <p class="detail-tagline">
+        Eight months in the Carbon Fiber Manufacturing Lab — sourcing asphaltenes,
+        carbonizing them through to fiber, and benchmarking a homebuilt
+        microwave-plasma activation rig against the furnace and laser-heating
+        methods it was meant to replace.
+      </p>
+
+      <div class="spec-grid reveal">
+        <div class="spec-cell">
+          <span class="k">Role</span>
+          <span class="v">Research Intern</span>
+        </div>
+        <div class="spec-cell">
+          <span class="k">Lab</span>
+          <span class="v">Carbon Fiber Mfg. Lab · UCalgary</span>
+        </div>
+        <div class="spec-cell">
+          <span class="k">Funding</span>
+          <span class="v"><em>Schulich Research Award</em></span>
+        </div>
+        <div class="spec-cell">
+          <span class="k">Method</span>
+          <span class="v"><em>Microwave plasma</em> vs furnace · laser</span>
+        </div>
+        <div class="spec-cell">
+          <span class="k">Source material</span>
+          <span class="v">Asphaltenes</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── HERO IMAGE — PLASMA ──────────────────────────────── -->
+  <section class="figure-large reveal">
+    <figure class="figure">
+      <img class="img-reveal" src="Photos/Carbon%20fiber%20research/plasma.jpeg" alt="Microwave plasma reactor — glowing plasma discharge during a carbonization run" style="aspect-ratio:21/9;object-fit:cover;" loading="lazy" />
+      <figcaption><strong>The whole reason this project is interesting</strong>Microwave plasma discharge during a carbonization test in the homebuilt reactor.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ── PREMISE / FRAMING ─────────────────────────────────── -->
+  <section class="detail-section">
+    <div class="detail-grid-2">
+      <div class="reveal">
+        <span class="eyebrow">Premise</span>
+        <h3 style="font-family:var(--ff-display);font-size:clamp(1.8rem,3.4vw,2.6rem);font-weight:300;line-height:1.1;letter-spacing:-0.02em;margin-top:24px;color:var(--text);">
+          Could a <em>plasma</em>&nbsp;do what a furnace does — better, cheaper, faster?
+        </h3>
+      </div>
+      <div class="reveal detail-prose">
+        <p>
+          Conventional carbon-fibre production runs precursor tow through enormous
+          graphitization furnaces at temperatures north of 2,000&nbsp;°C — slow,
+          expensive, and inefficient. The lab's question was simple: could you
+          activate the same material faster, with less energy, using something
+          other than a giant oven?
+        </p>
+        <p>
+          Conventional methods have known trade-offs. <span class="accent">Furnace heating</span>
+          is uniform but slow and energy-intensive — my own SolidWorks thermal
+          model of the lab graphitization furnace mapped <strong>15&ndash;20&nbsp;%
+          temperature non-uniformity</strong> across the tow bundle, linked
+          directly to inconsistent fiber microstructure. <span class="accent">Laser heating</span>
+          is fast but spatially restricted, with significant beam-edge artifacts.
+        </p>
+        <p>
+          The hypothesis: a <strong>microwave plasma</strong> could couple energy
+          directly into the precursor in a way that's more uniform than a laser
+          and more efficient than a furnace — if you could build a stable reactor
+          on a research budget.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MICROWAVE STORY (CALLOUT) ───────────────────────── -->
+  <section class="detail-section bg-soft">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="index">02</span>
+        <h2>Yes, the <em>microwave</em>&nbsp;is from Walmart.</h2>
+        <span class="meta">Approx. CAD $89 · 1100 W</span>
+      </div>
+
+      <div class="detail-grid-2">
+        <div class="reveal">
+          <figure class="figure">
+            <img class="img-reveal" src="Photos/Carbon%20fiber%20research/microwave.jpeg" alt="Consumer microwave purchased from Walmart, repurposed as the magnetron source for the plasma reactor" loading="lazy" />
+            <figcaption><strong>Fig.&nbsp;01</strong>Consumer microwave — magnetron donor for the plasma reactor.</figcaption>
+          </figure>
+        </div>
+        <div class="reveal detail-prose">
+          <p>
+            A research-grade microwave plasma source costs tens of thousands of
+            dollars and arrives on lab procurement timelines measured in months.
+            We didn't have tens of thousands of dollars. So I did what you do.
+          </p>
+          <p>
+            I drove to Walmart, bought a <span class="accent">consumer microwave</span>,
+            harvested the magnetron and waveguide, and rebuilt them into a
+            benchtop reactor cavity — designed to host the asphaltene precursor
+            under controlled atmosphere while the magnetron drove a stable
+            plasma discharge above the sample.
+          </p>
+          <p>
+            It looked exactly as crude as it sounds — and it worked. Once it
+            lit up, the plasma column was stable enough to run repeat trials.
+            The benchmark numbers for the comparison study against the furnace
+            and laser methods came out of this rig.
+          </p>
+
+          <div class="callout">
+            <span class="label">The story behind the rig</span>
+            <p>
+              "If a $40,000 instrument and a $89 microwave both fire a plasma
+              that can carbonize a precursor, the microwave is the better
+              instrument — because you can build five of them, break two,
+              and still keep researching."
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── METHOD COMPARISON ──────────────────────────────────── -->
+  <section class="detail-section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="index">03</span>
+        <h2>Three methods, <em>side&nbsp;by&nbsp;side</em>.</h2>
+        <span class="meta">Furnace · Laser · Plasma</span>
+      </div>
+
+      <div class="gallery">
+        <div class="gallery-item reveal" style="grid-column: span 4; aspect-ratio: 4/5;">
+          <img class="img-reveal" src="Photos/Carbon%20fiber%20research/heat%20furnace.jpeg" alt="Conventional graphitization furnace — slow, high-energy, with known temperature non-uniformity" loading="lazy" />
+          <div class="caption">Furnace · uniform but slow · 15–20 % cross-section non-uniformity</div>
+        </div>
+        <div class="gallery-item reveal" style="grid-column: span 4; aspect-ratio: 4/5;">
+          <img class="img-reveal" src="Photos/Carbon%20fiber%20research/lazer%20heating.jpeg" alt="Laser heating bench — fast and spatially restricted" loading="lazy" />
+          <div class="caption">Laser · fast but spatially constrained · edge artifacts</div>
+        </div>
+        <div class="gallery-item reveal" style="grid-column: span 4; aspect-ratio: 4/5;">
+          <img class="img-reveal" src="Photos/Carbon%20fiber%20research/plasma.jpeg" alt="Microwave plasma reactor — homebuilt from a consumer microwave" loading="lazy" />
+          <div class="caption">Plasma · homebuilt · benchmarked vs the other two</div>
+        </div>
+      </div>
+
+      <div class="detail-grid-2" style="margin-top:64px;">
+        <div class="reveal detail-prose">
+          <p>
+            The plasma rig was benchmarked head-to-head against the lab's
+            existing furnace and laser stations on three axes —
+            <span class="accent">energy efficiency, activation uniformity, and
+            resulting fiber tensile properties</span>. That meant feeding
+            identical precursor batches through all three methods and pulling
+            the post-treated fibers through the same QA pipeline so the
+            comparison was fair.
+          </p>
+          <p>
+            The earlier SolidWorks thermal model of the graphitization furnace
+            wasn't decoration — it directly shaped how we read the numbers.
+            Knowing the furnace had a 15–20&nbsp;% thermal non-uniformity baked
+            in meant variability in the furnace samples wasn't process noise
+            to be averaged away, it was a known signal. The plasma comparison
+            asked the right question: not "is plasma faster?", but "does
+            plasma reduce the variance the furnace can't eliminate?".
+          </p>
+        </div>
+        <div class="reveal">
+          <figure class="figure">
+            <img class="img-reveal" src="Photos/Carbon%20fiber%20research/plasma%20in%20microwave.jpeg" alt="Plasma struck inside the microwave-cavity reactor during a carbonization run" loading="lazy" />
+            <figcaption><strong>Fig.&nbsp;02</strong>Plasma struck inside the microwave-cavity reactor — the energy-coupling regime under study.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PULL QUOTE ─────────────────────────────────────────── -->
+  <section class="detail-section">
+    <blockquote class="pull-quote reveal">
+      <p>
+        The Walmart microwave is the punchline of the story; the discipline of
+        comparing it fairly to a <em>$40,000 furnace</em> is the actual&nbsp;work.
+      </p>
+    </blockquote>
+  </section>
+
+  <!-- ── PIPELINE / PROCESS ─────────────────────────────── -->
+  <section class="detail-section bg-soft">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="index">04</span>
+        <h2>End-to-end through the <em>pipeline</em>.</h2>
+        <span class="meta">Sourcing → reporting</span>
+      </div>
+
+      <div class="process-steps reveal">
+        <div class="process-step">
+          <h5>Sourcing asphaltenes</h5>
+          <p>Selected and sourced asphaltene feedstocks from Albertan oil-sands streams; characterized starting material to set process baselines.</p>
+        </div>
+        <div class="process-step">
+          <h5>Refining</h5>
+          <p>Solvent extraction and filtration to isolate the carbon-rich fraction and prepare it for thermal processing.</p>
+        </div>
+        <div class="process-step">
+          <h5>Carbonization</h5>
+          <p>Inert-atmosphere heating drives off non-carbon volatiles — the controlled pyrolysis step that locks the carbon scaffold.</p>
+        </div>
+        <div class="process-step">
+          <h5>Graphitization</h5>
+          <p>High-temperature treatment to align graphitic crystalline structure — where the furnace's 15–20 % non-uniformity showed up directly in fiber microstructure.</p>
+        </div>
+        <div class="process-step">
+          <h5>Fiber formation</h5>
+          <p>Spun and drew the activated material into continuous tow — the form factor used for downstream mechanical testing.</p>
+        </div>
+        <div class="process-step">
+          <h5>Tensile QA</h5>
+          <p>Mechanical testing of the resulting fibers — tensile strength, modulus, failure mode — across furnace, laser, and plasma-treated samples for direct comparison.</p>
+        </div>
+        <div class="process-step">
+          <h5>Microscopy</h5>
+          <p>Optical and SEM-level inspection on cross-sections to verify microstructural uniformity and tie tensile variance back to thermal exposure.</p>
+        </div>
+        <div class="process-step">
+          <h5>Reporting</h5>
+          <p>Wrote up the comparative results with revised zone-heating setpoints and ramp-rate recommendations for the lab's furnace recipe.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PRECURSOR + MICROSCOPY ──────────────────────── -->
+  <section class="detail-section">
+    <div class="detail-grid-2">
+      <div class="reveal">
+        <figure class="figure">
+          <img class="img-reveal" src="Photos/Carbon%20fiber%20research/pre%20carbon%20fiber%20material.jpeg" alt="Pre-carbonization precursor material — asphaltene-derived" loading="lazy" />
+          <figcaption><strong>Fig.&nbsp;03</strong>Pre-carbonization precursor — asphaltene-derived feedstock prior to thermal treatment.</figcaption>
+        </figure>
+      </div>
+      <div class="reveal">
+        <figure class="figure">
+          <img class="img-reveal" src="Photos/Carbon%20fiber%20research/microscope.jpeg" alt="Lab microscope used for fiber cross-section inspection" loading="lazy" />
+          <figcaption><strong>Fig.&nbsp;04</strong>Microscope station — cross-section microstructure was the ground truth for thermal-uniformity claims.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TAKEAWAY ─────────────────────────────────────── -->
+  <section class="detail-section bg-soft">
+    <div class="container reveal" style="text-align:center;max-width:880px;margin:0 auto;">
+      <span class="eyebrow">Takeaway</span>
+      <h3 style="font-family:var(--ff-display);font-size:clamp(2rem,4.5vw,3.4rem);font-weight:300;line-height:1.1;letter-spacing:-0.02em;margin:24px 0 24px;color:var(--text);">
+        Build the rig. Trust the <em>microscope</em>, not the&nbsp;mood.
+      </h3>
+      <p style="color:var(--text-soft);font-size:1.05rem;line-height:1.7;max-width:64ch;margin:0 auto;">
+        The eight months in the lab taught me how much engineering work happens
+        before the data exists. Sourcing, refining, building a reactor that
+        survives a hundred runs — that's the project. The graphs come at the&nbsp;end.
+        The plasma comparison demonstrated meaningful gains in activation
+        uniformity relative to the furnace baseline at substantially lower
+        energy input — an encouraging direction for follow-up work, with the
+        obvious caveats around a benchtop self-built rig.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── NEXT ──────────────────────────────────────────────── -->
+  <section class="next-project">
+    <div class="label-row">Next project · 04 / 04</div>
+    <a href="soar.html"><em>SOAR</em> — engineering rocketry</a>
+  </section>
+
+  <footer class="contact" style="padding: 80px var(--gutter) 60px;">
+    <div class="contact-inner">
+      <div class="footer-end" style="border: 0; padding: 0;">
+        <span>© 2026 — Ahmed Elkhrashy</span>
+        <span><a href="index.html">↑ Back to index</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

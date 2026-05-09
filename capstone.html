@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VR OPS · Capstone — Ahmed Elkhrashy</title>
+  <meta name="description" content="VR OPS — a virtual reality operator preparedness simulator for two-stage natural-gas compressor station startups. Capstone project, Schulich School of Engineering." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Space+Grotesk:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body data-section="capstone">
+
+  <div class="page-cover" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-brand"><span class="dot"></span> Ahmed Elkhrashy</a>
+    <ul class="nav-links">
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── DETAIL HERO ─────────────────────────────────────────── -->
+  <header class="detail-hero">
+    <div class="detail-hero-bg" style="background-image: url('Photos/Capstone/simulation%20full%20view.png');"></div>
+
+    <div class="detail-hero-inner">
+      <a href="index.html#work" class="crumb"><span class="arrow">←</span><span>All work</span></a>
+
+      <div class="detail-meta-tags">
+        <span class="tag">Project · 01</span>
+        <span class="tag tag-plain">Capstone — UCalgary</span>
+        <span class="tag tag-plain">Sep 2025 — Apr 2026</span>
+        <span class="tag">3rd of 149 teams</span>
+      </div>
+
+      <h1 class="detail-title">VR&nbsp;OPS — train for the <em>fault</em> you can't&nbsp;rehearse.</h1>
+      <p class="detail-tagline">
+        An immersive virtual-reality and retrieval-augmented AI training platform
+        for two-stage natural-gas compressor station startups and emergency
+        response — built so operators can fail a startup, trigger an ESD, and
+        recover, without ever touching a live compressor.
+      </p>
+
+      <div class="spec-grid-detail reveal">
+        <div class="spec-cell">
+          <span class="k">Role</span>
+          <span class="v">VR &amp; AI subsystem lead</span>
+        </div>
+        <div class="spec-cell">
+          <span class="k">Team</span>
+          <span class="v">6 — Group&nbsp;20</span>
+        </div>
+        <div class="spec-cell">
+          <span class="k">Result</span>
+          <span class="v"><em>3rd</em> / 149 teams</span>
+        </div>
+        <div class="spec-cell">
+          <span class="k">Duration</span>
+          <span class="v">8 months</span>
+        </div>
+        <div class="spec-cell">
+          <span class="k">Stack</span>
+          <span class="v mono">Unity · HYSYS · ESP32 · RAG</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── VIDEO ────────────────────────────────────────────────── -->
+  <section class="detail-section">
+    <div class="container reveal">
+      <div class="section-head">
+        <span class="index">01</span>
+        <h2>The <em>simulation</em>, in motion.</h2>
+        <span class="meta">YouTube · Project reel</span>
+      </div>
+      <div class="video-wrap">
+        <iframe
+          src="https://www.youtube.com/embed/COQ5wqYmYpc?rel=0&amp;modestbranding=1&amp;playsinline=1"
+          title="VR OPS — Compressor Station Trainer"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
+          allowfullscreen></iframe>
+      </div>
+      <p class="video-note">
+        Trouble with the embed?
+        <a href="https://www.youtube.com/watch?v=COQ5wqYmYpc" target="_blank" rel="noopener">Watch on YouTube ↗</a>
+      </p>
+      <div style="margin-top:32px;">
+        <a class="cta-pill"
+           href="info/2025-09%20-%20VR%20OPS%20Project%20Sponsor%20Presentation%20(1).pptx"
+           download="VR-OPS-Sponsor-Presentation.pptx">
+          <span>View Sponsor Presentation</span>
+          <span class="arrow">↓</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROBLEM ──────────────────────────────────────────────── -->
+  <section class="detail-section bg-soft">
+    <div class="detail-grid-2">
+      <div class="reveal">
+        <span class="eyebrow">Problem</span>
+        <h3 class="detail-h3">You can't safely teach an emergency by causing&nbsp;one.</h3>
+      </div>
+      <div class="reveal detail-prose">
+        <p>
+          The oil and gas industry continues to lose more than ten Canadian
+          workers each year to on-site fatalities — the majority traced back
+          to <strong>simple mistakes or unfamiliarity with equipment</strong>
+          during high-consequence events.
+        </p>
+        <p>
+          Traditional training has a structural problem: classroom-only
+          instruction lacks practical engagement, and on-site training
+          introduces real safety risk and operational disruption. Compressor
+          startups and emergency shutdowns can't be rehearsed on live
+          equipment without putting people and product at risk.
+        </p>
+        <div class="callout-block">
+          <span class="callout-label">The brief</span>
+          <p>
+            Build an immersive, scalable training environment that lets
+            operators make high-consequence decisions, repeatedly, without
+            consequence — and measure whether they're actually getting&nbsp;better.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SIMULATION FOCUS ─────────────────────────────────────── -->
+  <section class="detail-section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="index">02</span>
+        <h2>The <em>VR simulation</em>.</h2>
+        <span class="meta">Unity · Meta Quest · WiFi-tethered hardware</span>
+      </div>
+
+      <div class="detail-grid-2">
+        <div class="reveal detail-prose">
+          <h3>A two-stage compressor station you can <em>walk</em>&nbsp;through.</h3>
+          <p>
+            The trainee enters a Unity-built compressor station rendered for
+            Meta Quest using the Meta XR SDK. As they advance through a
+            <strong>12-step startup procedure</strong>, a state machine
+            validates every action against the SOP — scrubbers, compressors,
+            intercoolers, recycle paths, and the export line, all rebuilt at
+            the scale operators experience in the field.
+          </p>
+          <p>
+            Locomotion is teleport-based — fixed nodes at suction, interstage,
+            and export — to eliminate motion sickness and keep trainees focused
+            on procedure, not their stomach. UI panels are spatially anchored
+            but resizable, so they don't obstruct equipment during critical
+            steps.
+          </p>
+
+          <h4>Live process feedback you can read at a glance.</h4>
+          <p>
+            Pipe segments dynamically change colour based on the current
+            pressure state at every monitored stream — <span class="accent">grey</span>
+            for no flow, <span class="accent">yellow</span> below range,
+            <span class="accent">red</span> above range, and
+            <span class="accent">green</span> when conditions are valid for
+            the active step. Compressor audio scales with dial position and
+            intercooler activity is signalled by flashing status lights.
+          </p>
+          <p>
+            Pressures are pulled from a precomputed lookup table of
+            <strong>100,000+ rows</strong> generated by an Aspen HYSYS
+            case-study sweep — <span class="accent">O(1) runtime</span> with
+            no simulation delay. The trade-off was deliberate: prioritise
+            stable VR performance and procedural fidelity over high-frequency
+            transient prediction.
+          </p>
+        </div>
+
+        <div class="reveal">
+          <figure class="figure">
+            <img src="Photos/Capstone/simulation%20full%20view.png" alt="Wide view of the VR compressor station rendered in Unity / Meta XR" loading="lazy" />
+            <figcaption><strong>Fig. 01</strong>Full simulation view — two-stage compressor station, Unity / Meta XR.</figcaption>
+          </figure>
+
+          <figure class="figure">
+            <img src="Photos/Capstone/simulation%20with%20varying%20pipe%20colors.png" alt="Pipework rendered with varying colours indicating pressure compliance per step" loading="lazy" />
+            <figcaption><strong>Fig. 02</strong>Pipe colours signal pressure compliance against the acceptable range for the active SOP step.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GALLERY ──────────────────────────────────────────────── -->
+  <section class="detail-section bg-soft">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="index">03</span>
+        <h2>Inside the <em>scene</em>.</h2>
+        <span class="meta">Selected captures · Unity build</span>
+      </div>
+
+      <div class="gallery">
+        <div class="gallery-item reveal" style="grid-column: span 8; aspect-ratio: 16/9;">
+          <img src="Photos/Capstone/simulation%20live%20pressure%20window.png" alt="In-sim live pressure overlay window anchored in the scene" loading="lazy" />
+          <div class="caption">Live pressure window — anchored UI, repositionable in-scene</div>
+        </div>
+        <div class="gallery-item reveal" style="grid-column: span 4; aspect-ratio: 4/3;">
+          <img src="Photos/Capstone/simulation%20indicators.png" alt="Equipment status indicators inside the simulation" loading="lazy" />
+          <div class="caption">Status indicators · intercooler &amp; compressor</div>
+        </div>
+        <div class="gallery-item reveal" style="grid-column: span 4; aspect-ratio: 4/3;">
+          <img src="Photos/Capstone/teleportation%20boxes.png" alt="Teleport nodes placed at major equipment areas" loading="lazy" />
+          <div class="caption">Teleport nodes — suction, interstage, export</div>
+        </div>
+        <div class="gallery-item reveal" style="grid-column: span 8; aspect-ratio: 16/9;">
+          <img src="Photos/Capstone/moving%20in%20simulation.png" alt="Trainee moving through the virtual compressor station" loading="lazy" />
+          <div class="caption">Operator perspective during a startup procedure run</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HARDWARE ─────────────────────────────────────────────── -->
+  <section class="detail-section">
+    <div class="detail-grid-2">
+      <div class="reveal">
+        <figure class="figure">
+          <img src="Photos/Capstone/physical%20control%20panel.jpg" alt="Custom-built physical control panel with rotary encoders, push buttons, and emergency stop" loading="lazy" />
+          <figcaption><strong>Fig. 03</strong>Physical control panel — modular three-section shell, ESP32 over WiFi to Unity.</figcaption>
+        </figure>
+      </div>
+      <div class="reveal detail-prose">
+        <span class="eyebrow">Hardware</span>
+        <h3 class="detail-h3-spaced">A control panel you can <em>actually</em>&nbsp;feel.</h3>
+        <p>
+          The literature was clear: tangible interaction beats hand-tracking
+          for procedural training. Trainees who turn real switches build
+          sustained proficiency over time; those who use VR controllers don't.
+          So we built the panel.
+        </p>
+        <ul>
+          <li><strong>14 rotary encoders</strong> — infinite rotation, digital stepping for 0–100 % valve control</li>
+          <li><strong>4 industrial push buttons</strong> — momentary, mirroring real motor-starter logic</li>
+          <li><strong>1 latching mushroom-head ESD</strong> — physically locks open until twisted to reset</li>
+          <li><strong>ESP32-WROOM-32E</strong> + MCP23017 GPIO expander, talking TCP-over-WiFi to Unity on port 7777</li>
+          <li><strong>Modular shell</strong> — 3-section PLA chassis with M5 brass heat-set inserts for repeated disassembly</li>
+        </ul>
+        <p>
+          Inputs flow through a centralised <span class="accent">InputState
+          registry</span> that decouples raw TCP messages from procedure logic
+          — meaning the same 12-step state machine validates either the
+          physical panel or a software input simulator built into the Unity
+          editor.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── AI INSTRUCTOR ────────────────────────────────────────── -->
+  <section class="detail-section bg-soft">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="index">04</span>
+        <h2>The <em>AI instructor</em>.</h2>
+        <span class="meta">RAG · GPT-4o-mini · ChromaDB</span>
+      </div>
+
+      <div class="detail-grid-2">
+        <div class="reveal detail-prose">
+          <h3>An instructor that <em>cites its sources</em>.</h3>
+          <p>
+            Live human instructors don't scale, especially for the rare
+            emergency-response drills the simulator is designed for. So we
+            embedded an AI instructor inside the VR experience — the trainee
+            speaks to it by voice, speech is captured, transcribed, and routed
+            through a Retrieval-Augmented Generation pipeline.
+          </p>
+          <p>
+            Relevant SOP passages, equipment manuals, and safety guidance are
+            retrieved from a vetted knowledge base before generation. The
+            model is constrained to answer only from retrieved context and to
+            <span class="accent">decline when no relevant passage exists</span>
+            — important in a safety-critical context where a black-box
+            assistant isn't acceptable.
+          </p>
+          <ul>
+            <li><strong>nomic-embed-text</strong> via Ollama — local embeddings, no API cost on indexing</li>
+            <li><strong>ChromaDB</strong> as the vector store</li>
+            <li><strong>GPT-4o-mini</strong> for generation, target latency &lt; 5&nbsp;s per query</li>
+            <li><strong>FastAPI</strong> on UCalgary CloudStack, behind Nginx, as a persistent systemd service</li>
+            <li><strong>SOP Manager</strong> in the admin dashboard — coordinators upload DOCX / PDF; chunked &amp; embedded server-side without dev involvement</li>
+          </ul>
+        </div>
+
+        <div class="reveal">
+          <figure class="figure">
+            <img src="Photos/Capstone/RAG%20answering%20question.png" alt="AI instructor answering a procedure-related query with cited source chunks" loading="lazy" />
+            <figcaption><strong>Fig. 04</strong>RAG-based instructor answering a procedural query — source chunks cited beneath the response.</figcaption>
+          </figure>
+          <figure class="figure">
+            <img src="Photos/Capstone/RAG%20not%20answering%20question%20outside%20of%20scope.png" alt="AI instructor declining an out-of-scope question" loading="lazy" />
+            <figcaption><strong>Fig. 05</strong>Out-of-scope handling — the model declines rather than hallucinating.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SYSTEM ARCHITECTURE ─────────────────────────────────── -->
+  <section class="detail-section">
+    <div class="container reveal">
+      <div class="section-head">
+        <span class="index">05</span>
+        <h2>System <em>architecture</em>.</h2>
+        <span class="meta">VR · Hardware · HYSYS · RAG · Cloud</span>
+      </div>
+      <figure class="figure">
+        <img src="Photos/Capstone/System%20Architecture.png" alt="High-level system architecture diagram of VR OPS" loading="lazy" />
+        <figcaption><strong>Fig. 06</strong>High-level architecture — Meta Quest VR client, ESP32 panel over TCP, HYSYS lookup table, RAG service, PostgreSQL + REST on UCalgary CloudStack, Streamlit admin dashboard.</figcaption>
+      </figure>
+
+      <p class="pull-quote reveal">
+        The architecture deliberately separates procedure logic, process-response
+        data, and VR assets — so the platform extends to new training scenarios
+        without rewriting the simulator.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── DASHBOARD ────────────────────────────────────────────── -->
+  <section class="detail-section bg-soft">
+    <div class="detail-grid-2">
+      <div class="reveal detail-prose">
+        <span class="eyebrow">Admin Dashboard</span>
+        <h3 class="detail-h3-spaced">Cohort screening on top, <em>step-level</em> diagnosis below.</h3>
+        <p>
+          A two-tab Streamlit application reads from PostgreSQL via REST. The
+          upper tab is for <span class="accent">cohort-level monitoring</span>
+          — aggregated trends, top-performer / most-errors auto-surfacing,
+          plus the SOP Manager for managing the AI instructor's knowledge
+          base.
+        </p>
+        <p>
+          The lower tab drops into a single trainee — completion time per
+          step, colour-shaded by correct / incorrect execution, with
+          overlapping session plots so recurring weaknesses become visible
+          across attempts. You can tell instantly whether someone is slow but
+          accurate, or fast but stuck on the same step.
+        </p>
+      </div>
+      <div class="reveal">
+        <figure class="figure">
+          <img src="Photos/Capstone/dashboard.png" alt="Admin monitoring dashboard with cohort and per-trainee analytics" loading="lazy" />
+          <figcaption><strong>Fig. 07</strong>Admin dashboard · cohort metrics &amp; trainee step-level breakdown.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROCESS / WORKFLOW ──────────────────────────────────── -->
+  <section class="detail-section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="index">06</span>
+        <h2>Eight months, <em>five subsystems</em>.</h2>
+        <span class="meta">Sep 2025 → Apr 2026</span>
+      </div>
+
+      <div class="process-steps reveal">
+        <div class="process-step">
+          <h5>Process model</h5>
+          <p>Aspen HYSYS two-stage compressor case study, swept across operating envelope to produce a 100k+ row pressure lookup table.</p>
+        </div>
+        <div class="process-step">
+          <h5>VR scene</h5>
+          <p>Unity + Meta XR build of the compressor station, teleport-locomotion, anchored UI, dynamic pipe colouring tied to active SOP step.</p>
+        </div>
+        <div class="process-step">
+          <h5>Control panel</h5>
+          <p>ESP32 + MCP23017 panel with 14 encoders, 4 buttons, latching ESD — TCP over WiFi at port 7777, decoupled via InputState registry.</p>
+        </div>
+        <div class="process-step">
+          <h5>RAG instructor</h5>
+          <p>FastAPI service on UCalgary CloudStack — nomic-embed-text + ChromaDB + GPT-4o-mini, refusal on out-of-scope, &lt;&nbsp;5&nbsp;s latency.</p>
+        </div>
+        <div class="process-step">
+          <h5>Dashboard</h5>
+          <p>Streamlit admin for cohort + trainee analytics over PostgreSQL, plus SOP Manager for non-developer knowledge-base updates.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BY THE NUMBERS ──────────────────────────────────────── -->
+  <section class="detail-section bg-soft">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="index">07</span>
+        <h2>By the <em>numbers</em>.</h2>
+        <span class="meta">Verified at design fair</span>
+      </div>
+
+      <div class="spec-grid-detail reveal" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">
+        <div class="spec-cell">
+          <span class="k">SOP length</span>
+          <span class="v"><em>12</em> steps</span>
+        </div>
+        <div class="spec-cell">
+          <span class="k">Lookup table</span>
+          <span class="v"><em>100,000+</em> rows</span>
+        </div>
+        <div class="spec-cell">
+          <span class="k">Stage&nbsp;1 ratio</span>
+          <span class="v mono">2.40 (theory&nbsp;2.31)</span>
+        </div>
+        <div class="spec-cell">
+          <span class="k">Interstage P</span>
+          <span class="v mono">3.44 — 3.48 MPa</span>
+        </div>
+        <div class="spec-cell">
+          <span class="k">Discharge P</span>
+          <span class="v mono">7.9 MPa</span>
+        </div>
+        <div class="spec-cell">
+          <span class="k">Inputs</span>
+          <span class="v mono">14 enc · 4 btn · 1 ESD</span>
+        </div>
+        <div class="spec-cell">
+          <span class="k">Comm</span>
+          <span class="v mono">TCP / WiFi · :7777</span>
+        </div>
+        <div class="spec-cell">
+          <span class="k">AI latency</span>
+          <span class="v mono">&lt; 5 s / query</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── OUTCOME ─────────────────────────────────────────────── -->
+  <section class="detail-section">
+    <div class="container reveal outcome-block">
+      <span class="eyebrow">Outcome</span>
+      <h3 class="outcome-title">
+        <em>Third place</em> out of 149 teams at the UCalgary Capstone Design Fair.
+      </h3>
+      <p class="outcome-body">
+        VR OPS landed on the podium against the largest cohort the fair has
+        run. It produced a working VR client, a tangible control panel, a
+        deployed cloud-hosted AI service citing its sources, and a coordinator
+        dashboard already viable for cohort-scale training — all addressing a
+        real industry gap: rehearsing the high-consequence faults that live
+        equipment can't safely&nbsp;teach.
+      </p>
+      <p class="outcome-credits">
+        Team — Abduljalel Wadouh, Ahmed Elkhrashy, Dieter Banaag,
+        Ibrahim Hashmi, Zaid Ahmed, Zain Tariq.
+      </p>
+
+      <figure class="figure outcome-figure">
+        <img src="Photos/Capstone/bronze%20medal.jpeg" alt="Bronze medal — third place at the UCalgary Capstone Design Fair" loading="lazy" />
+      </figure>
+
+      <div class="gallery outcome-gallery">
+        <div class="gallery-item reveal" style="grid-column: span 6; aspect-ratio: 4/3;">
+          <img src="Photos/Capstone/capstone%20fair.jpeg" alt="Capstone fair display showing the VR OPS team and their booth" loading="lazy" />
+          <div class="caption">Capstone Fair · the floor</div>
+        </div>
+        <div class="gallery-item reveal" style="grid-column: span 6; aspect-ratio: 4/3;">
+          <img src="Photos/Capstone/capstone%20fair2.jpeg" alt="VR OPS demo at the Capstone fair" loading="lazy" />
+          <div class="caption">Live demo · trainees stepping through the SOP</div>
+        </div>
+        <div class="gallery-item reveal" style="grid-column: span 12; aspect-ratio: 16/9;">
+          <img src="Photos/Capstone/Poster.jpg" alt="VR OPS project poster" loading="lazy" />
+          <div class="caption">Capstone poster</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── NEXT PROJECT ────────────────────────────────────────── -->
+  <section class="next-project">
+    <div class="label-row">Next project · 02 / 04</div>
+    <a href="enbridge.html"><em>Enbridge</em> — power operations</a>
+  </section>
+
+  <footer class="contact" style="padding: 80px var(--gutter) 60px;">
+    <div class="contact-inner">
+      <div class="footer-end" style="border: 0; padding: 0;">
+        <span>© 2026 — Ahmed Elkhrashy</span>
+        <span><a href="index.html">↑ Back to index</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

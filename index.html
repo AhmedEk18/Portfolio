@@ -1475,26 +1475,40 @@
       tryPlay();
     }
 
-    /* ── 8. Hero video chroma-key (true transparent bg) ─────
-       The video has a light-grey background. CSS blend modes can't
-       selectively erase only the bg pixels without destroying the
-       orange keycap colours, so we do it in software:
-         1. Each rAF tick, drawImage(video) onto an offscreen canvas
-         2. getImageData → loop pixels in HSV-ish space
-         3. Pixels that are bright AND desaturated (= the bg) get
-            their alpha softly reduced toward 0
-         4. putImageData and display the canvas in place of the video
-       The video stays in the DOM (hidden) so the ping-pong loop in
-       initVideoPingPong() keeps owning currentTime / play / pause /
-       ended events. The canvas just mirrors whatever frame the video
-       is on, with its background pixels keyed out.
+    /* ── 8. Hero video chroma-key (WebGL, transparent bg) ─────
+       The video has a light-grey background. The previous version
+       did the keying in JavaScript per-pixel (Canvas2D + getImageData
+       + ~520 K iterations every frame), which produced a soft, low-
+       resolution canvas (capped at 720²) and noticeable jitter on
+       slower hardware.
 
-       CORS: the source video must be served with
-       Access-Control-Allow-Origin headers, and the <video> tag must
-       carry crossorigin="anonymous", or getImageData() will throw
-       on a tainted canvas. If readback throws we silently bail out
-       and unhide the source video (which still has the CSS filter
-       fallback applied). */
+       This version does it on the GPU via a fragment shader:
+         1. WebGL canvas at the source's native 1440² resolution
+            (HD, downscaled by the browser to whatever CSS size the
+            magnet wrap chooses).
+         2. Each video frame is uploaded as a texture (texImage2D
+            with a video element is hardware-accelerated).
+         3. The fragment shader rejects pixels close to the key
+            colour in RGB space, smooth-stepping the alpha so edges
+            remain antialiased.
+         4. Browser composites the resulting transparent canvas
+            over whatever's behind it (the dark site bg).
+
+       Net effect: per-frame CPU cost drops to roughly nothing
+       (just a texImage2D upload), and the visible canvas is at
+       native source resolution → HD on every device, and smooth
+       at the video's native frame rate even on phones.
+
+       CORS: same requirement as before. The <video> tag must
+       carry crossorigin="anonymous", and the CDN must reply with
+       Access-Control-Allow-Origin. If the texture upload taints
+       (cross-origin without CORS) WebGL throws on the next draw,
+       we catch and fall back to the un-keyed video + CSS filter.
+
+       file:// origin: CloudFront's CORS may reject the null
+       origin and the video would fail to load entirely. We strip
+       crossorigin and reload, returning early — the CSS filter
+       fallback on `.magnet video` keeps the bg blending in. */
     function initVideoChromaKey() {
       const video = document.getElementById('heroVideo');
       if (!video) return;
@@ -1539,35 +1553,41 @@
       } catch (_) { /* not supported — keep going */ }
 
       const start = () => {
-        const w = video.videoWidth  || 720;
-        const h = video.videoHeight || 720;
+        const w = video.videoWidth  || 1440;
+        const h = video.videoHeight || 1440;
 
-        // 720 device px is sharp at 520 CSS px even on retina (DPR 2)
-        // — the source is 1440² and would still oversample. The pixel
-        // loop drops to ~520 K iterations / frame from ~1.1 M, halving
-        // CPU.
-        const MAX_DIM = 720;
-        const scale = Math.min(1, MAX_DIM / Math.max(w, h));
-        const cw = Math.max(1, Math.round(w * scale));
-        const ch = Math.max(1, Math.round(h * scale));
-
+        // Canvas at the source's native resolution. The browser
+        // downscales to whatever CSS size we display at — that's
+        // high-quality anti-aliased downscaling done by the GPU.
         const canvas = document.createElement('canvas');
-        canvas.width  = cw;
-        canvas.height = ch;
+        canvas.width  = w;
+        canvas.height = h;
         canvas.className = 'hero-video-canvas';
         canvas.setAttribute('aria-label',
           'Make It Real keyboard hero video');
+
+        // WebGL2 first, fall back to WebGL1.
+        const glOpts = {
+          premultipliedAlpha: false,
+          alpha: true,
+          antialias: true,
+          preserveDrawingBuffer: false,
+          desynchronized: true,    // hint: skip the compositor sync if possible
+        };
+        const gl = canvas.getContext('webgl2', glOpts)
+                || canvas.getContext('webgl',  glOpts)
+                || canvas.getContext('experimental-webgl', glOpts);
+        if (!gl) {
+          // No WebGL — bail out, leave the CSS filter fallback in place
+          console.warn('[chroma-key] no WebGL, using CSS filter fallback');
+          return;
+        }
+
         wrap.appendChild(canvas);
-
-        // Send the source video off-screen but keep it playing
         video.classList.add('hero-video--hidden');
-
-        const ctx = canvas.getContext('2d', { willReadFrequently: true });
         let active = true;
-        let rafToggle = 0;        // skip alternate rAFs in fallback path
 
-        // Pause chroma-key processing when the hero is scrolled out of
-        // view — no point burning CPU on a frame nobody's looking at.
+        // ── Pause rendering when the hero scrolls out of view ──
         let inView = true;
         if ('IntersectionObserver' in window) {
           new IntersectionObserver(entries => {
@@ -1575,84 +1595,139 @@
           }, { threshold: 0 }).observe(canvas);
         }
 
-        // Inset to crop edge artefacts from the source frame
-        const INSET = 6;
+        // ── Shaders ──────────────────────────────────────────
+        // Vertex: full-screen quad, UVs flipped vertically because
+        // WebGL textures originate at bottom-left whereas videos
+        // originate at top-left.
+        const vsSource = `
+          attribute vec2 a_pos;
+          varying vec2 v_uv;
+          void main() {
+            gl_Position = vec4(a_pos, 0.0, 1.0);
+            v_uv = vec2(a_pos.x * 0.5 + 0.5,
+                        1.0 - (a_pos.y * 0.5 + 0.5));
+          }
+        `;
+        // Fragment: distance-from-key-colour in RGB space, with
+        // a smoothstep alpha falloff. u_keyLow is the distance at
+        // which a pixel is fully transparent (= bg), u_keyHigh is
+        // the distance at which it is fully opaque (= content).
+        // Pixels in between get an antialiased alpha.
+        const fsSource = `
+          precision mediump float;
+          varying vec2 v_uv;
+          uniform sampler2D u_video;
+          uniform vec3 u_keyColor;
+          uniform float u_keyLow;
+          uniform float u_keyHigh;
+          void main() {
+            vec4 c = texture2D(u_video, v_uv);
+            float d = distance(c.rgb, u_keyColor);
+            float a = smoothstep(u_keyLow, u_keyHigh, d);
+            gl_FragColor = vec4(c.rgb, a);
+          }
+        `;
 
-        // Pre-scaled (255-domain) thresholds — avoids /255 in hot loop
-        const LUMA_LOW  = 0.48 * 255;  // ≈ 122
-        const LUMA_HIGH = 0.72 * 255;  // ≈ 184
-        const LUMA_RANGE = LUMA_HIGH - LUMA_LOW;
-        const SAT_LOW   = 0.06;        // ratio, kept as float
-        const SAT_HIGH  = 0.20;
-        const SAT_RANGE = SAT_HIGH - SAT_LOW;
+        function compile(type, source) {
+          const s = gl.createShader(type);
+          gl.shaderSource(s, source);
+          gl.compileShader(s);
+          if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+            console.error('shader:', gl.getShaderInfoLog(s));
+            gl.deleteShader(s);
+            return null;
+          }
+          return s;
+        }
+        const vs = compile(gl.VERTEX_SHADER,   vsSource);
+        const fs = compile(gl.FRAGMENT_SHADER, fsSource);
+        if (!vs || !fs) {
+          canvas.remove();
+          video.classList.remove('hero-video--hidden');
+          return;
+        }
+        const program = gl.createProgram();
+        gl.attachShader(program, vs);
+        gl.attachShader(program, fs);
+        gl.linkProgram(program);
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+          console.error('link:', gl.getProgramInfoLog(program));
+          canvas.remove();
+          video.classList.remove('hero-video--hidden');
+          return;
+        }
+        gl.useProgram(program);
 
-        function processFrame() {
-          if (video.readyState < 2) return;
-          if (!inView) return;          // off-screen → skip pixel work
+        // Full-screen quad — two triangles
+        const buf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+          -1, -1,   1, -1,  -1,  1,
+          -1,  1,   1, -1,   1,  1,
+        ]), gl.STATIC_DRAW);
+        const aPos = gl.getAttribLocation(program, 'a_pos');
+        gl.enableVertexAttribArray(aPos);
+        gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+        // Texture for the video frame
+        const tex = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, tex);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S,     gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T,     gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+        gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+        gl.uniform1i(gl.getUniformLocation(program, 'u_video'), 0);
+
+        // Key colour: the video's light-grey background, ~RGB(223, 223, 223),
+        // expressed in 0..1 space. The two thresholds define the alpha
+        // ramp in RGB-distance units (sqrt(3) ≈ 1.73 is the max possible).
+        gl.uniform3f(gl.getUniformLocation(program, 'u_keyColor'),
+                     0xDF / 255, 0xDF / 255, 0xDF / 255);
+        gl.uniform1f(gl.getUniformLocation(program, 'u_keyLow'),  0.05);
+        gl.uniform1f(gl.getUniformLocation(program, 'u_keyHigh'), 0.20);
+
+        gl.viewport(0, 0, w, h);
+        gl.clearColor(0, 0, 0, 0);
+        gl.enable(gl.BLEND);
+        gl.blendFuncSeparate(
+          gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA,
+          gl.ONE,       gl.ONE_MINUS_SRC_ALPHA);
+
+        // ── Render loop ────────────────────────────────────
+        function render() {
+          if (!active) return;
+          if (!inView || video.readyState < 2) {
+            scheduleNext();
+            return;
+          }
           try {
-            ctx.drawImage(video,
-              -INSET, -INSET,
-              cw + INSET * 2, ch + INSET * 2);
-
-            const img = ctx.getImageData(0, 0, cw, ch);
-            const d = img.data;
-            const len = d.length;
-
-            for (let i = 0; i < len; i += 4) {
-              const r = d[i], g = d[i + 1], b = d[i + 2];
-              // Inline max/min — faster than Math.max/min in hot loop
-              let max = r, min = r;
-              if (g > max) max = g; else if (g < min) min = g;
-              if (b > max) max = b; else if (b < min) min = b;
-
-              // Cheap reject: if pixel is darker than LUMA_LOW it's
-              // definitely content — skip the rest of the math.
-              if (max < LUMA_LOW) continue;
-
-              const sat = max === 0 ? 0 : (max - min) / max;
-              if (sat >= SAT_HIGH) continue;       // saturated → content
-
-              const lumaT = max >= LUMA_HIGH ? 1
-                          : (max - LUMA_LOW) / LUMA_RANGE;
-              const satT  = sat <= SAT_LOW ? 1
-                          : (SAT_HIGH - sat) / SAT_RANGE;
-
-              const bgScore = lumaT * satT;
-              if (bgScore > 0) {
-                d[i + 3] = (255 * (1 - bgScore)) | 0;  // | 0 = fast floor
-              }
-            }
-            ctx.putImageData(img, 0, 0);
+            gl.bindTexture(gl.TEXTURE_2D, tex);
+            // Hardware-accelerated upload from the video element.
+            // No CPU pixel loop; the GPU samples the texture directly.
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA,
+                          gl.RGBA, gl.UNSIGNED_BYTE, video);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
           } catch (err) {
-            // Cross-origin canvas got tainted — fall back to the
-            // un-keyed video with its CSS filter.
+            // Tainted texture (CORS regression) — bail out cleanly.
             active = false;
             canvas.remove();
             video.classList.remove('hero-video--hidden');
-            console.warn('[chroma-key] disabled, CORS failure:', err);
+            console.warn('[chroma-key] disabled, GL failure:', err);
+            return;
+          }
+          scheduleNext();
+        }
+        function scheduleNext() {
+          if (typeof video.requestVideoFrameCallback === 'function') {
+            video.requestVideoFrameCallback(render);
+          } else {
+            requestAnimationFrame(render);
           }
         }
-
-        // Prefer requestVideoFrameCallback — fires once per decoded
-        // video frame, so we don't waste CPU re-processing identical
-        // frames or running while the video is held mid-seek. Falls
-        // back to rAF with frame-skipping for browsers without rVFC.
-        if (typeof video.requestVideoFrameCallback === 'function') {
-          const onFrame = () => {
-            if (!active) return;
-            processFrame();
-            video.requestVideoFrameCallback(onFrame);
-          };
-          video.requestVideoFrameCallback(onFrame);
-        } else {
-          const rafTick = () => {
-            if (!active) return;
-            // Process every other rAF tick → ~30 fps chroma-key
-            if ((rafToggle++ & 1) === 0) processFrame();
-            requestAnimationFrame(rafTick);
-          };
-          requestAnimationFrame(rafTick);
-        }
+        scheduleNext();
       };
 
       if (video.readyState >= 1) {

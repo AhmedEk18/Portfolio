@@ -694,6 +694,14 @@
       height: auto;
       position: relative;        /* create stacking context above video */
       z-index: 1;
+      /* Match the CSS-filter fallback path's look: invert + hue-rotate
+         turns the video's light/white keycaps into dark/charcoal ones,
+         dark text becomes light, and the orange keys survive the
+         round-trip via the 180° hue rotation. The chroma-key alpha
+         channel is unaffected by colour filters, so the transparent
+         background stays transparent — we get the bg-keying of WebGL
+         plus the inverted-keycap look the deployed site was missing. */
+      filter: invert(1) hue-rotate(180deg) saturate(1.05);
     }
   </style>
 </head>

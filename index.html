@@ -1574,11 +1574,15 @@
           'Make It Real keyboard hero video');
 
         // WebGL2 first, fall back to WebGL1.
-        // Premultiplied alpha keeps the edge pixels from showing the
-        // light-grey halo that non-premultiplied bg leaks at antialiased
-        // borders — the compositor blends premultiplied colours cleanly.
+        // Using STRAIGHT alpha (premultipliedAlpha: false) — the previous
+        // premultiplied pipeline interacted with the browser compositor's
+        // sRGB-to-linear conversion in a way that subtly shifted the
+        // keycap colours between render environments (local vs deployed,
+        // different DPR / canvas sizes). Straight alpha gives identical
+        // colour reproduction everywhere; the slight edge-halo benefit
+        // of premultiplied wasn't worth the colour-consistency cost.
         const glOpts = {
-          premultipliedAlpha: true,
+          premultipliedAlpha: false,
           alpha: true,
           antialias: true,
           preserveDrawingBuffer: false,
@@ -1620,9 +1624,9 @@
         // space, with a smoothstep alpha falloff. highp gives more
         // accurate edge antialiasing than mediump; with mediump on
         // mobile GPUs the smoothstep ramp can quantise visibly into
-        // a few alpha steps. Output is PREMULTIPLIED — the keyed
-        // pixels carry the source colour multiplied by their alpha,
-        // so the compositor doesn't blend in any bg-colour halo.
+        // a few alpha steps. Output is STRAIGHT alpha — see the
+        // context-creation comment above for why we're not
+        // premultiplying.
         const fsSource = `
           precision highp float;
           varying vec2 v_uv;
@@ -1634,7 +1638,7 @@
             vec4 c = texture2D(u_video, v_uv);
             float d = distance(c.rgb, u_keyColor);
             float a = smoothstep(u_keyLow, u_keyHigh, d);
-            gl_FragColor = vec4(c.rgb * a, a);   // premultiplied
+            gl_FragColor = vec4(c.rgb, a);
           }
         `;
 
@@ -1731,12 +1735,11 @@
         gl.viewport(0, 0, canvas.width, canvas.height);
         gl.clearColor(0, 0, 0, 0);
         gl.enable(gl.BLEND);
-        // Premultiplied-alpha blend: the shader outputs (rgb*a, a), so
-        // the source factor is already weighted — use ONE for the colour
-        // term so we don't multiply alpha in twice.
+        // Straight-alpha blend: shader outputs (rgb, a) and the
+        // compositor weights the colour term by the source alpha.
         gl.blendFuncSeparate(
-          gl.ONE, gl.ONE_MINUS_SRC_ALPHA,
-          gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+          gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA,
+          gl.ONE,       gl.ONE_MINUS_SRC_ALPHA);
 
         // ── Render loop ────────────────────────────────────
         function render() {

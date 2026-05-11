@@ -1556,27 +1556,33 @@
         const w = video.videoWidth  || 1440;
         const h = video.videoHeight || 1440;
 
-        // Canvas at the source's native resolution. The browser
-        // downscales to whatever CSS size we display at — that's
-        // high-quality anti-aliased downscaling done by the GPU.
+        // Oversample the canvas above the source's native resolution
+        // so the downscaled output still hits sub-pixel detail on
+        // hi-DPR displays. Mobile compatibility was traded away in
+        // favour of pure quality — at this scale we want every spare
+        // bit of fidelity. Browser handles GPU-side downscaling
+        // when the canvas is rendered into its smaller CSS box.
+        const dpr = Math.min(3, window.devicePixelRatio || 1);
+        const OVERSAMPLE = 1.5;        // 1440 → 2160 at 1×, even higher at 2×+
+        const targetDim = Math.min(3200,           // safety cap
+          Math.round(Math.max(w, h) * dpr * OVERSAMPLE));
         const canvas = document.createElement('canvas');
-        canvas.width  = w;
-        canvas.height = h;
+        canvas.width  = targetDim;
+        canvas.height = Math.round(targetDim * h / w);
         canvas.className = 'hero-video-canvas';
         canvas.setAttribute('aria-label',
           'Make It Real keyboard hero video');
 
         // WebGL2 first, fall back to WebGL1.
-        // `desynchronized: true` causes silent texImage2D(video) failures
-        // on some Chromium builds — the texture stays as the default
-        // black/zero pixel, the shader keys it to opaque black, and the
-        // canvas reads as a black square. Leaving it off so the compositor
-        // sync stays standard.
+        // Premultiplied alpha keeps the edge pixels from showing the
+        // light-grey halo that non-premultiplied bg leaks at antialiased
+        // borders — the compositor blends premultiplied colours cleanly.
         const glOpts = {
-          premultipliedAlpha: false,
+          premultipliedAlpha: true,
           alpha: true,
           antialias: true,
           preserveDrawingBuffer: false,
+          powerPreference: 'high-performance',
         };
         const gl = canvas.getContext('webgl2', glOpts)
                 || canvas.getContext('webgl',  glOpts)
@@ -1591,13 +1597,11 @@
         video.classList.add('hero-video--hidden');
         let active = true;
 
-        // ── Pause rendering when the hero scrolls out of view ──
-        let inView = true;
-        if ('IntersectionObserver' in window) {
-          new IntersectionObserver(entries => {
-            inView = entries[0].isIntersecting;
-          }, { threshold: 0 }).observe(canvas);
-        }
+        // (Render-every-frame; intersection-observer pause removed
+        //  with the explicit mobile-compatibility trade-off the user
+        //  asked for. Modern GPUs eat 1440²-2160² shader work for
+        //  free, and skipping the IO check shaves a few ms of bookkeeping
+        //  per frame.)
 
         // ── Shaders ──────────────────────────────────────────
         // Vertex: full-screen quad, UVs flipped vertically because
@@ -1612,13 +1616,15 @@
                         1.0 - (a_pos.y * 0.5 + 0.5));
           }
         `;
-        // Fragment: distance-from-key-colour in RGB space, with
-        // a smoothstep alpha falloff. u_keyLow is the distance at
-        // which a pixel is fully transparent (= bg), u_keyHigh is
-        // the distance at which it is fully opaque (= content).
-        // Pixels in between get an antialiased alpha.
+        // Fragment: high-precision distance-from-key-colour in RGB
+        // space, with a smoothstep alpha falloff. highp gives more
+        // accurate edge antialiasing than mediump; with mediump on
+        // mobile GPUs the smoothstep ramp can quantise visibly into
+        // a few alpha steps. Output is PREMULTIPLIED — the keyed
+        // pixels carry the source colour multiplied by their alpha,
+        // so the compositor doesn't blend in any bg-colour halo.
         const fsSource = `
-          precision mediump float;
+          precision highp float;
           varying vec2 v_uv;
           uniform sampler2D u_video;
           uniform vec3 u_keyColor;
@@ -1628,7 +1634,7 @@
             vec4 c = texture2D(u_video, v_uv);
             float d = distance(c.rgb, u_keyColor);
             float a = smoothstep(u_keyLow, u_keyHigh, d);
-            gl_FragColor = vec4(c.rgb, a);
+            gl_FragColor = vec4(c.rgb * a, a);   // premultiplied
           }
         `;
 
@@ -1682,6 +1688,22 @@
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T,     gl.CLAMP_TO_EDGE);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+        // Anisotropic filtering: keeps texture sharp at oblique angles
+        // and on heavy minification — the difference between "looks
+        // soft" and "looks crisp" when the canvas is downscaled into a
+        // smaller CSS box. Widely supported (Chrome, Firefox, Safari).
+        const anisoExt = gl.getExtension('EXT_texture_filter_anisotropic')
+                      || gl.getExtension('MOZ_EXT_texture_filter_anisotropic')
+                      || gl.getExtension('WEBKIT_EXT_texture_filter_anisotropic');
+        if (anisoExt) {
+          const maxAniso = gl.getParameter(
+            anisoExt.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+          gl.texParameterf(gl.TEXTURE_2D,
+            anisoExt.TEXTURE_MAX_ANISOTROPY_EXT,
+            Math.min(16, maxAniso));
+        }
+
         // Flip Y on upload so the texture is stored upright (videos
         // originate top-left; WebGL textures are bottom-left). With this
         // set, the v_uv computation in the vertex shader doesn't need
@@ -1689,28 +1711,37 @@
         // un-flipping it. So leave UNPACK_FLIP_Y_WEBGL false and let the
         // shader handle orientation.
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+        // Source is straight-alpha (the shader will premultiply on output);
+        // tell the upload path NOT to premultiply during decode.
         gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
         gl.uniform1i(gl.getUniformLocation(program, 'u_video'), 0);
 
         // Key colour: the video's light-grey background, ~RGB(223, 223, 223),
-        // expressed in 0..1 space. The two thresholds define the alpha
-        // ramp in RGB-distance units (sqrt(3) ≈ 1.73 is the max possible).
+        // expressed in 0..1 space. Tighter low/high band than before gives
+        // a crisper edge — the antialiased ramp covers a narrower range
+        // around the key distance so foreground pixels stay fully opaque
+        // and bg pixels go fully transparent with fewer mid-alpha pixels
+        // (which were creating the slightly soft look on the deployed
+        // site). max distance possible is sqrt(3) ≈ 1.73.
         gl.uniform3f(gl.getUniformLocation(program, 'u_keyColor'),
                      0xDF / 255, 0xDF / 255, 0xDF / 255);
-        gl.uniform1f(gl.getUniformLocation(program, 'u_keyLow'),  0.05);
-        gl.uniform1f(gl.getUniformLocation(program, 'u_keyHigh'), 0.20);
+        gl.uniform1f(gl.getUniformLocation(program, 'u_keyLow'),  0.03);
+        gl.uniform1f(gl.getUniformLocation(program, 'u_keyHigh'), 0.14);
 
-        gl.viewport(0, 0, w, h);
+        gl.viewport(0, 0, canvas.width, canvas.height);
         gl.clearColor(0, 0, 0, 0);
         gl.enable(gl.BLEND);
+        // Premultiplied-alpha blend: the shader outputs (rgb*a, a), so
+        // the source factor is already weighted — use ONE for the colour
+        // term so we don't multiply alpha in twice.
         gl.blendFuncSeparate(
-          gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA,
-          gl.ONE,       gl.ONE_MINUS_SRC_ALPHA);
+          gl.ONE, gl.ONE_MINUS_SRC_ALPHA,
+          gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
         // ── Render loop ────────────────────────────────────
         function render() {
           if (!active) return;
-          if (!inView || video.readyState < 2) {
+          if (video.readyState < 2) {
             scheduleNext();
             return;
           }

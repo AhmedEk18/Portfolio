@@ -22,20 +22,37 @@ if (document.readyState === 'complete') {
   if (!cursor || !ring) return;
 
   let cx = 0, cy = 0, rx = 0, ry = 0;
+  // Self-pause the ring lerp when the user is idle. The constant 60 Hz
+  // rAF tax was real on long pages — it kept the renderer warm even
+  // when nothing was moving. mousemove re-arms it.
+  let ringRunning = false;
+
+  function wakeRing() {
+    if (ringRunning) return;
+    ringRunning = true;
+    requestAnimationFrame(animateRing);
+  }
 
   document.addEventListener('mousemove', e => {
     cx = e.clientX; cy = e.clientY;
     cursor.style.left = cx + 'px';
     cursor.style.top  = cy + 'px';
-  });
+    wakeRing();
+  }, { passive: true });
 
-  (function animateRing() {
-    rx += (cx - rx) * 0.14;
-    ry += (cy - ry) * 0.14;
+  function animateRing() {
+    const dx = cx - rx, dy = cy - ry;
+    rx += dx * 0.14;
+    ry += dy * 0.14;
     ring.style.left = rx + 'px';
     ring.style.top  = ry + 'px';
+    if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) {
+      ringRunning = false;       // settled — exit the loop
+      return;
+    }
     requestAnimationFrame(animateRing);
-  })();
+  }
+  wakeRing();
 
   const expandSelectors = 'a, button, .project-card, .gallery-item, .pipeline-step, .method, .stat, .nav-links a, .contact-title a';
   document.querySelectorAll(expandSelectors).forEach(el => {

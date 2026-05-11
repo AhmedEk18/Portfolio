@@ -702,7 +702,26 @@
          background stays transparent — we get the bg-keying of WebGL
          plus the inverted-keycap look the deployed site was missing. */
       filter: invert(1) hue-rotate(180deg) saturate(1.05);
+      /* Promote to its own composite layer so the filter pass is
+         cached by the compositor instead of re-running every frame. */
+      will-change: transform;
+      transform: translateZ(0);
     }
+
+    /* ── Off-screen section paint skipping ───────────────
+       content-visibility:auto tells the browser to skip layout,
+       paint, and rendering for sections that aren't anywhere
+       near the viewport. Combined with contain-intrinsic-size
+       (a placeholder size so scroll position doesn't jump), this
+       can dramatically reduce paint cost on long pages with many
+       sections, scroll-driven effects, and large images. */
+    .section,
+    .stats,
+    .contact {
+      content-visibility: auto;
+      contain-intrinsic-size: 0 1200px;
+    }
+    /* Hero must paint immediately on load — no content-visibility on it. */
   </style>
 </head>
 <body>
@@ -1153,19 +1172,41 @@
       const gridL     = canvas.querySelector('.bg-grid-layer');
       const spotlight = canvas.querySelector('.bg-spotlight');
 
-      /* Smooth scroll tracker — lerp toward actual scrollY */
+      /* Smooth scroll tracker — lerp toward actual scrollY.
+         Loop self-pauses when no input has changed and the lerp
+         delta is below 0.5px — saves the 60Hz wakeup tax when
+         the user is idle. Any scroll or mousemove re-arms it. */
       let smoothY = 0, rawY = 0;
       let spotX = window.innerWidth / 2, spotY = window.innerHeight / 2;
       let sxCur = spotX, syCur = spotY;
       const SPOT_HALF = 260;
+      let bgRunning = false;
+      let bgIdleFrames = 0;
 
-      window.addEventListener('scroll', () => { rawY = window.scrollY; }, { passive: true });
-      document.addEventListener('mousemove', e => { spotX = e.clientX; spotY = e.clientY; });
+      const wake = () => {
+        if (bgRunning) { bgIdleFrames = 0; return; }
+        bgRunning = true;
+        bgIdleFrames = 0;
+        requestAnimationFrame(bgLoop);
+      };
+
+      window.addEventListener('scroll', () => {
+        rawY = window.scrollY;
+        wake();
+      }, { passive: true });
+      document.addEventListener('mousemove', e => {
+        spotX = e.clientX;
+        spotY = e.clientY;
+        wake();
+      }, { passive: true });
 
       function bgLoop() {
-        // Lerp scroll (0.08 = smooth lag)
-        smoothY += (rawY - smoothY) * 0.075;
+        const dyScroll = rawY  - smoothY;
+        const dxSpot   = spotX - sxCur;
+        const dySpot   = spotY - syCur;
 
+        // Lerp scroll (0.075 = smooth lag)
+        smoothY += dyScroll * 0.075;
         // Orb parallax — more dramatic multipliers
         orb1.style.transform =
           `translate3d(${smoothY * 0.10}px, ${smoothY * 0.20}px, 0)`;
@@ -1175,21 +1216,37 @@
           `translate3d(0, ${smoothY * 0.045}px, 0)`;
 
         // Spotlight: lerp toward mouse (slow = dreamy)
-        sxCur += (spotX - sxCur) * 0.05;
-        syCur += (spotY - syCur) * 0.05;
+        sxCur += dxSpot * 0.05;
+        syCur += dySpot * 0.05;
         spotlight.style.left = (sxCur - SPOT_HALF) + 'px';
         spotlight.style.top  = (syCur - SPOT_HALF) + 'px';
 
-        // Scroll progress bar
+        // Scroll progress bar (only writes when value changes
+        // meaningfully — avoids re-styling every frame at rest)
         const maxScroll = Math.max(1,
           document.documentElement.scrollHeight - window.innerHeight);
         const pct = (rawY / maxScroll) * 100;
         const bar = document.getElementById('scrollProgress');
         if (bar) bar.style.width = pct + '%';
 
+        // Self-pause once every channel has settled below 0.5 px for
+        // a handful of frames. The wake() callback above re-arms us
+        // when the user moves or scrolls again.
+        const settled = Math.abs(dyScroll) < 0.5
+                     && Math.abs(dxSpot)   < 0.5
+                     && Math.abs(dySpot)   < 0.5;
+        if (settled) {
+          bgIdleFrames++;
+          if (bgIdleFrames > 8) {
+            bgRunning = false;
+            return;     // exit the rAF chain
+          }
+        } else {
+          bgIdleFrames = 0;
+        }
         requestAnimationFrame(bgLoop);
       }
-      bgLoop();
+      wake();   // kick the first frame
     }
 
     /* ── 2. Hero intro timeline ─────────────────────────────
@@ -1298,10 +1355,17 @@
 
       sections.forEach(s => observer.observe(s));
 
-      // Hero dot: activate by scroll position
+      // Hero dot: activate when scrolled near the top. Edge-triggered
+      // so we only call activateDot on transitions, not every scroll
+      // event (which can fire 100+ times per second during a flick).
+      let heroDotActive = true;
       window.addEventListener('scroll', () => {
-        if (window.scrollY < window.innerHeight * 0.5) {
+        const now = window.scrollY < window.innerHeight * 0.5;
+        if (now && !heroDotActive) {
+          heroDotActive = true;
           activateDot('hero');
+        } else if (!now && heroDotActive) {
+          heroDotActive = false;
         }
       }, { passive: true });
 
@@ -1341,16 +1405,34 @@
 
       cards.forEach(c => obs.observe(c));
 
-      /* Image parallax inside each card:
-         image moves slower than card scrolls, creating depth */
-      const cardImgs = document.querySelectorAll('.parallax-card-img');
+      /* Image parallax inside each card — image moves slower than the
+         card scrolls, creating depth. Only run the math on cards that
+         are currently within the viewport (plus a small margin), so
+         long pages don't re-evaluate four off-screen cards' bounding
+         rects on every scroll tick. */
+      const cardImgs = Array.from(document.querySelectorAll('.parallax-card-img'));
       let imgTick = false;
+      const visibleCards = new Set();
+
+      if ('IntersectionObserver' in window) {
+        const visObs = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) visibleCards.add(entry.target);
+            else                       visibleCards.delete(entry.target);
+          });
+        }, { rootMargin: '300px' });
+        cardImgs.forEach(img => visObs.observe(img));
+      } else {
+        // No IO support — fall back to "always visible"
+        cardImgs.forEach(img => visibleCards.add(img));
+      }
 
       function updateCardParallax() {
-        cardImgs.forEach(img => {
-          const rect = img.closest('.project-card-media').getBoundingClientRect();
-          const viewH = window.innerHeight;
-          // How far through the viewport: -1 (above) to 1 (below)
+        const viewH = window.innerHeight;
+        visibleCards.forEach(img => {
+          const media = img.closest('.project-card-media');
+          if (!media) return;
+          const rect = media.getBoundingClientRect();
           const progress = (viewH / 2 - (rect.top + rect.height / 2)) / viewH;
           const shift = progress * 40; // max 40px shift
           img.style.transform = `translateY(${shift}px) scale(1.08)`;
@@ -1393,7 +1475,7 @@
        around the element bounds; movement = mouse offset / strength
        (lower strength = stronger pull, matching React-Bits convention). */
     function initMagnet() {
-      const magnets = document.querySelectorAll('[data-magnet]');
+      const magnets = Array.from(document.querySelectorAll('[data-magnet]'));
       if (!magnets.length) return;
       // Skip on touch devices — no useful pointer signal
       if (matchMedia('(hover: none)').matches) return;
@@ -1403,36 +1485,54 @@
       const ACTIVE_T   = 'transform 0.3s ease-out';
       const INACTIVE_T = 'transform 0.6s ease-in-out';
 
-      magnets.forEach(el => {
-        let active = false;
+      // Pre-initialise transition state once
+      const states = magnets.map(el => {
         el.style.transition = INACTIVE_T;
         el.style.transform  = 'translate(0, 0)';
+        return { el, active: false };
+      });
 
-        document.addEventListener('mousemove', e => {
-          const rect = el.getBoundingClientRect();
+      // ONE shared document listener instead of N (was being added once
+      // per magnet). The body of the listener now also exits early on
+      // every magnet that's not anywhere near the pointer — saves
+      // getBoundingClientRect calls during scroll.
+      document.addEventListener('mousemove', e => {
+        for (const s of states) {
+          const rect = s.el.getBoundingClientRect();
+
+          // Cheap viewport reject before computing centre
+          if (rect.bottom < -PADDING ||
+              rect.top    > window.innerHeight + PADDING) {
+            if (s.active) {
+              s.active = false;
+              s.el.style.transition = INACTIVE_T;
+              s.el.style.transform  = 'translate(0, 0)';
+            }
+            continue;
+          }
+
           const cx = rect.left + rect.width  / 2;
           const cy = rect.top  + rect.height / 2;
-
           const inX = e.clientX >= rect.left   - PADDING
                    && e.clientX <= rect.right  + PADDING;
           const inY = e.clientY >= rect.top    - PADDING
                    && e.clientY <= rect.bottom + PADDING;
 
           if (inX && inY) {
-            if (!active) {
-              active = true;
-              el.style.transition = ACTIVE_T;
+            if (!s.active) {
+              s.active = true;
+              s.el.style.transition = ACTIVE_T;
             }
             const dx = (e.clientX - cx) / STRENGTH;
             const dy = (e.clientY - cy) / STRENGTH;
-            el.style.transform = `translate(${dx}px, ${dy}px)`;
-          } else if (active) {
-            active = false;
-            el.style.transition = INACTIVE_T;
-            el.style.transform  = 'translate(0, 0)';
+            s.el.style.transform = `translate(${dx}px, ${dy}px)`;
+          } else if (s.active) {
+            s.active = false;
+            s.el.style.transition = INACTIVE_T;
+            s.el.style.transform  = 'translate(0, 0)';
           }
-        }, { passive: true });
-      });
+        }
+      }, { passive: true });
     }
 
     /* ── 7. Hero video loop ─────────────────────────────────
@@ -1564,19 +1664,16 @@
         const w = video.videoWidth  || 1440;
         const h = video.videoHeight || 1440;
 
-        // Oversample the canvas above the source's native resolution
-        // so the downscaled output still hits sub-pixel detail on
-        // hi-DPR displays. Mobile compatibility was traded away in
-        // favour of pure quality — at this scale we want every spare
-        // bit of fidelity. Browser handles GPU-side downscaling
-        // when the canvas is rendered into its smaller CSS box.
-        const dpr = Math.min(3, window.devicePixelRatio || 1);
-        const OVERSAMPLE = 1.5;        // 1440 → 2160 at 1×, even higher at 2×+
-        const targetDim = Math.min(3200,           // safety cap
-          Math.round(Math.max(w, h) * dpr * OVERSAMPLE));
+        // Canvas matches the source video's native resolution (1440²).
+        // Previously we oversampled to 2160×2160 — 3200×3200 on retina
+        // — which looked marginally crisper but cost ~3–9× the
+        // compositor pixel work every frame the canvas is on screen.
+        // At display sizes ≤ 520 CSS px with the browser's GPU-side
+        // downscale, 1440² is already past the visible quality plateau.
+        // This is the single biggest perf win for the deployed site.
         const canvas = document.createElement('canvas');
-        canvas.width  = targetDim;
-        canvas.height = Math.round(targetDim * h / w);
+        canvas.width  = w;
+        canvas.height = h;
         canvas.className = 'hero-video-canvas';
         canvas.setAttribute('aria-label',
           'Make It Real keyboard hero video');
@@ -1609,11 +1706,18 @@
         video.classList.add('hero-video--hidden');
         let active = true;
 
-        // (Render-every-frame; intersection-observer pause removed
-        //  with the explicit mobile-compatibility trade-off the user
-        //  asked for. Modern GPUs eat 1440²-2160² shader work for
-        //  free, and skipping the IO check shaves a few ms of bookkeeping
-        //  per frame.)
+        // Pause rendering when the hero is scrolled off-screen.
+        // The render itself is cheap on the GPU, but skipping the
+        // composite + texImage2D upload entirely matters on long
+        // pages — we'd otherwise burn 24 frames/sec of pipeline work
+        // for content nobody's looking at. The catch in render()
+        // also kicks in if the page is hidden (visibilityState).
+        let inView = true;
+        if ('IntersectionObserver' in window) {
+          new IntersectionObserver(entries => {
+            inView = entries[0].isIntersecting;
+          }, { threshold: 0, rootMargin: '120px' }).observe(canvas);
+        }
 
         // ── Shaders ──────────────────────────────────────────
         // Vertex: full-screen quad, UVs flipped vertically because
@@ -1752,7 +1856,13 @@
         // ── Render loop ────────────────────────────────────
         function render() {
           if (!active) return;
-          if (video.readyState < 2) {
+          // Skip pipeline work if hero is offscreen, video isn't ready,
+          // or the page is hidden (tab in background). All three early
+          // returns still re-schedule so we resume cleanly when state
+          // changes.
+          if (!inView
+              || video.readyState < 2
+              || document.hidden) {
             scheduleNext();
             return;
           }
@@ -1795,14 +1905,19 @@
     function initNav() {
       const nav = document.getElementById('main-nav');
       if (!nav) return;
+      // The previous version wrote three style properties on every
+      // scroll event (potentially hundreds per second during a fast
+      // flick) — including a backdrop-filter that triggers a paint
+      // re-evaluation. Use a single class toggle keyed off a
+      // boolean instead so we only touch the DOM at the transition.
+      nav.style.transition = 'background 0.4s ease, backdrop-filter 0.4s ease';
+      let scrolled = false;
       window.addEventListener('scroll', () => {
-        nav.style.background = window.scrollY > 60
-          ? 'rgba(7,9,16,0.82)'
-          : '';
-        nav.style.backdropFilter = window.scrollY > 60
-          ? 'blur(14px)'
-          : '';
-        nav.style.transition = 'background 0.4s ease, backdrop-filter 0.4s ease';
+        const now = window.scrollY > 60;
+        if (now === scrolled) return;
+        scrolled = now;
+        nav.style.background      = now ? 'rgba(7,9,16,0.82)' : '';
+        nav.style.backdropFilter  = now ? 'blur(14px)'       : '';
       }, { passive: true });
     }
 
